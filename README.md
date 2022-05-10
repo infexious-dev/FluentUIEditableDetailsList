@@ -8,4 +8,6 @@ New features include:
 >- enablePanelEdit on EditableGrid to allow for editing all or custom fields (see below) for a selected grid row via an edit panel that prepopulates fields with current values. This acts similar to "enableBulkEdit" but is only allowed for one row selection and also prefills data.
 >- customEditPanelColumns on EditableGrid allows user to define custom fields to show when editing rows via the panel. This affects both "enablePanelEdit" and "enableBulkEdit" options. This enables the grid to show a subset of the fields per item while the panel editing to show a larger subset - particularly useful when there are over 50 fields to edit, but we only want to actually display 10 fields in the grid.
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
+>- Updated office-ui-fabric-react version to latest.
+>- Allow IColumnConfig to utilise className and headerClassName props correctly from IColumn when rendering in EditableGrid.
 >- TEMPORARY enableSave "Submit" button text temporarily changed to "Save to SharePoint" until we extend options to allow for text/icon customisation of some of these grid toolbar buttons.
