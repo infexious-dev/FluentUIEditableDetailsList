@@ -10,4 +10,9 @@ New features include:
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
 >- Updated office-ui-fabric-react version to latest.
 >- Allow IColumnConfig to utilise className and headerClassName props correctly from IColumn when rendering in EditableGrid.
+>- Marquee Selection now optional in EditableGrid options. This is a way to get rid of the current "mouse drag" selection which doesn't select multiple rows anyways. use "enableMarqueeSelection".
+>- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
+>- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows default column sorting when the grid is rendered.
+>- Provided "prependRowEditActions" prop on EditableGrid when "enableRowEdit" is set to TRUE. This allows the "Actions" column to appear as the first column on the grid (rather than the last).
+>- Added ability to have above/below sticky content render in the grid. This is done via manipulation of the ScrollablePane ref.
 >- TEMPORARY enableSave "Submit" button text temporarily changed to "Save to SharePoint" until we extend options to allow for text/icon customisation of some of these grid toolbar buttons.
