@@ -1147,6 +1147,7 @@ const EditableGrid = (props: Props) => {
                 isFiltered: (isDataTypeSupportedForFilter && column.applyColumnFilter && props.enableColumnFilters && (getColumnFiltersRef() && getColumnFiltersRef().length > 0 && getColumnFiltersRef().filter(i => i.column.key == column.key).length > 0 && getColumnFiltersRef().filter(i => i.column.key == column.key)[0].isApplied)) ? true : false,
                 sortAscendingAriaLabel: 'Sorted A to Z',
                 sortDescendingAriaLabel: 'Sorted Z to A',
+                isMultiline: column.isMultiline,
                 onRender: column.onRender ? column.onRender : (item, rowNum) => {
                     rowNum = Number(item['_grid_row_id_']);
 
@@ -1716,6 +1717,7 @@ const EditableGrid = (props: Props) => {
             className={GetDynamicSpanStyles(column, item[column.key])}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum)}
+            style={{ whiteSpace: column.isMultiline ? 'pre-line' : 'normal' }}
         >
             {customRender ? customRender : item[column.key]}
         </span>;
@@ -1887,7 +1889,7 @@ const EditableGrid = (props: Props) => {
             {showFilterCallout && filterCalloutComponent}
             <div className={mergeStyles({ height: props.height != null ? props.height : '70vh', width: props.width != null ? props.width : '130vh', position: 'relative', backgroundColor: 'white', })}>
                 <ScrollablePane styles={{ contentContainer: { paddingTop: aboveContentHeight, paddingBottom: belowContentHeight } }} componentRef={scrollablePaneRef} scrollbarVisibility={ScrollbarVisibility.auto}>
-                    <MarqueeSelection selection={_selection} isEnabled={props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true} >
+                    <MarqueeSelection isDraggingConstrainedToRoot={true} selection={_selection} isEnabled={props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true} >
                         <DetailsList
                             compact={true}
                             items={defaultGridData.length > 0 ? defaultGridData.filter((x) => (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_ == true) && (x._is_filtered_in_grid_search_ == true) && (x._is_filtered_in_column_filter_ == true)) : []}
