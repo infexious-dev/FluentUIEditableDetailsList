@@ -684,7 +684,7 @@ const EditableGrid = (props: Props) => {
         });
 
         var defaultGridDataTmp = CheckCellOnChangeCallBack(arr, [row], column);
-        setDefaultGridData(defaultGridDataTmp);
+        //setDefaultGridData(defaultGridDataTmp);
         activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridDataTmp, activateCellEditTmp);
     }
     /* #endregion */
@@ -909,6 +909,10 @@ const EditableGrid = (props: Props) => {
         ClearFilters();
         SetGridItems(backupDefaultGridData.map(obj => ({ ...obj })));
         UpdateSelectedItems(backupDefaultGridData);
+
+        if (props.onGridReset) {
+            props.onGridReset(backupDefaultGridData);
+        }
     };
 
     /* #region [Column Click] */
@@ -1361,10 +1365,10 @@ const EditableGrid = (props: Props) => {
                         {(activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])
                             ?
                             <div>
-                                <IconButton disabled={editMode} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, false)} iconProps={{ iconName: 'Save' }} title={'Save'}></IconButton>
+                                <IconButton data-is-focusable={false} disabled={editMode} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, false)} iconProps={{ iconName: 'Save' }} title={'Save'}></IconButton>
                                 {props.enableRowEditCancel
                                     ?
-                                    <IconButton disabled={editMode} onClick={() => CancelRowEditMode(item, Number(item['_grid_row_id_'])!)} iconProps={{ iconName: 'RemoveFilter' }} title={'Cancel'}></IconButton>
+                                    <IconButton data-is-focusable={false} disabled={editMode} onClick={() => CancelRowEditMode(item, Number(item['_grid_row_id_'])!)} iconProps={{ iconName: 'RemoveFilter' }} title={'Cancel'}></IconButton>
                                     :
                                     null
                                 }
@@ -1372,10 +1376,11 @@ const EditableGrid = (props: Props) => {
                             :
                             <div>
                                 {!props.enableDefaultEditMode &&
-                                    <IconButton onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} title={'Edit'}></IconButton>
+                                    <IconButton data-is-focusable={false} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} title={'Edit'}></IconButton>
                                 }{
                                     props.gridCopyOptions && props.gridCopyOptions.enableRowCopy &&
                                     <IconButton
+                                        data-is-focusable={false}
                                         onClick={() => HandleRowCopy(Number(item['_grid_row_id_'])!)}
                                         iconProps={{ iconName: "Copy" }}
                                         title={"Copy"}

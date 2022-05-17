@@ -4,7 +4,7 @@ export var operatorsArr = [
         value: ['equals', 'contains', 'starts with', 'ends with', 'not equal to']
     },
     {
-        type: 'number',
+        type: 'number' || 'decimal',
         value: ['>', '<', '>=', '<=', '=', '!=']
     }
 ];

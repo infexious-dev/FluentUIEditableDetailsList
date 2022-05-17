@@ -632,7 +632,7 @@ var EditableGrid = function (props) {
             arr.push(rowObj);
         });
         var defaultGridDataTmp = CheckCellOnChangeCallBack(arr, [row], column);
-        setDefaultGridData(defaultGridDataTmp);
+        //setDefaultGridData(defaultGridDataTmp);
         activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridDataTmp, activateCellEditTmp);
     };
     /* #endregion */
@@ -820,6 +820,9 @@ var EditableGrid = function (props) {
         ClearFilters();
         SetGridItems(backupDefaultGridData.map(function (obj) { return (__assign({}, obj)); }));
         UpdateSelectedItems(backupDefaultGridData);
+        if (props.onGridReset) {
+            props.onGridReset(backupDefaultGridData);
+        }
     };
     /* #region [Column Click] */
     var onColumnClick = function (ev, column, index) {
@@ -1124,15 +1127,15 @@ var EditableGrid = function (props) {
                 maxWidth: props.prependRowEditActions ? 70 : 50,
                 onRender: function (item, index) { return (_jsx("div", { children: (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])
                         ?
-                            _jsxs("div", { children: [_jsx(IconButton, { disabled: editMode, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
+                            _jsxs("div", { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
                                         ?
-                                            _jsx(IconButton, { disabled: editMode, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
+                                            _jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
                                         :
                                             null] }, void 0)
                         :
                             _jsxs("div", { children: [!props.enableDefaultEditMode &&
-                                        _jsx(IconButton, { onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0), props.gridCopyOptions && props.gridCopyOptions.enableRowCopy &&
-                                        _jsx(IconButton, { onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0)] }, void 0) }, void 0)); },
+                                        _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0), props.gridCopyOptions && props.gridCopyOptions.enableRowCopy &&
+                                        _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0)] }, void 0) }, void 0)); },
             };
             props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
         }
