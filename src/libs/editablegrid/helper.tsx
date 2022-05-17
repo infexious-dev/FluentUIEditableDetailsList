@@ -12,6 +12,7 @@ export const filterGridData = (data: any[], filters: IFilter[]): any[] => {
                 var columnType = item.column.dataType;
                 switch (columnType) {
                     case 'number':
+                    case 'decimal':
                         isRowIncluded = isRowIncluded && numberOperatorEval(row[item.column.key], item.value, item.operator);
                         break;
                     case 'string':
@@ -50,6 +51,7 @@ export const applyGridColumnFilter = (data: any[], gridColumnFilterArr: IGridCol
 export const isColumnDataTypeSupportedForFilter = (datatype: string | undefined): boolean => {
     switch (datatype) {
         case 'number':
+        case 'decimal':
             return true;
         case 'string':
             return true;
@@ -62,7 +64,11 @@ export const IsValidDataType = (type: string | undefined, text: string): boolean
     var isValid = true;
     switch (type) {
         case 'number':
-            var regex = new RegExp(/^\d*(\.\d{0,2})?$/, 'g');
+            isValid = !isNaN(Number(text));
+            break;
+        case 'decimal':
+            //var regex = new RegExp(/^\d*(\.\d{0,0})?$/, 'g');
+            let regex = new RegExp(/^-?[0-9]*\.?[0-9]*?$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
             }
@@ -79,6 +85,7 @@ export const EvaluateRule = (datatType: string, cellValue: string | number | und
 
     switch (datatType) {
         case 'number':
+        case 'decimal':
             return numberOperatorEval(Number(cellValue), styleRule?.rule!.value as number, styleRule?.rule!.operator);
         case 'string':
             return stringOperatorEval(String(cellValue), styleRule?.rule!.value as string, styleRule?.rule!.operator)
@@ -106,9 +113,12 @@ export const ParseType = (type: string | undefined, text: string): any => {
 
     switch (type) {
         case 'number':
-            var regex = new RegExp(/^\d*(\.\d{0,0})?$/, 'g');
+            return Number(text);
+        case 'decimal':
+            // var regex = new RegExp(/^\d*(\.\d{0,2})?$/, 'g');
+            let regex = new RegExp(/^-?[0-9]*\.*?[0]*?$/, 'g');
             if (regex.test(text)) {
-                return text;
+                return text // keep as string until more decimals are added
             } else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }

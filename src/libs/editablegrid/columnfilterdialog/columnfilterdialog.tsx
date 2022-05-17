@@ -25,14 +25,14 @@ const ColumnFilterDialog = (props: Props) => {
         setGridColumn(gridColumn);
 
         switch (gridColumn?.dataType) {
-            case "number":
-                doOperatorTypeChange("number");
+            case 'number':
+                doOperatorTypeChange('number');
                 break;
-            case "string":
-                doOperatorTypeChange("string");
+            case 'string':
+                doOperatorTypeChange('string');
                 break;
-            case "date":
-                doOperatorTypeChange("date");
+            case 'date':
+                doOperatorTypeChange('date');
                 break;
         }
 
@@ -65,6 +65,7 @@ const ColumnFilterDialog = (props: Props) => {
                 var valueOptions = createValueOptions(column[0]);
                 switch (column[0].dataType) {
                     case 'number':
+                    case 'decimal':
                         setInputFieldContent(
                             <TextField
                                 className={controlClass.textFieldClass}
@@ -142,6 +143,7 @@ const ColumnFilterDialog = (props: Props) => {
                 operatorsOptions = operatorsArr.filter((item) => item.type == 'string')[0].value;
                 break;
             case 'number':
+            case 'decimal':
                 operatorsOptions = operatorsArr.filter((item) => item.type == 'number')[0].value;
                 break;
         }

@@ -41,14 +41,14 @@ var ColumnFilterDialog = function (props) {
         var gridColumn = props.columnConfigurationData.filter(function (val) { return val.key == item.key; })[0];
         setGridColumn(gridColumn);
         switch (gridColumn === null || gridColumn === void 0 ? void 0 : gridColumn.dataType) {
-            case "number":
-                doOperatorTypeChange("number");
+            case 'number':
+                doOperatorTypeChange('number');
                 break;
-            case "string":
-                doOperatorTypeChange("string");
+            case 'string':
+                doOperatorTypeChange('string');
                 break;
-            case "date":
-                doOperatorTypeChange("date");
+            case 'date':
+                doOperatorTypeChange('date');
                 break;
         }
         if (operatorType.current !== operatorTypePrevious.current) {
@@ -75,6 +75,7 @@ var ColumnFilterDialog = function (props) {
                 var valueOptions = createValueOptions(column[0]);
                 switch (column[0].dataType) {
                     case 'number':
+                    case 'decimal':
                         setInputFieldContent(_jsx(TextField, { className: controlClass.textFieldClass, placeholder: "Value", onChange: function (ev, text) { return onTextUpdate(ev, text); }, styles: textFieldStyles }, void 0));
                         setOperatorDropDownContent(_jsx(Dropdown, { placeholder: "Select Operator", options: createCompareOptions(), styles: dropdownStyles, onChange: onSelectOperator, selectedKey: operator ? operator.key : null }, void 0));
                         break;
@@ -110,6 +111,7 @@ var ColumnFilterDialog = function (props) {
                 operatorsOptions = operatorsArr.filter(function (item) { return item.type == 'string'; })[0].value;
                 break;
             case 'number':
+            case 'decimal':
                 operatorsOptions = operatorsArr.filter(function (item) { return item.type == 'number'; })[0].value;
                 break;
         }

@@ -49,7 +49,8 @@ export const GridColumnConfig: IColumnConfig[] =
             isResizable: true,
             includeColumnInExport: true,
             includeColumnInSearch: true,
-            applyColumnFilter: true
+            applyColumnFilter: true,
+            onChange: () => { console.log('Testing on change callback isn\'t resetting grid') }
         },
         {
             key: 'age',
@@ -83,7 +84,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'Salary',
             text: 'Salary',
             editable: true,
-            dataType: 'number',
+            dataType: 'decimal',
             minWidth: 100,
             maxWidth: 100,
             isResizable: true,

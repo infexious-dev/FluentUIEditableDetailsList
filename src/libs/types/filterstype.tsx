@@ -17,7 +17,7 @@ export const operatorsArr: IOperators[] = [
         value: ['equals', 'contains', 'starts with', 'ends with', 'not equal to']
     },
     {
-        type: 'number',
+        type: 'number' || 'decimal',
         value: ['>', '<', '>=', '<=', '=', '!=']
     }
 ]
