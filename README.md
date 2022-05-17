@@ -12,6 +12,7 @@ New updates include:
 >- Provided "prependRowEditActions" prop on EditableGrid when "enableRowEdit" is set to TRUE. This allows the "Actions" column to appear as the first column on the grid (rather than the last).
 >- "EnableSaveText" prop added to EditableGrid which allows customisation of the "Submit" button text and arial-label.
 >- Marquee Selection now optional in EditableGrid options. This is a way to get rid of the current "mouse drag" selection which doesn't select multiple rows anyways. use "enableMarqueeSelection".
+>- New function "onGridReset" callback available to run after grid data is reset. Useful for clear search box text etc. Does it provide any additional data, just triggers the function when grid is reset.
 
 ### New "IColumnConfig" Features
 >- "onCustomRender" prop on IColumnConfig allows for custom rendering of the column without breaking "editing" capabilities
@@ -20,10 +21,12 @@ New updates include:
 ### Bug Fixes
 >- Reset Data now properly updates currently selected item with changes.
 >- "Filter" modal now correctly changes operators when switching between columns if the data type is the same between previous and new selected column. Otherwise, it will clear the current operator and force a new operator selection. (Example: going from "number" to "number" columns will retain the currently selected operator, but going from "number" to "string" will force user to select a new operator).
+>- "onChange" on IColumnConfig no longer causes filtered items to reset to showing all grid data.
+>- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
->- "Number" input type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except ".").
+>- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
 >- IColumnConfig can utilise inherited "className" and "headerClassName" props correctly from IColumn when rendering in EditableGrid.
