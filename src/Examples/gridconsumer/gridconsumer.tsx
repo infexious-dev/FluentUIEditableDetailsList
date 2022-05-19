@@ -37,6 +37,8 @@ interface GridConfigOptions {
     enableColumnFilters: boolean;
     enableDefaultEditMode: boolean;
     enableMarqueeSelection: boolean;
+    enableRowMute: boolean;
+    prependRowEditActions: boolean;
 }
 
 const Consumer = () => {
@@ -65,8 +67,11 @@ const Consumer = () => {
         enableGridReset: true,
         enableColumnFilters: true,
         enableDefaultEditMode: false,
-        enableMarqueeSelection: false
+        enableMarqueeSelection: false,
+        enableRowMute: true,
+        prependRowEditActions: false
     });
+    const [gridSearchText, setGridSearchText] = useState("");
 
     const RowSize = 5;
 
@@ -194,6 +199,8 @@ const Consumer = () => {
         console.log(data.filter(item => item._grid_row_operation_ == Operation.Delete));
         console.log('Unchanged Rows');
         console.log(data.filter(item => item._grid_row_operation_ == Operation.None));
+        console.log('Muted Rows');
+        console.log(data.filter(item => item._grid_row_operation_ == Operation.Mute));
     }
 
     const onPayrollChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
@@ -235,31 +242,15 @@ const Consumer = () => {
     const [belowContent, setBelowContent] = React.useState<HTMLDivElement>();
 
     React.useEffect(() => {
-        setTimeout(() => {
-            let aboveContent = document.createElement('div');
+        let aboveContent = document.createElement('div');
 
-            aboveContent.innerHTML = `
+        aboveContent.innerHTML = `
                 <div class="above-content" style="background: rgba(0,0,0,.05); font-weight:600; padding: 20px 0;">
-                    Text here is displaying as sticky content in the "above" area that is not only delayed, but changed!
+                    Text here is displaying as sticky content in the "above" area
                 </div>
             `;
 
-            setAboveContent(aboveContent);
-
-        }, 5000);
-
-        setTimeout(() => {
-            let aboveContent = document.createElement('div');
-
-            aboveContent.innerHTML = `
-                <div class="above-content" style="background: rgba(0,0,0,.05); font-weight:600; padding: 20px 0;">
-                    Text here is displaying as sticky content in the "above" area but now it has changed!
-                </div>
-            `;
-
-            setAboveContent(aboveContent);
-
-        }, 10000);
+        setAboveContent(aboveContent);
     }, []);
 
     React.useEffect(() => {
@@ -285,32 +276,8 @@ const Consumer = () => {
 
             setBelowContent(belowContent);
 
-        }, 10000);
+        }, 5000);
     }, []);
-
-    const getAboveContentRender = (): HTMLDivElement => {
-        let aboveContent = document.createElement('div');
-
-        aboveContent.innerHTML = `
-            <div class="above-content" style="background: rgba(0,0,0,.05); font-weight:600; padding: 20px 0;">
-                Text here is displaying as sticky content in the "above" area
-            </div>
-        `;
-
-        return aboveContent;
-    }
-
-    const getBelowContentRender = (): HTMLDivElement => {
-        let belowContent = document.createElement('div');
-
-        belowContent.innerHTML = `
-            <div class="below-content" style="background: rgba(255,255,255,.9); font-weight:600; padding: 20px 0;">
-                Text here is displaying as sticky content in the "below" area
-            </div>
-        `;
-
-        return belowContent;
-    }
 
     return (
         <Fabric>
@@ -387,15 +354,24 @@ const Consumer = () => {
                 </Stack>
                 <Stack horizontal tokens={gapStackTokens}>
                     <Stack.Item className={classNames.checkbox}>
-                        <Checkbox id={"enableSave"} label="Save" onChange={onCheckboxChange} checked={gridConfigOptions.enableSave} />
+                        <Checkbox id={"enableMarqueeSelection"} label="Marquee Selection" onChange={onCheckboxChange} checked={gridConfigOptions.enableMarqueeSelection} />
                     </Stack.Item>
                     <Stack.Item className={classNames.checkbox}>
-                        <Checkbox id={"enableGridReset"} label="Grid Reset" onChange={onCheckboxChange} checked={gridConfigOptions.enableGridReset} />
+                        <Checkbox id={"enableRowMute"} label="Row Mute" onChange={onCheckboxChange} checked={gridConfigOptions.enableRowMute} />
+                    </Stack.Item>
+                    <Stack.Item className={classNames.checkbox}>
+                        <Checkbox id={"prependRowEditActions"} label="Prepend Row 'Actions'" onChange={onCheckboxChange} checked={gridConfigOptions.prependRowEditActions} />
                     </Stack.Item>
                 </Stack>
             </fieldset>
             <div className={classNames.controlWrapper}>
-                <TextField id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={(event) => EventEmitter.dispatch(EventType.onSearch, event)} />
+                <TextField value={gridSearchText} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={
+                    (event, value) => {
+                        setGridSearchText(value)
+                        EventEmitter.dispatch(EventType.onSearch, event);
+                    }
+                }
+                />
                 <Link>
                     <FontIcon
                         aria-label="View"
@@ -416,8 +392,9 @@ const Consumer = () => {
                 layoutMode={DetailsListLayoutMode.justified}
                 selectionMode={SelectionMode.multiple}
                 enableRowEdit={gridConfigOptions.enableRowEdit}
-                prependRowEditActions={true}
+                prependRowEditActions={gridConfigOptions.prependRowEditActions}
                 enableRowEditCancel={gridConfigOptions.enableRowEditCancel}
+                rowMuteOptions={{ enableRowMute: gridConfigOptions.enableRowMute }}
                 enablePanelEdit={gridConfigOptions.enablePanelEdit}
                 enableBulkEdit={gridConfigOptions.enableBulkEdit}
                 items={items}
@@ -443,10 +420,9 @@ const Consumer = () => {
                     })
                 }}
                 onGridUpdate={onGridUpdate}
-                onGridReset={() => { console.log('Grid has reset') }}
+                onGridReset={(items) => {  console.log('Grid has reset with items:'); console.log(items); setGridSearchText('') }}
                 enableDefaultEditMode={gridConfigOptions.enableDefaultEditMode}
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
-                //aboveStickyContent={getAboveContentRender()}
                 aboveStickyContent={aboveContent}
                 belowStickyContent={belowContent}
             />

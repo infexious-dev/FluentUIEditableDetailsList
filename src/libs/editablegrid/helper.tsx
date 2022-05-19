@@ -68,7 +68,7 @@ export const IsValidDataType = (type: string | undefined, text: string): boolean
             break;
         case 'decimal':
             //var regex = new RegExp(/^\d*(\.\d{0,0})?$/, 'g');
-            let regex = new RegExp(/^-?[0-9]*\.?[0-9]*?$/, 'g');
+            let regex = new RegExp(/^-?[0-9]*\.?[0-9]{0,2}$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
             }
@@ -116,8 +116,9 @@ export const ParseType = (type: string | undefined, text: string): any => {
             return Number(text);
         case 'decimal':
             // var regex = new RegExp(/^\d*(\.\d{0,2})?$/, 'g');
-            let regex = new RegExp(/^-?[0-9]*\.*?[0]*?$/, 'g');
-            if (regex.test(text)) {
+            //let regex = new RegExp(/^-?[0-9]*\.*?[0]*?$/, 'g');
+            let regex = new RegExp(/^-?[0-9]*\.*?[0]{0,1}$/, 'g');
+            if (text !== '0' && text !== "0" && regex.test(text)) {
                 return text // keep as string until more decimals are added
             } else {
                 return parseFloat(parseFloat(text).toFixed(2));

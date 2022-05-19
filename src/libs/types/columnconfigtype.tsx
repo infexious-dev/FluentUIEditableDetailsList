@@ -33,7 +33,8 @@ export interface IColumnConfig extends IColumn {
 export interface ILinkOptions {
     href?: string;
     onClick?: any;
-    disabled?: boolean
+    disabled?: boolean;
+    isFocusable?: boolean;
 }
 
 export interface IHoverOptions {

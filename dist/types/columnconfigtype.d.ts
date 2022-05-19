@@ -33,6 +33,7 @@ export interface ILinkOptions {
     href?: string;
     onClick?: any;
     disabled?: boolean;
+    isFocusable?: boolean;
 }
 export interface IHoverOptions {
     enable?: boolean;

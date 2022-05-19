@@ -79,6 +79,7 @@ const EditPanel = (props: Props) => {
             switch (item.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
+                        key={item.key}
                         label={item.text}
                         strings={DayPickerStrings}
                         placeholder="Select a date..."
@@ -88,7 +89,7 @@ const EditPanel = (props: Props) => {
                     />);
                     break;
                 case EditControlType.Picker:
-                    tmpRenderObj.push(<div>
+                    tmpRenderObj.push(<div key={item.key}>
                         <span className={controlClass.pickerLabel}>{item.text}</span>
                         <PickerControl
                             arialabel={item.text}
@@ -111,6 +112,7 @@ const EditPanel = (props: Props) => {
 
                     tmpRenderObj.push(
                         <Dropdown
+                            key={item.key}
                             label={item.text}
                             options={item.dropdownValues ?? []}
                             selectedKey={selectedKey || null}
@@ -120,6 +122,7 @@ const EditPanel = (props: Props) => {
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(<TextField
+                        key={item.key}
                         errorMessage={columnValuesObj[item.key].error}
                         name={item.text}
                         multiline={true}
@@ -133,6 +136,7 @@ const EditPanel = (props: Props) => {
                     break;
                 default:
                     tmpRenderObj.push(<TextField
+                        key={item.key}
                         errorMessage={columnValuesObj[item.key].error}
                         name={item.text}
                         id={item.key}

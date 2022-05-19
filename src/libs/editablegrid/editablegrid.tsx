@@ -350,6 +350,7 @@ const EditableGrid = (props: Props) => {
             obj._is_filtered_in_ = true;
             obj._is_filtered_in_grid_search_ = true;
             obj._is_filtered_in_column_filter_ = true;
+            obj._is_muted_ = false;
             addedRows.push(obj);
         }
 
@@ -909,9 +910,12 @@ const EditableGrid = (props: Props) => {
         ClearFilters();
         SetGridItems(backupDefaultGridData.map(obj => ({ ...obj })));
         UpdateSelectedItems(backupDefaultGridData);
+        onGridReset();
+    };
 
+    const onGridReset = async (): Promise<void> => {
         if (props.onGridReset) {
-            props.onGridReset(backupDefaultGridData);
+            await props.onGridReset(defaultGridData);
         }
     };
 
@@ -1350,7 +1354,39 @@ const EditableGrid = (props: Props) => {
             setColumnFiltersRef(columnFilterArrTmp);
         }
 
-        if (props.enableRowEdit) {
+        if (props.enableRowEdit || props.gridCopyOptions?.enableRowCopy || props.rowMuteOptions?.enableRowMute) {
+            let minWidth: number = 50,
+                maxWidth: number = 75,
+                buttonNumber: number = 0;
+
+            if (props.enableRowEdit)
+                buttonNumber++;
+            if (props.gridCopyOptions?.enableRowCopy)
+                buttonNumber++;
+            if (props.rowMuteOptions?.enableRowMute)
+                buttonNumber++;
+
+            switch (buttonNumber) {
+                case 1:
+                    minWidth = 50;
+                    maxWidth = 50;
+                    break;
+                case 2:
+                    minWidth = 75;
+                    maxWidth = 75;
+                    break;
+                case 3:
+                    minWidth = 100;
+                    maxWidth = 100;
+                    break;
+                default:
+                    break;
+            }
+
+            if (props.prependRowEditActions) {
+                maxWidth += 0;
+            }
+
             let actionsColumn: IColumnConfig = {
                 key: 'action',
                 text: 'Actions',
@@ -1358,37 +1394,61 @@ const EditableGrid = (props: Props) => {
                 ariaLabel: 'Actions',
                 fieldName: 'action',
                 isResizable: true,
-                minWidth: 50,
-                maxWidth: props.prependRowEditActions ? 70 : 50,
+                minWidth: minWidth,
+                maxWidth: maxWidth,
                 onRender: (item, index) => (
-                    <div>
-                        {(activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])
-                            ?
-                            <div>
-                                <IconButton data-is-focusable={false} disabled={editMode} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, false)} iconProps={{ iconName: 'Save' }} title={'Save'}></IconButton>
-                                {props.enableRowEditCancel
+                    <>
+                        {
+                            props.enableRowEdit ?
+                                (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])
                                     ?
-                                    <IconButton data-is-focusable={false} disabled={editMode} onClick={() => CancelRowEditMode(item, Number(item['_grid_row_id_'])!)} iconProps={{ iconName: 'RemoveFilter' }} title={'Cancel'}></IconButton>
+                                    <>
+                                        <IconButton data-is-focusable={false} disabled={editMode} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, false)} iconProps={{ iconName: 'Save' }} title={'Save'}></IconButton>
+                                        {props.enableRowEditCancel
+                                            ?
+                                            <IconButton data-is-focusable={false} disabled={editMode} onClick={() => CancelRowEditMode(item, Number(item['_grid_row_id_'])!)} iconProps={{ iconName: 'RemoveFilter' }} title={'Cancel'}></IconButton>
+                                            :
+                                            null
+                                        }
+                                    </>
                                     :
-                                    null
-                                }
-                            </div>
-                            :
-                            <div>
-                                {!props.enableDefaultEditMode &&
-                                    <IconButton data-is-focusable={false} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} title={'Edit'}></IconButton>
-                                }{
-                                    props.gridCopyOptions && props.gridCopyOptions.enableRowCopy &&
-                                    <IconButton
-                                        data-is-focusable={false}
-                                        onClick={() => HandleRowCopy(Number(item['_grid_row_id_'])!)}
-                                        iconProps={{ iconName: "Copy" }}
-                                        title={"Copy"}
-                                    ></IconButton>
-                                }
-                            </div>
+                                    <>
+                                        {!props.enableDefaultEditMode &&
+                                            <IconButton data-is-focusable={false} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} title={'Edit'}></IconButton>
+                                        }
+                                    </> : null
                         }
-                    </div>
+
+                        {
+                            props.rowMuteOptions?.enableRowMute ?
+                                <IconButton
+                                    data-is-focusable={false}
+                                    onClick={() => {
+                                        let defaultGridDataTmp = [...defaultGridData];
+
+                                        defaultGridDataTmp.filter((x => x._grid_row_id_ == item._grid_row_id_)).map((
+                                            x => {
+                                                x._is_muted_ = !x._is_muted_;
+                                                x._grid_row_operation_ = x._is_muted_ ? Operation.Mute : Operation.Update
+                                            }
+                                        ));
+
+                                        setGridEditState(true);
+                                        SetGridItems(defaultGridDataTmp);
+                                    }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }} title={`${item._is_muted_ ? 'Unmute' : 'Mute'}`}></IconButton>
+                                : null
+                        }
+
+                        {
+                            props.gridCopyOptions?.enableRowCopy ?
+                                <IconButton
+                                    data-is-focusable={false}
+                                    onClick={() => HandleRowCopy(Number(item['_grid_row_id_'])!)}
+                                    iconProps={{ iconName: "Copy" }}
+                                    title={"Copy"}
+                                ></IconButton> : null
+                        }
+                    </>
                 ),
             };
 
@@ -1675,12 +1735,12 @@ const EditableGrid = (props: Props) => {
             {
                 column.linkOptions?.onClick
                     ?
-                    <Link target="_blank" disabled={column.linkOptions?.disabled} underline onClick={() => {
+                    <Link data-is-focusable={column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true} target="_blank" disabled={column.linkOptions?.disabled} underline onClick={() => {
                         let params: ICallBackParams = { rowindex: [rowNum], data: defaultGridData, triggerkey: column.key, activatetriggercell: false };
                         column.linkOptions!.onClick(params);
                     }}>{item[column.key]}</Link>
                     :
-                    <Link target="_blank" disabled={column.linkOptions?.disabled} underline href={column.linkOptions?.href}>{item[column.key]}</Link>
+                    <Link data-is-focusable={column?.linkOptions?.isFocusable !== undefined ? column.linkOptions.isFocusable : true} target="_blank" disabled={column.linkOptions?.disabled} underline href={column.linkOptions?.href}>{item[column.key]}</Link>
             }
         </span>;
     }
@@ -1947,7 +2007,24 @@ const EditableGrid = (props: Props) => {
                             onRenderDetailsFooter={props.onRenderDetailsFooter}
                             onRenderItemColumn={props.onRenderItemColumn}
                             onRenderMissingItem={props.onRenderMissingItem}
-                            onRenderRow={props.onRenderRow}
+                            onRenderRow={(rowProps, defaultRender) => {
+                                return <>
+                                    {
+                                        rowProps && defaultRender ?
+                                            props.rowMuteOptions?.enableRowMute ?
+                                                defaultRender({
+                                                    ...rowProps,
+                                                    className: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteClass ? props.rowMuteOptions.rowMuteClass : 'muted' : props.rowMuteOptions?.rowUnmuteClass ? props.rowMuteOptions.rowUnmuteClass : '',
+                                                    styles: {
+                                                        root:
+                                                            { opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity} !important` : '.4 !important' : '' }
+                                                    }
+                                                })
+                                                : defaultRender({ ...rowProps }) : null
+
+                                    }
+                                </>
+                            }}
                             onRowDidMount={props.onRowDidMount}
                             onRowWillUnmount={props.onRowWillUnmount}
                             onShouldVirtualize={props.onShouldVirtualize}
