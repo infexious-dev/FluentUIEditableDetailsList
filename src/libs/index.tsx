@@ -7,4 +7,4 @@ export { EventEmitter, EventType } from "./eventemitter/EventEmitter";
 export { NumberAndDateOperators, StringOperators } from './types/cellstyleruletype';
 export type { ICellStyleRulesType } from './types/cellstyleruletype';
 export type { ICellHoverProps } from './types/cellhoverpropstype';
-export type { Operation } from './types/operation';
+export { Operation } from './types/operation';
