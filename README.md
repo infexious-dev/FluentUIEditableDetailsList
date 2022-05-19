@@ -26,6 +26,7 @@ New updates include:
 >- "onChange" on IColumnConfig no longer causes filtered items to reset to showing all grid data.
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
 >- "Key" props added to controls in edit panel to stop console errors.
+>- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
