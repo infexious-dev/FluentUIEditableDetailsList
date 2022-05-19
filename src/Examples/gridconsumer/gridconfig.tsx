@@ -185,6 +185,7 @@ export const GridColumnConfig: IColumnConfig[] =
                 onClick: () => {     // onClick takes higher precedence over href. If both are enabled, the grid will trigger onClick
                     alert('clicked')
                 },
+                isFocusable: false,
                 //href: 'https://www.bing.com/', 
                 disabled: false
             }

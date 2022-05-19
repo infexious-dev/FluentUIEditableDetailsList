@@ -6,4 +6,5 @@ export var Operation;
     Operation[Operation["Add"] = 2] = "Add";
     Operation[Operation["Update"] = 3] = "Update";
     Operation[Operation["Delete"] = 4] = "Delete";
+    Operation[Operation["Mute"] = 5] = "Mute";
 })(Operation || (Operation = {}));

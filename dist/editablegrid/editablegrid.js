@@ -368,6 +368,7 @@ var EditableGrid = function (props) {
             obj._is_filtered_in_ = true;
             obj._is_filtered_in_grid_search_ = true;
             obj._is_filtered_in_column_filter_ = true;
+            obj._is_muted_ = false;
             addedRows.push(obj);
         }
         return addedRows;
@@ -820,10 +821,21 @@ var EditableGrid = function (props) {
         ClearFilters();
         SetGridItems(backupDefaultGridData.map(function (obj) { return (__assign({}, obj)); }));
         UpdateSelectedItems(backupDefaultGridData);
-        if (props.onGridReset) {
-            props.onGridReset(backupDefaultGridData);
-        }
+        onGridReset();
     };
+    var onGridReset = function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!props.onGridReset) return [3 /*break*/, 2];
+                    return [4 /*yield*/, props.onGridReset(defaultGridData)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    }); };
     /* #region [Column Click] */
     var onColumnClick = function (ev, column, index) {
         ev.preventDefault();
@@ -993,6 +1005,7 @@ var EditableGrid = function (props) {
     };
     /* #endregion [Grid Column Filter] */
     var CreateColumnConfigs = function () {
+        var _a, _b, _c, _d;
         var columnConfigs = [];
         var columnFilterArrTmp = [];
         props.columns.forEach(function (column, index) {
@@ -1115,7 +1128,33 @@ var EditableGrid = function (props) {
         if (getColumnFiltersRef().length == 0) {
             setColumnFiltersRef(columnFilterArrTmp);
         }
-        if (props.enableRowEdit) {
+        if (props.enableRowEdit || ((_a = props.gridCopyOptions) === null || _a === void 0 ? void 0 : _a.enableRowCopy) || ((_b = props.rowMuteOptions) === null || _b === void 0 ? void 0 : _b.enableRowMute)) {
+            var minWidth = 50, maxWidth = 75, buttonNumber = 0;
+            if (props.enableRowEdit)
+                buttonNumber++;
+            if ((_c = props.gridCopyOptions) === null || _c === void 0 ? void 0 : _c.enableRowCopy)
+                buttonNumber++;
+            if ((_d = props.rowMuteOptions) === null || _d === void 0 ? void 0 : _d.enableRowMute)
+                buttonNumber++;
+            switch (buttonNumber) {
+                case 1:
+                    minWidth = 50;
+                    maxWidth = 50;
+                    break;
+                case 2:
+                    minWidth = 75;
+                    maxWidth = 75;
+                    break;
+                case 3:
+                    minWidth = 100;
+                    maxWidth = 100;
+                    break;
+                default:
+                    break;
+            }
+            if (props.prependRowEditActions) {
+                maxWidth += 0;
+            }
             var actionsColumn = {
                 key: 'action',
                 text: 'Actions',
@@ -1123,19 +1162,33 @@ var EditableGrid = function (props) {
                 ariaLabel: 'Actions',
                 fieldName: 'action',
                 isResizable: true,
-                minWidth: 50,
-                maxWidth: props.prependRowEditActions ? 70 : 50,
-                onRender: function (item, index) { return (_jsx("div", { children: (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])
-                        ?
-                            _jsxs("div", { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
-                                        ?
-                                            _jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
-                                        :
-                                            null] }, void 0)
-                        :
-                            _jsxs("div", { children: [!props.enableDefaultEditMode &&
-                                        _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0), props.gridCopyOptions && props.gridCopyOptions.enableRowCopy &&
-                                        _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0)] }, void 0) }, void 0)); },
+                minWidth: minWidth,
+                maxWidth: maxWidth,
+                onRender: function (item, index) {
+                    var _a, _b;
+                    return (_jsxs(_Fragment, { children: [props.enableRowEdit ?
+                                (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])
+                                    ?
+                                        _jsxs(_Fragment, { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
+                                                    ?
+                                                        _jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
+                                                    :
+                                                        null] }, void 0)
+                                    :
+                                        _jsx(_Fragment, { children: !props.enableDefaultEditMode &&
+                                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0) }, void 0) : null, ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
+                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () {
+                                        var defaultGridDataTmp = __spreadArray([], __read(defaultGridData));
+                                        defaultGridDataTmp.filter((function (x) { return x._grid_row_id_ == item._grid_row_id_; })).map((function (x) {
+                                            x._is_muted_ = !x._is_muted_;
+                                            x._grid_row_operation_ = x._is_muted_ ? Operation.Mute : Operation.Update;
+                                        }));
+                                        setGridEditState(true);
+                                        SetGridItems(defaultGridDataTmp);
+                                    }, iconProps: { iconName: "" + (item._is_muted_ ? 'RedEye' : 'Hide') }, title: "" + (item._is_muted_ ? 'Unmute' : 'Mute') }, void 0)
+                                : null, ((_b = props.gridCopyOptions) === null || _b === void 0 ? void 0 : _b.enableRowCopy) ?
+                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0) : null] }, void 0));
+                },
             };
             props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
         }
@@ -1371,15 +1424,15 @@ var EditableGrid = function (props) {
     };
     /* #region [Span Renders] */
     var RenderLinkSpan = function (props, index, rowNum, column, item, EditCellValue) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum) }, { children: ((_a = column.linkOptions) === null || _a === void 0 ? void 0 : _a.onClick)
                 ?
-                    _jsx(Link, __assign({ target: "_blank", disabled: (_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled, underline: true, onClick: function () {
+                    _jsx(Link, __assign({ "data-is-focusable": column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: (_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled, underline: true, onClick: function () {
                             var params = { rowindex: [rowNum], data: defaultGridData, triggerkey: column.key, activatetriggercell: false };
                             column.linkOptions.onClick(params);
                         } }, { children: item[column.key] }), void 0)
                 :
-                    _jsx(Link, __assign({ target: "_blank", disabled: (_c = column.linkOptions) === null || _c === void 0 ? void 0 : _c.disabled, underline: true, href: (_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.href }, { children: item[column.key] }), void 0) }), void 0);
+                    _jsx(Link, __assign({ "data-is-focusable": ((_c = column === null || column === void 0 ? void 0 : column.linkOptions) === null || _c === void 0 ? void 0 : _c.isFocusable) !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: (_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.disabled, underline: true, href: (_e = column.linkOptions) === null || _e === void 0 ? void 0 : _e.href }, { children: item[column.key] }), void 0) }), void 0);
     };
     var RenderTextFieldSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
@@ -1497,7 +1550,15 @@ var EditableGrid = function (props) {
                     null, showFilterCallout && filterCalloutComponent, _jsx("div", __assign({ className: mergeStyles({ height: props.height != null ? props.height : '70vh', width: props.width != null ? props.width : '130vh', position: 'relative', backgroundColor: 'white', }) }, { children: _jsx(ScrollablePane, __assign({ styles: { contentContainer: { paddingTop: aboveContentHeight, paddingBottom: belowContentHeight } }, componentRef: scrollablePaneRef, scrollbarVisibility: ScrollbarVisibility.auto }, { children: _jsx(MarqueeSelection, __assign({ isDraggingConstrainedToRoot: true, selection: _selection, isEnabled: props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true }, { children: _jsx(DetailsList, { compact: true, items: defaultGridData.length > 0 ? defaultGridData.filter(function (x) { return (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_ == true) && (x._is_filtered_in_grid_search_ == true) && (x._is_filtered_in_column_filter_ == true); }) : [], columns: GridColumns, selectionMode: props.selectionMode, 
                             // layoutMode={props.layoutMode}
                             // constrainMode={props.constrainMode}
-                            layoutMode: DetailsListLayoutMode.fixedColumns, constrainMode: ConstrainMode.unconstrained, selection: _selection, setKey: "none", onRenderDetailsHeader: onRenderDetailsHeader, ariaLabelForSelectAllCheckbox: "Toggle selection for all items", ariaLabelForSelectionColumn: "Toggle selection", checkButtonAriaLabel: "Row checkbox", ariaLabel: props.ariaLabel, ariaLabelForGrid: props.ariaLabelForGrid, ariaLabelForListHeader: props.ariaLabelForListHeader, cellStyleProps: props.cellStyleProps, checkboxCellClassName: props.checkboxCellClassName, checkboxVisibility: props.checkboxVisibility, className: props.className, columnReorderOptions: props.columnReorderOptions, componentRef: props.componentRef, disableSelectionZone: props.disableSelectionZone, dragDropEvents: props.dragDropEvents, enableUpdateAnimations: props.enableUpdateAnimations, enterModalSelectionOnTouch: props.enterModalSelectionOnTouch, getCellValueKey: props.getCellValueKey, getGroupHeight: props.getGroupHeight, getKey: props.getKey, getRowAriaDescribedBy: props.getRowAriaDescribedBy, getRowAriaLabel: props.getRowAriaLabel, groupProps: props.groupProps, groups: props.groups, indentWidth: props.indentWidth, initialFocusedIndex: props.initialFocusedIndex, isHeaderVisible: props.isHeaderVisible, isPlaceholderData: props.isPlaceholderData, listProps: props.listProps, minimumPixelsForDrag: props.minimumPixelsForDrag, onActiveItemChanged: props.onActiveItemChanged, onColumnHeaderClick: props.onColumnHeaderClick, onColumnHeaderContextMenu: props.onColumnHeaderContextMenu, onColumnResize: props.onColumnResize, onDidUpdate: props.onDidUpdate, onItemContextMenu: props.onItemContextMenu, onItemInvoked: props.onItemInvoked, onRenderCheckbox: props.onRenderCheckbox, onRenderDetailsFooter: props.onRenderDetailsFooter, onRenderItemColumn: props.onRenderItemColumn, onRenderMissingItem: props.onRenderMissingItem, onRenderRow: props.onRenderRow, onRowDidMount: props.onRowDidMount, onRowWillUnmount: props.onRowWillUnmount, onShouldVirtualize: props.onShouldVirtualize, rowElementEventMap: props.rowElementEventMap, selectionPreservedOnEmptyClick: props.selectionPreservedOnEmptyClick, selectionZoneProps: props.selectionZoneProps, shouldApplyApplicationRole: props.shouldApplyApplicationRole, styles: props.styles, useFastIcons: props.useFastIcons, usePageCache: props.usePageCache, useReducedRowRenderer: props.useReducedRowRenderer, viewport: props.viewport }, void 0) }), void 0) }), void 0) }), void 0), _jsx(Dialog, __assign({ hidden: !dialogContent, onDismiss: CloseRenameDialog, closeButtonAriaLabel: "Close" }, { children: dialogContent }), void 0), messageDialogProps.visible
+                            layoutMode: DetailsListLayoutMode.fixedColumns, constrainMode: ConstrainMode.unconstrained, selection: _selection, setKey: "none", onRenderDetailsHeader: onRenderDetailsHeader, ariaLabelForSelectAllCheckbox: "Toggle selection for all items", ariaLabelForSelectionColumn: "Toggle selection", checkButtonAriaLabel: "Row checkbox", ariaLabel: props.ariaLabel, ariaLabelForGrid: props.ariaLabelForGrid, ariaLabelForListHeader: props.ariaLabelForListHeader, cellStyleProps: props.cellStyleProps, checkboxCellClassName: props.checkboxCellClassName, checkboxVisibility: props.checkboxVisibility, className: props.className, columnReorderOptions: props.columnReorderOptions, componentRef: props.componentRef, disableSelectionZone: props.disableSelectionZone, dragDropEvents: props.dragDropEvents, enableUpdateAnimations: props.enableUpdateAnimations, enterModalSelectionOnTouch: props.enterModalSelectionOnTouch, getCellValueKey: props.getCellValueKey, getGroupHeight: props.getGroupHeight, getKey: props.getKey, getRowAriaDescribedBy: props.getRowAriaDescribedBy, getRowAriaLabel: props.getRowAriaLabel, groupProps: props.groupProps, groups: props.groups, indentWidth: props.indentWidth, initialFocusedIndex: props.initialFocusedIndex, isHeaderVisible: props.isHeaderVisible, isPlaceholderData: props.isPlaceholderData, listProps: props.listProps, minimumPixelsForDrag: props.minimumPixelsForDrag, onActiveItemChanged: props.onActiveItemChanged, onColumnHeaderClick: props.onColumnHeaderClick, onColumnHeaderContextMenu: props.onColumnHeaderContextMenu, onColumnResize: props.onColumnResize, onDidUpdate: props.onDidUpdate, onItemContextMenu: props.onItemContextMenu, onItemInvoked: props.onItemInvoked, onRenderCheckbox: props.onRenderCheckbox, onRenderDetailsFooter: props.onRenderDetailsFooter, onRenderItemColumn: props.onRenderItemColumn, onRenderMissingItem: props.onRenderMissingItem, onRenderRow: function (rowProps, defaultRender) {
+                                var _a, _b, _c, _d;
+                                return _jsx(_Fragment, { children: rowProps && defaultRender ?
+                                        ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
+                                            defaultRender(__assign(__assign({}, rowProps), { className: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_b = props.rowMuteOptions) === null || _b === void 0 ? void 0 : _b.rowMuteClass) ? props.rowMuteOptions.rowMuteClass : 'muted' : ((_c = props.rowMuteOptions) === null || _c === void 0 ? void 0 : _c.rowUnmuteClass) ? props.rowMuteOptions.rowUnmuteClass : '', styles: {
+                                                    root: { opacity: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_d = props.rowMuteOptions) === null || _d === void 0 ? void 0 : _d.rowMuteOpacity) ? props.rowMuteOptions.rowMuteOpacity + " !important" : '.4 !important' : '' }
+                                                } }))
+                                            : defaultRender(__assign({}, rowProps)) : null }, void 0);
+                            }, onRowDidMount: props.onRowDidMount, onRowWillUnmount: props.onRowWillUnmount, onShouldVirtualize: props.onShouldVirtualize, rowElementEventMap: props.rowElementEventMap, selectionPreservedOnEmptyClick: props.selectionPreservedOnEmptyClick, selectionZoneProps: props.selectionZoneProps, shouldApplyApplicationRole: props.shouldApplyApplicationRole, styles: props.styles, useFastIcons: props.useFastIcons, usePageCache: props.usePageCache, useReducedRowRenderer: props.useReducedRowRenderer, viewport: props.viewport }, void 0) }), void 0) }), void 0) }), void 0), _jsx(Dialog, __assign({ hidden: !dialogContent, onDismiss: CloseRenameDialog, closeButtonAriaLabel: "Close" }, { children: dialogContent }), void 0), messageDialogProps.visible
                 ?
                     _jsx(MessageDialog, { message: messageDialogProps.message, subMessage: messageDialogProps.subMessage, onDialogClose: CloseMessageDialog }, void 0)
                 :

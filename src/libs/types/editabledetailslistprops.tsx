@@ -3,6 +3,7 @@ import { IDetailsListProps } from "office-ui-fabric-react/lib/components/Details
 import { IColumnConfig } from "./columnconfigtype";
 import { IGridCopy } from "./gridcopytype";
 import { IRowAddWithValues } from "./rowaddtype";
+import { IRowMute } from "./rowmutetype";
 
 export interface Props extends IDetailsListProps {
     id: number;
@@ -16,6 +17,7 @@ export interface Props extends IDetailsListProps {
     enableRowEdit?: boolean;
     prependRowEditActions?: boolean;
     enableRowEditCancel?: boolean;
+    rowMuteOptions?: IRowMute;
     enableColumnEdit?: boolean;
     enablePanelEdit?: boolean; // like bulk edit but for one item only
     enableBulkEdit?: boolean;
