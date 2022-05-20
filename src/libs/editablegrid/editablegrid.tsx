@@ -36,7 +36,7 @@ import { ICallBackParams, ICallBackRequestParams } from '../types/callbackparams
 import { EventEmitter, EventType } from '../eventemitter/EventEmitter';
 import ColumnFilterDialog from './columnfilterdialog/columnfilterdialog';
 import { IFilter } from '../types/filterstype';
-import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType } from './helper';
+import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, DeepCopy } from './helper';
 import { IFilterItem, IFilterListProps, IGridColumnFilter } from '../types/columnfilterstype';
 import FilterCallout from './columnfiltercallout/filtercallout';
 import { IRowAddWithValues } from '../types/rowaddtype';
@@ -148,8 +148,9 @@ const EditableGrid = (props: Props) => {
     useEffect(() => {
         if (props && props.items) {
             var data: any[] = InitializeInternalGrid(props.items);
+            let deeplyCopiedData = DeepCopy(data);
             setGridData(data);
-            setBackupDefaultGridData(data.map(obj => ({ ...obj })));
+            setBackupDefaultGridData(deeplyCopiedData);
             setGridEditState(false);
             SetGridItems(data);
         }
@@ -906,9 +907,10 @@ const EditableGrid = (props: Props) => {
     }
 
     const ResetGridData = (): void => {
+        let deeplyCopiedData = DeepCopy(backupDefaultGridData);
         setGridEditState(false);
         ClearFilters();
-        SetGridItems(backupDefaultGridData.map(obj => ({ ...obj })));
+        SetGridItems(deeplyCopiedData);
         UpdateSelectedItems(backupDefaultGridData);
         onGridReset();
     };

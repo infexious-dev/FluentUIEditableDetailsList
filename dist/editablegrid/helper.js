@@ -77,8 +77,7 @@ export var IsValidDataType = function (type, text) {
             isValid = !isNaN(Number(text));
             break;
         case 'decimal':
-            //var regex = new RegExp(/^\d*(\.\d{0,0})?$/, 'g');
-            var regex = new RegExp(/^-?[0-9]*\.?[0-9]{0,2}$/, 'g');
+            var regex = new RegExp(/^[0-9.]*$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
             }
@@ -117,15 +116,14 @@ export var ParseType = function (type, text) {
         case 'number':
             return Number(text);
         case 'decimal':
-            // var regex = new RegExp(/^\d*(\.\d{0,2})?$/, 'g');
-            //let regex = new RegExp(/^-?[0-9]*\.*?[0]*?$/, 'g');
-            var regex = new RegExp(/^-?[0-9]*\.*?[0]{0,1}$/, 'g');
+            var regex = new RegExp(/^-?[0-9]*\.[0-9]{0,1}$/, 'g');
             if (text !== '0' && text !== "0" && regex.test(text)) {
                 return text; // keep as string until more decimals are added
             }
             else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
+            return Number(text);
         case 'date':
             return Date.parse(text);
     }
@@ -146,4 +144,18 @@ export var GetValue = function (type, value) {
         default:
             return value;
     }
+};
+// obtained from https://javascript.plainenglish.io/deep-clone-an-object-and-preserve-its-type-with-typescript-d488c35e5574
+export var DeepCopy = function (source) {
+    return Array.isArray(source)
+        ? source.map(function (item) { return DeepCopy(item); })
+        : source instanceof Date
+            ? new Date(source.getTime())
+            : source && typeof source === 'object'
+                ? Object.getOwnPropertyNames(source).reduce(function (o, prop) {
+                    Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(source, prop));
+                    o[prop] = DeepCopy(source[prop]);
+                    return o;
+                }, Object.create(Object.getPrototypeOf(source)))
+                : source;
 };

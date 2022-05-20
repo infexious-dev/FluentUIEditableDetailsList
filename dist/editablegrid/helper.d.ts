@@ -11,3 +11,4 @@ export declare const ConvertObjectToText: (obj: any, columns: IColumnConfig[]) =
 export declare const ParseType: (type: string | undefined, text: string) => any;
 export declare const GetDefault: (type: string | undefined) => any;
 export declare const GetValue: (type: string | undefined, value: any) => any;
+export declare const DeepCopy: (source: any) => any;
