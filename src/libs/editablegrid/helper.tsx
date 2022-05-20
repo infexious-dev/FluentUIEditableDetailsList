@@ -67,8 +67,7 @@ export const IsValidDataType = (type: string | undefined, text: string): boolean
             isValid = !isNaN(Number(text));
             break;
         case 'decimal':
-            //var regex = new RegExp(/^\d*(\.\d{0,0})?$/, 'g');
-            let regex = new RegExp(/^-?[0-9]*\.?[0-9]{0,2}$/, 'g');
+            let regex = new RegExp(/^[0-9.]*$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
             }
@@ -115,14 +114,13 @@ export const ParseType = (type: string | undefined, text: string): any => {
         case 'number':
             return Number(text);
         case 'decimal':
-            // var regex = new RegExp(/^\d*(\.\d{0,2})?$/, 'g');
-            //let regex = new RegExp(/^-?[0-9]*\.*?[0]*?$/, 'g');
-            let regex = new RegExp(/^-?[0-9]*\.*?[0]{0,1}$/, 'g');
+            let regex = new RegExp(/^-?[0-9]*\.[0-9]{0,1}$/, 'g');
             if (text !== '0' && text !== "0" && regex.test(text)) {
                 return text // keep as string until more decimals are added
             } else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
+            return Number(text);
 
         case 'date':
             return Date.parse(text);
@@ -147,4 +145,19 @@ export const GetValue = (type: string | undefined, value: any): any => {
         default:
             return value;
     }
+}
+
+// obtained from https://javascript.plainenglish.io/deep-clone-an-object-and-preserve-its-type-with-typescript-d488c35e5574
+export const DeepCopy = (source: any): any => {
+    return Array.isArray(source)
+        ? source.map(item => DeepCopy(item))
+        : source instanceof Date
+            ? new Date(source.getTime())
+            : source && typeof source === 'object'
+                ? Object.getOwnPropertyNames(source).reduce((o, prop) => {
+                    Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(source, prop)!);
+                    o[prop] = DeepCopy((source as { [key: string]: any })[prop]);
+                    return o;
+                }, Object.create(Object.getPrototypeOf(source)))
+                : source as any;
 }

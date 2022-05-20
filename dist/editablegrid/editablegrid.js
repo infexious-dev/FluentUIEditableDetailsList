@@ -92,7 +92,7 @@ import ColumnUpdateDialog from './columnupdatedialog';
 import EditPanel from './editpanel';
 import { EventEmitter, EventType } from '../eventemitter/EventEmitter';
 import ColumnFilterDialog from './columnfilterdialog/columnfilterdialog';
-import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType } from './helper';
+import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, DeepCopy } from './helper';
 import FilterCallout from './columnfiltercallout/filtercallout';
 import AddRowPanel from './addrowpanel';
 import PickerControl from './pickercontrol/picker';
@@ -187,8 +187,9 @@ var EditableGrid = function (props) {
     useEffect(function () {
         if (props && props.items) {
             var data = InitializeInternalGrid(props.items);
+            var deeplyCopiedData = DeepCopy(data);
             setGridData(data);
-            setBackupDefaultGridData(data.map(function (obj) { return (__assign({}, obj)); }));
+            setBackupDefaultGridData(deeplyCopiedData);
             setGridEditState(false);
             SetGridItems(data);
         }
@@ -817,9 +818,10 @@ var EditableGrid = function (props) {
         }
     };
     var ResetGridData = function () {
+        var deeplyCopiedData = DeepCopy(backupDefaultGridData);
         setGridEditState(false);
         ClearFilters();
-        SetGridItems(backupDefaultGridData.map(function (obj) { return (__assign({}, obj)); }));
+        SetGridItems(deeplyCopiedData);
         UpdateSelectedItems(backupDefaultGridData);
         onGridReset();
     };

@@ -66,6 +66,21 @@ export const GridColumnConfig: IColumnConfig[] =
             applyColumnFilter: true
         },
         {
+            key: 'nameage',
+            name: 'Name // Age',
+            text: 'Name // Age',
+            editable: false,
+            dataType: 'string',
+            minWidth: 100,
+            maxWidth: 100,
+            isResizable: true,
+            includeColumnInExport: true,
+            includeColumnInSearch: true,
+            applyColumnFilter: true,
+            onCustomRender: (item: GridItemsType) => { return item.getNameAndAge() },
+            onChange: () => { console.log('Testing on change callback isn\'t resetting grid') }
+        },
+        {
             key: 'designation',
             name: 'Designation',
             text: 'Designation',
@@ -209,7 +224,7 @@ export const GridColumnConfigCustomPanelEdit: IColumnConfig[] =
         }
     ];
 
-export interface GridItemsType {
+export class GridItemsType {
     id: number;
     customerhovercol: string;
     name: string;
@@ -220,4 +235,9 @@ export interface GridItemsType {
     payrolltype: string;
     employmenttype: string;
     employeelink: string;
+
+
+    public getNameAndAge(): string {
+        return this.name + ' with ' + this.age + ' years of age';
+    };
 };
