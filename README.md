@@ -3,7 +3,7 @@
 ## Overview
 Forks the main FluentUI Editable DetailsList to add new functionality
 
-New updates include:
+Updates include:
 
 ### New "EditableGrid" Features
 >- "enablePanelEdit" prop on EditableGrid allows for editing all or custom fields (see below) for a selected grid row via an edit panel that **prepopulates** fields with current values. This acts similar to "enableBulkEdit" but is only allowed for one row selection and also prefills data.
