@@ -31,7 +31,6 @@ New updates include:
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
->- [EXPERIMENTAL] New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
 >- IColumnConfig can utilise inherited "className" and "headerClassName" props correctly from IColumn when rendering in EditableGrid.
@@ -39,3 +38,6 @@ New updates include:
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
 >- "Actions" buttons now render independently as long as at least one option is enabled (i.e. no longer dependent on "enableRowEdit" to be shown).
 >- Back up grid data is now copied via a deep copy mechanism, copying the object as is, including prototype methods in the tree.
+
+### Experimental
+>- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
