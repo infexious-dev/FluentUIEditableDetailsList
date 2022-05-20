@@ -27,7 +27,7 @@ New updates include:
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
 >- "Key" props added to controls in edit panel to stop console errors.
 >- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
->- Having data with a "prototype" method will no longer cause grid to crash of grid reset.
+>- Having data with a "prototype" method will no longer cause grid to crash of grid reset if method is used during rendering.
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
