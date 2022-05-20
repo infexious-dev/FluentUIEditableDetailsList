@@ -27,13 +27,15 @@ New updates include:
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
 >- "Key" props added to controls in edit panel to stop console errors.
 >- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
+>- Having data with a "prototype" method will no longer cause grid to crash of grid reset.
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
->- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
+>- [EXPERIMENTAL] New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
 >- IColumnConfig can utilise inherited "className" and "headerClassName" props correctly from IColumn when rendering in EditableGrid.
 >- IColumnConfig can now utilise inherited "isMultiline" prop correctly from IColumn and render a span which has "white-space: pre-line".
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
 >- "Actions" buttons now render independently as long as at least one option is enabled (i.e. no longer dependent on "enableRowEdit" to be shown).
+>- Back up grid data is now copied via a deep copy mechanism, copying the object as is, including prototype methods in the tree.
