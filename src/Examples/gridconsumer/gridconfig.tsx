@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import { ICallBackParams } from "../../libs/types/callbackparams";
 import { NumberAndDateOperators, StringOperators } from "../../libs/types/cellstyleruletype";
 import { IColumnConfig } from "../../libs/types/columnconfigtype";
 import { EditControlType } from "../../libs/types/editcontroltype";
@@ -49,8 +50,7 @@ export const GridColumnConfig: IColumnConfig[] =
             isResizable: true,
             includeColumnInExport: true,
             includeColumnInSearch: true,
-            applyColumnFilter: true,
-            onChange: () => { console.log('Testing on change callback isn\'t resetting grid') }
+            applyColumnFilter: true
         },
         {
             key: 'age',
@@ -78,7 +78,6 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInSearch: true,
             applyColumnFilter: true,
             onCustomRender: (item: GridItemsType) => { return item.getNameAndAge() },
-            onChange: () => { console.log('Testing on change callback isn\'t resetting grid') }
         },
         {
             key: 'designation',
@@ -235,7 +234,6 @@ export class GridItemsType {
     payrolltype: string;
     employmenttype: string;
     employeelink: string;
-
 
     public getNameAndAge(): string {
         return this.name + ' with ' + this.age + ' years of age';

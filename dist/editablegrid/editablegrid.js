@@ -634,7 +634,7 @@ var EditableGrid = function (props) {
             arr.push(rowObj);
         });
         var defaultGridDataTmp = CheckCellOnChangeCallBack(arr, [row], column);
-        //setDefaultGridData(defaultGridDataTmp);
+        setDefaultGridData(defaultGridDataTmp);
         activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridDataTmp, activateCellEditTmp);
     };
     /* #endregion */
