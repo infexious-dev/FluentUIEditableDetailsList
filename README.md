@@ -23,7 +23,6 @@ Updates include:
 ### Bug Fixes
 >- Reset Data now properly updates currently selected item with changes.
 >- "Filter" modal now correctly changes operators when switching between columns if the data type is the same between previous and new selected column. Otherwise, it will clear the current operator and force a new operator selection. (Example: going from "number" to "number" columns will retain the currently selected operator, but going from "number" to "string" will force user to select a new operator).
->- "onChange" on IColumnConfig no longer causes filtered items to reset to showing all grid data.
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
 >- "Key" props added to controls in edit panel to stop console errors.
 >- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
@@ -41,3 +40,10 @@ Updates include:
 
 ### Experimental
 >- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
+
+### New Bugs and Issues (newly introduced)
+>- "Decimal" data type will return a string if the inputted value contains one period and no decimals ("81.") or contains one period and exactly one decimal ("81.0").
+
+### Existing Bugs and Issues (from original code)
+>- "onChange" on IColumnConfig causes filtered items to reset to showing all grid data.
+>- "onChange" on IColumnConfig does not deeply copy grid data causing "prototype" methods to get lost.
