@@ -686,7 +686,7 @@ const EditableGrid = (props: Props) => {
         });
 
         var defaultGridDataTmp = CheckCellOnChangeCallBack(arr, [row], column);
-        //setDefaultGridData(defaultGridDataTmp);
+        setDefaultGridData(defaultGridDataTmp);
         activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridDataTmp, activateCellEditTmp);
     }
     /* #endregion */
