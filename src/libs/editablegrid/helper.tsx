@@ -120,8 +120,6 @@ export const ParseType = (type: string | undefined, text: string): any => {
             } else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
-            return Number(text);
-
         case 'date':
             return Date.parse(text);
     }

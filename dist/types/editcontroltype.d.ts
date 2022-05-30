@@ -6,5 +6,6 @@ export declare enum EditControlType {
     MultilineTextField = 4,
     DateTime = 5,
     Picker = 6,
-    Link = 7
+    Checkbox = 7,
+    Link = 8
 }

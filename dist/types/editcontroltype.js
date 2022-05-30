@@ -9,5 +9,6 @@ export var EditControlType;
     EditControlType[EditControlType["MultilineTextField"] = 4] = "MultilineTextField";
     EditControlType[EditControlType["DateTime"] = 5] = "DateTime";
     EditControlType[EditControlType["Picker"] = 6] = "Picker";
-    EditControlType[EditControlType["Link"] = 7] = "Link";
+    EditControlType[EditControlType["Checkbox"] = 7] = "Checkbox";
+    EditControlType[EditControlType["Link"] = 8] = "Link";
 })(EditControlType || (EditControlType = {}));

@@ -159,6 +159,7 @@ const Consumer = () => {
             let newDummyData = new GridItemsType();
 
             newDummyData.id = i;
+            newDummyData.check = !!GetRandomInt(0, 1);
             newDummyData.customerhovercol = 'Hover Me';
             newDummyData.name = 'Name' + GetRandomInt(1, 10);
             newDummyData.age = GetRandomInt(20, 40);

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EditControlType } from "../types/editcontroltype";
@@ -40,6 +40,10 @@ const EditPanel = (props: Props) => {
 
     const onDropDownChange = (event: React.FormEvent<HTMLDivElement>, selectedDropdownItem: IDropdownOption | undefined, item: any): void => {
         SetObjValues(item.key, selectedDropdownItem?.text);
+    }
+
+    const onCheckboxChange = (checked: boolean | undefined, item: any): void => {
+        SetObjValues(item.key, checked);
     }
 
     const onTextUpdate = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string, column: IColumnConfig): void => {
@@ -117,6 +121,17 @@ const EditPanel = (props: Props) => {
                             options={item.dropdownValues ?? []}
                             selectedKey={selectedKey || null}
                             onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
+                        />
+                    );
+                    break;
+                case EditControlType.Checkbox:
+                    tmpRenderObj.push(
+                        <Checkbox
+                            key={item.key}
+                            label={item.text}
+                            disabled={!item.editable}
+                            checked={columnValuesObj[item.key].value || false}
+                            onChange={(ev, checked) => onCheckboxChange(checked, item)}
                         />
                     );
                     break;

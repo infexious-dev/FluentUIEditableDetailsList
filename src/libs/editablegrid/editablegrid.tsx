@@ -15,7 +15,7 @@ import {
 } from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 import { IconButton } from 'office-ui-fabric-react/lib/components/Button/IconButton/IconButton';
-import { PrimaryButton, Panel, PanelType, IStackTokens, Stack, mergeStyleSets, Fabric, Dropdown, IDropdownStyles, IDropdownOption, IButtonStyles, DialogFooter, Announced, Dialog, SpinButton, DefaultButton, DatePicker, IDatePickerStrings, on, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, IRefObject, IScrollablePane, ScrollablePaneBase, ScrollablePaneContext } from 'office-ui-fabric-react';
+import { PrimaryButton, Panel, PanelType, IStackTokens, Stack, mergeStyleSets, Fabric, Dropdown, IDropdownStyles, IDropdownOption, IButtonStyles, DialogFooter, Announced, Dialog, SpinButton, DefaultButton, DatePicker, IDatePickerStrings, on, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, IRefObject, IScrollablePane, ScrollablePaneBase, ScrollablePaneContext, Checkbox } from 'office-ui-fabric-react';
 import { TextField, ITextFieldStyles, ITextField } from 'office-ui-fabric-react/lib/TextField';
 import { ContextualMenu, DirectionalHint, IContextualMenu, IContextualMenuProps } from 'office-ui-fabric-react/lib/ContextualMenu';
 import { useBoolean } from '@uifabric/react-hooks';
@@ -246,8 +246,15 @@ const EditableGrid = (props: Props) => {
     const setGridEditState = (editState: boolean): void => {
         if (isGridStateEdited != editState) {
             setIsGridStateEdited(editState);
+            onGridEditStateChange(editState);
         }
     }
+
+    const onGridEditStateChange = async (editState: boolean): Promise<void> => {
+        if (props.onGridEditStateChange) {
+            await props.onGridEditStateChange(editState);
+        }
+    };
 
     const SetFilteredGridData = (filters: IFilter[]): void => {
         var filteredData = filterGridData(defaultGridData, filters);
@@ -652,6 +659,29 @@ const EditableGrid = (props: Props) => {
         if (column.onChange) {
             HandleColumnOnChange(activateCellEditTmp, row, column);
         }
+
+        setActivateCellEdit(activateCellEditTmp);
+    };
+
+    const onCheckboxChange = (checked: boolean | undefined, row: number, column: IColumnConfig): void => {
+        setGridEditState(true);
+
+        let activateCellEditTmp: any[] = [];
+        activateCellEdit.forEach((item, index) => {
+            if (row == index) {
+                item.properties[column.key].value = checked;
+            }
+
+            activateCellEditTmp.push(item);
+        });
+
+        if (column.onChange) {
+            HandleColumnOnChange(activateCellEditTmp, row, column);
+        }
+
+        HandleCellOnClick(props, column, EditCellValue, row);
+
+        EditCellValue(column.key, row, false);
 
         setActivateCellEdit(activateCellEditTmp);
     };
@@ -1194,7 +1224,6 @@ const EditableGrid = (props: Props) => {
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                         maxLength={column.maxLength != null ? column.maxLength : 10000}
                                     />)}</span>
-                            break;
                         case EditControlType.Date:
                             return <span>{
                                 (ShouldRenderSpan())
@@ -1222,7 +1251,6 @@ const EditableGrid = (props: Props) => {
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)
                             }</span>
-                            break;
                         case EditControlType.DropDown:
                             return <span className={'row-' + rowNum! + '-col-' + index}>{
                                 (ShouldRenderSpan())
@@ -1251,7 +1279,6 @@ const EditableGrid = (props: Props) => {
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)
                             }</span>
-                            break;
                         case EditControlType.Picker:
                             return <span>{
                                 (ShouldRenderSpan())
@@ -1283,7 +1310,32 @@ const EditableGrid = (props: Props) => {
                                         />
                                     </span>)
                             }</span>
-                            break;
+                        case EditControlType.Checkbox:
+                            return <span>{
+                                (column?.hoverComponentOptions?.enable ?
+                                    (<HoverCard
+                                        type={HoverCardType.plain}
+                                        plainCardProps={{
+                                            onRenderPlainCard: () => onRenderPlainCard(column, rowNum!, item),
+                                        }}
+                                        instantOpenOnClick
+                                    >
+                                        <Checkbox
+                                            ariaLabel={column.key}
+                                            disabled={!column.editable}
+                                            checked={activateCellEdit[rowNum!].properties[column.key].value || false}
+                                            onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
+                                        />
+                                    </HoverCard>)
+                                    :
+                                    <Checkbox
+                                        ariaLabel={column.key}
+                                        disabled={!column.editable}
+                                        checked={activateCellEdit[rowNum!].properties[column.key].value || false}
+                                        onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
+                                    />
+                                )
+                            }</span>
                         case EditControlType.Link:
                             return <span>{
                                 (column?.hoverComponentOptions?.enable ?
