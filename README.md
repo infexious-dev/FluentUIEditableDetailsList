@@ -12,13 +12,15 @@ Updates include:
 >- Provided "prependRowEditActions" prop on EditableGrid when "enableRowEdit" is set to TRUE. This allows the "Actions" column to appear as the first column on the grid (rather than the last).
 >- "EnableSaveText" prop added to EditableGrid which allows customisation of the "Submit" button text and arial-label.
 >- Marquee Selection now optional in EditableGrid options. This is a way to get rid of the current "mouse drag" selection which doesn't select multiple rows anyways. use "enableMarqueeSelection".
->- New function "onGridReset" callback available to run after grid data is reset. Useful for clear search box text etc. Returns grid data.
+>- New callback function "onGridReset" runs after grid data is reset. Useful for clear search box text etc. Returns grid data after it has been reset.
+>- New callback function "onGridEditStateChange" runs after grid edit state is changed. Useful to track data manipulation. Returns a boolean.
 >- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.4". This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. Mute and umute classes are customisable - as is the default opacity applied. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation.
 
 ### New "IColumnConfig" Features
 >- "onCustomRender" prop on IColumnConfig allows for custom rendering of the column without breaking "editing" capabilities
 >- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted (including showing the sort indicator) when the grid is initially rendered.
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
+>- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
 
 ### Bug Fixes
 >- Reset Data now properly updates currently selected item with changes.
