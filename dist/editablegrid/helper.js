@@ -123,7 +123,6 @@ export var ParseType = function (type, text) {
             else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
-            return Number(text);
         case 'date':
             return Date.parse(text);
     }

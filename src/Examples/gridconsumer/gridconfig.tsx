@@ -15,14 +15,28 @@ export const GridColumnConfig: IColumnConfig[] =
             text: 'ID',
             editable: false,
             dataType: 'number',
-            minWidth: 100,
-            maxWidth: 100,
+            minWidth: 40,
+            maxWidth: 80,
             isResizable: true,
             includeColumnInExport: true,
             includeColumnInSearch: true,
             applyColumnFilter: true,
             disableSort: false,
             isSortedByDefault: true
+        },
+        {
+            key: 'check',
+            name: 'Check',
+            text: 'Check',
+            editable: true,
+            minWidth: 50,
+            maxWidth: 100,
+            isResizable: true,
+            includeColumnInExport: true,
+            includeColumnInSearch: true,
+            applyColumnFilter: true,
+            disableSort: false,
+            inputType: EditControlType.Checkbox
         },
         {
             key: 'customerhovercol',
@@ -225,6 +239,7 @@ export const GridColumnConfigCustomPanelEdit: IColumnConfig[] =
 
 export class GridItemsType {
     id: number;
+    check: boolean;
     customerhovercol: string;
     name: string;
     age: number;
