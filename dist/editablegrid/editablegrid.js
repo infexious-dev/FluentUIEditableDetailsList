@@ -1599,7 +1599,7 @@ var EditableGrid = function (props) {
                                             defaultRender(__assign(__assign({}, rowProps), { className: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_b = props.rowMuteOptions) === null || _b === void 0 ? void 0 : _b.rowMuteClass) ? props.rowMuteOptions.rowMuteClass : 'muted' : ((_c = props.rowMuteOptions) === null || _c === void 0 ? void 0 : _c.rowUnmuteClass) ? props.rowMuteOptions.rowUnmuteClass : '', styles: {
                                                     root: {
                                                         ".ms-DetailsRow-cell:not(.actions-cell)": {
-                                                            opacity: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_d = props.rowMuteOptions) === null || _d === void 0 ? void 0 : _d.rowMuteOpacity) ? "" + props.rowMuteOptions.rowMuteOpacity : '.4' : '',
+                                                            opacity: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_d = props.rowMuteOptions) === null || _d === void 0 ? void 0 : _d.rowMuteOpacity) ? "" + props.rowMuteOptions.rowMuteOpacity : '.2' : '',
                                                             filter: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? 'grayscale(100%)' : 'none'
                                                         }
                                                     }

@@ -2084,7 +2084,7 @@ const EditableGrid = (props: Props) => {
                                                         root:
                                                         {
                                                             ".ms-DetailsRow-cell:not(.actions-cell)": {
-                                                                opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity}` : '.4' : '',
+                                                                opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity}` : '.2' : '',
                                                                 filter: rowProps?.item._is_muted_ ? 'grayscale(100%)' : 'none'
                                                             }
                                                         }
