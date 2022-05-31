@@ -1118,9 +1118,15 @@ var EditableGrid = function (props) {
                             return _jsx("span", { children: (((_q = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _q === void 0 ? void 0 : _q.enable) ?
                                     (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                             onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                        }, instantOpenOnClick: true }, { children: _jsx(Checkbox, { ariaLabel: column.key, disabled: !column.editable, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0) }), void 0))
+                                        }, instantOpenOnClick: true }, { children: _jsx(Checkbox, { inputProps: {
+                                                // @ts-ignore
+                                                "data-is-focusable": false
+                                            }, ariaLabel: column.key, disabled: !column.editable || item._is_muted_, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0) }), void 0))
                                     :
-                                        _jsx(Checkbox, { ariaLabel: column.key, disabled: !column.editable, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0)) }, void 0);
+                                        _jsx(Checkbox, { inputProps: {
+                                                // @ts-ignore
+                                                "data-is-focusable": false
+                                            }, ariaLabel: column.key, disabled: !column.editable || item._is_muted_, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0)) }, void 0);
                         case EditControlType.Link:
                             return _jsx("span", { children: (((_r = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _r === void 0 ? void 0 : _r.enable) ?
                                     (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
@@ -1173,16 +1179,16 @@ var EditableGrid = function (props) {
                 buttonNumber++;
             switch (buttonNumber) {
                 case 1:
-                    minWidth = 50;
-                    maxWidth = 50;
+                    minWidth = 75;
+                    maxWidth = 100;
                     break;
                 case 2:
-                    minWidth = 75;
-                    maxWidth = 75;
+                    minWidth = 100;
+                    maxWidth = 125;
                     break;
                 case 3:
-                    minWidth = 100;
-                    maxWidth = 100;
+                    minWidth = 125;
+                    maxWidth = 150;
                     break;
                 default:
                     break;
@@ -1199,20 +1205,21 @@ var EditableGrid = function (props) {
                 isResizable: true,
                 minWidth: minWidth,
                 maxWidth: maxWidth,
+                className: 'actions-cell',
                 onRender: function (item, index) {
                     var _a, _b;
                     return (_jsxs(_Fragment, { children: [props.enableRowEdit ?
                                 (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])
                                     ?
-                                        _jsxs(_Fragment, { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
+                                        _jsxs(_Fragment, { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
                                                     ?
-                                                        _jsx(IconButton, { "data-is-focusable": false, disabled: editMode, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
+                                                        _jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
                                                     :
                                                         null] }, void 0)
                                     :
                                         _jsx(_Fragment, { children: !props.enableDefaultEditMode &&
-                                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0) }, void 0) : null, ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
-                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () {
+                                                _jsx(IconButton, { "data-is-focusable": false, disabled: item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0) }, void 0) : null, ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
+                                _jsx(IconButton, { disabled: activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'], "data-is-focusable": false, onClick: function () {
                                         var defaultGridDataTmp = __spreadArray([], __read(defaultGridData));
                                         defaultGridDataTmp.filter((function (x) { return x._grid_row_id_ == item._grid_row_id_; })).map((function (x) {
                                             x._is_muted_ = !x._is_muted_;
@@ -1222,7 +1229,7 @@ var EditableGrid = function (props) {
                                         SetGridItems(defaultGridDataTmp);
                                     }, iconProps: { iconName: "" + (item._is_muted_ ? 'RedEye' : 'Hide') }, title: "" + (item._is_muted_ ? 'Unmute' : 'Mute') }, void 0)
                                 : null, ((_b = props.gridCopyOptions) === null || _b === void 0 ? void 0 : _b.enableRowCopy) ?
-                                _jsx(IconButton, { "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0) : null] }, void 0));
+                                _jsx(IconButton, { disabled: item._is_muted_, "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0) : null] }, void 0));
                 },
             };
             props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
@@ -1462,12 +1469,12 @@ var EditableGrid = function (props) {
         var _a, _b, _c, _d, _e;
         return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum) }, { children: ((_a = column.linkOptions) === null || _a === void 0 ? void 0 : _a.onClick)
                 ?
-                    _jsx(Link, __assign({ "data-is-focusable": column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: (_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled, underline: true, onClick: function () {
+                    _jsx(Link, __assign({ "data-is-focusable": column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled) || item._is_muted_, underline: true, onClick: function () {
                             var params = { rowindex: [rowNum], data: defaultGridData, triggerkey: column.key, activatetriggercell: false };
                             column.linkOptions.onClick(params);
                         } }, { children: item[column.key] }), void 0)
                 :
-                    _jsx(Link, __assign({ "data-is-focusable": ((_c = column === null || column === void 0 ? void 0 : column.linkOptions) === null || _c === void 0 ? void 0 : _c.isFocusable) !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: (_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.disabled, underline: true, href: (_e = column.linkOptions) === null || _e === void 0 ? void 0 : _e.href }, { children: item[column.key] }), void 0) }), void 0);
+                    _jsx(Link, __assign({ "data-is-focusable": ((_c = column === null || column === void 0 ? void 0 : column.linkOptions) === null || _c === void 0 ? void 0 : _c.isFocusable) !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.disabled) || item._is_muted_, underline: true, href: (_e = column.linkOptions) === null || _e === void 0 ? void 0 : _e.href }, { children: item[column.key] }), void 0) }), void 0);
     };
     var RenderTextFieldSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
@@ -1586,12 +1593,10 @@ var EditableGrid = function (props) {
                             // layoutMode={props.layoutMode}
                             // constrainMode={props.constrainMode}
                             layoutMode: DetailsListLayoutMode.fixedColumns, constrainMode: ConstrainMode.unconstrained, selection: _selection, setKey: "none", onRenderDetailsHeader: onRenderDetailsHeader, ariaLabelForSelectAllCheckbox: "Toggle selection for all items", ariaLabelForSelectionColumn: "Toggle selection", checkButtonAriaLabel: "Row checkbox", ariaLabel: props.ariaLabel, ariaLabelForGrid: props.ariaLabelForGrid, ariaLabelForListHeader: props.ariaLabelForListHeader, cellStyleProps: props.cellStyleProps, checkboxCellClassName: props.checkboxCellClassName, checkboxVisibility: props.checkboxVisibility, className: props.className, columnReorderOptions: props.columnReorderOptions, componentRef: props.componentRef, disableSelectionZone: props.disableSelectionZone, dragDropEvents: props.dragDropEvents, enableUpdateAnimations: props.enableUpdateAnimations, enterModalSelectionOnTouch: props.enterModalSelectionOnTouch, getCellValueKey: props.getCellValueKey, getGroupHeight: props.getGroupHeight, getKey: props.getKey, getRowAriaDescribedBy: props.getRowAriaDescribedBy, getRowAriaLabel: props.getRowAriaLabel, groupProps: props.groupProps, groups: props.groups, indentWidth: props.indentWidth, initialFocusedIndex: props.initialFocusedIndex, isHeaderVisible: props.isHeaderVisible, isPlaceholderData: props.isPlaceholderData, listProps: props.listProps, minimumPixelsForDrag: props.minimumPixelsForDrag, onActiveItemChanged: props.onActiveItemChanged, onColumnHeaderClick: props.onColumnHeaderClick, onColumnHeaderContextMenu: props.onColumnHeaderContextMenu, onColumnResize: props.onColumnResize, onDidUpdate: props.onDidUpdate, onItemContextMenu: props.onItemContextMenu, onItemInvoked: props.onItemInvoked, onRenderCheckbox: props.onRenderCheckbox, onRenderDetailsFooter: props.onRenderDetailsFooter, onRenderItemColumn: props.onRenderItemColumn, onRenderMissingItem: props.onRenderMissingItem, onRenderRow: function (rowProps, defaultRender) {
-                                var _a, _b, _c, _d;
+                                var _a, _b, _c;
                                 return _jsx(_Fragment, { children: rowProps && defaultRender ?
                                         ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
-                                            defaultRender(__assign(__assign({}, rowProps), { className: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_b = props.rowMuteOptions) === null || _b === void 0 ? void 0 : _b.rowMuteClass) ? props.rowMuteOptions.rowMuteClass : 'muted' : ((_c = props.rowMuteOptions) === null || _c === void 0 ? void 0 : _c.rowUnmuteClass) ? props.rowMuteOptions.rowUnmuteClass : '', styles: {
-                                                    root: { opacity: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_d = props.rowMuteOptions) === null || _d === void 0 ? void 0 : _d.rowMuteOpacity) ? props.rowMuteOptions.rowMuteOpacity + " !important" : '.4 !important' : '' }
-                                                } }))
+                                            defaultRender(__assign(__assign({}, rowProps), { className: (rowProps === null || rowProps === void 0 ? void 0 : rowProps.item._is_muted_) ? ((_b = props.rowMuteOptions) === null || _b === void 0 ? void 0 : _b.rowMuteClass) ? props.rowMuteOptions.rowMuteClass : 'muted' : ((_c = props.rowMuteOptions) === null || _c === void 0 ? void 0 : _c.rowUnmuteClass) ? props.rowMuteOptions.rowUnmuteClass : '' }))
                                             : defaultRender(__assign({}, rowProps)) : null }, void 0);
                             }, onRowDidMount: props.onRowDidMount, onRowWillUnmount: props.onRowWillUnmount, onShouldVirtualize: props.onShouldVirtualize, rowElementEventMap: props.rowElementEventMap, selectionPreservedOnEmptyClick: props.selectionPreservedOnEmptyClick, selectionZoneProps: props.selectionZoneProps, shouldApplyApplicationRole: props.shouldApplyApplicationRole, styles: props.styles, useFastIcons: props.useFastIcons, usePageCache: props.usePageCache, useReducedRowRenderer: props.useReducedRowRenderer, viewport: props.viewport }, void 0) }), void 0) }), void 0) }), void 0), _jsx(Dialog, __assign({ hidden: !dialogContent, onDismiss: CloseRenameDialog, closeButtonAriaLabel: "Close" }, { children: dialogContent }), void 0), messageDialogProps.visible
                 ?

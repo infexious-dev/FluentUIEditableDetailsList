@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { Checkbox, DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EditControlType } from "../types/editcontroltype";
@@ -126,13 +126,16 @@ const EditPanel = (props: Props) => {
                     break;
                 case EditControlType.Checkbox:
                     tmpRenderObj.push(
-                        <Checkbox
-                            key={item.key}
-                            label={item.text}
-                            disabled={!item.editable}
-                            checked={columnValuesObj[item.key].value || false}
-                            onChange={(ev, checked) => onCheckboxChange(checked, item)}
-                        />
+                        <div>
+                            <Label>{item.text}</Label>
+                            <Checkbox
+                                styles={{ root: { marginTop: 0 } }}
+                                key={item.key}
+                                disabled={!item.editable}
+                                checked={columnValuesObj[item.key].value || false}
+                                onChange={(ev, checked) => onCheckboxChange(checked, item)}
+                            />
+                        </div>
                     );
                     break;
                 case EditControlType.MultilineTextField:
