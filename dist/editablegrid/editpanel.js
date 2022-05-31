@@ -28,7 +28,7 @@ var __read = (this && this.__read) || function (o, n) {
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-import { Checkbox, DatePicker, Dropdown, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, DatePicker, Dropdown, Label, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import { useEffect, useState } from "react";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
@@ -107,7 +107,7 @@ var EditPanel = function (props) {
                     tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: (_e = item.dropdownValues) !== null && _e !== void 0 ? _e : [], selectedKey: selectedKey || null, onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, item.key));
                     break;
                 case EditControlType.Checkbox:
-                    tmpRenderObj.push(_jsx(Checkbox, { label: item.text, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, item.key));
+                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, item.key)] }, void 0));
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, multiline: true, rows: 1, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }, item.key));
