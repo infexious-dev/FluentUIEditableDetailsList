@@ -2080,10 +2080,15 @@ const EditableGrid = (props: Props) => {
                                                 defaultRender({
                                                     ...rowProps,
                                                     className: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteClass ? props.rowMuteOptions.rowMuteClass : 'muted' : props.rowMuteOptions?.rowUnmuteClass ? props.rowMuteOptions.rowUnmuteClass : '',
-                                                    // styles: {
-                                                    //     root:
-                                                    //         { opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity} !important` : '.4 !important' : '' }
-                                                    // }
+                                                    styles: {
+                                                        root:
+                                                        {
+                                                            ".ms-DetailsRow-cell:not(.actions-cell)": {
+                                                                opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity}` : '.4' : '',
+                                                                filter: rowProps?.item._is_muted_ ? 'grayscale(100%)' : 'none'
+                                                            }
+                                                        }
+                                                    }
                                                 })
                                                 : defaultRender({ ...rowProps }) : null
 

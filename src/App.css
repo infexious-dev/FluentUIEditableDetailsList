@@ -1,4 +1,0 @@
-.ms-DetailsRow.muted .ms-DetailsRow-cell:not(.actions-cell) {
-  opacity: 0.2;
-  filter: grayscale(100%);
-}
