@@ -942,12 +942,12 @@ const EditableGrid = (props: Props) => {
         ClearFilters();
         SetGridItems(deeplyCopiedData);
         UpdateSelectedItems(backupDefaultGridData);
-        onGridReset();
+        onGridReset(deeplyCopiedData);
     };
 
-    const onGridReset = async (): Promise<void> => {
+    const onGridReset = async (data: Array<any>): Promise<void> => {
         if (props.onGridReset) {
-            await props.onGridReset(defaultGridData);
+            await props.onGridReset(data);
         }
     };
 

@@ -189,6 +189,7 @@ const Consumer = () => {
     };
 
     const onGridUpdate = async (data: any[]): Promise<void> => {
+        console.log(items);
         console.log('Grid Data Updated');
         LogRows(data);
     };

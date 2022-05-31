@@ -853,14 +853,14 @@ var EditableGrid = function (props) {
         ClearFilters();
         SetGridItems(deeplyCopiedData);
         UpdateSelectedItems(backupDefaultGridData);
-        onGridReset();
+        onGridReset(deeplyCopiedData);
     };
-    var onGridReset = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var onGridReset = function (data) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!props.onGridReset) return [3 /*break*/, 2];
-                    return [4 /*yield*/, props.onGridReset(defaultGridData)];
+                    return [4 /*yield*/, props.onGridReset(data)];
                 case 1:
                     _a.sent();
                     _a.label = 2;
