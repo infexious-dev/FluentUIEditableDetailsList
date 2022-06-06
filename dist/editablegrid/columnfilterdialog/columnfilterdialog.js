@@ -29,6 +29,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { DefaultButton, Dialog, DialogFooter, Dropdown, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
+import { DataType } from "../../types/datatype";
 import { operatorsArr } from "../../types/filterstype";
 import { controlClass, dropdownStyles, modelProps, stackTokens, textFieldStyles } from "./columnfilterdialogStyles";
 var ColumnFilterDialog = function (props) {
@@ -41,14 +42,15 @@ var ColumnFilterDialog = function (props) {
         var gridColumn = props.columnConfigurationData.filter(function (val) { return val.key == item.key; })[0];
         setGridColumn(gridColumn);
         switch (gridColumn === null || gridColumn === void 0 ? void 0 : gridColumn.dataType) {
-            case 'number':
-                doOperatorTypeChange('number');
+            case DataType.number:
+            case DataType.decimal:
+                doOperatorTypeChange(DataType.number);
                 break;
-            case 'string':
-                doOperatorTypeChange('string');
+            case DataType.string:
+                doOperatorTypeChange(DataType.string);
                 break;
-            case 'date':
-                doOperatorTypeChange('date');
+            case DataType.date:
+                doOperatorTypeChange(DataType.date);
                 break;
         }
         if (operatorType.current !== operatorTypePrevious.current) {
@@ -74,16 +76,16 @@ var ColumnFilterDialog = function (props) {
             if (column.length > 0) {
                 var valueOptions = createValueOptions(column[0]);
                 switch (column[0].dataType) {
-                    case 'number':
-                    case 'decimal':
+                    case DataType.number:
+                    case DataType.decimal:
                         setInputFieldContent(_jsx(TextField, { className: controlClass.textFieldClass, placeholder: "Value", onChange: function (ev, text) { return onTextUpdate(ev, text); }, styles: textFieldStyles }, void 0));
                         setOperatorDropDownContent(_jsx(Dropdown, { placeholder: "Select Operator", options: createCompareOptions(), styles: dropdownStyles, onChange: onSelectOperator, selectedKey: operator ? operator.key : null }, void 0));
                         break;
-                    case 'string':
+                    case DataType.string:
                         setInputFieldContent(_jsx(TextField, { className: controlClass.textFieldClass, placeholder: "Value", onChange: function (ev, text) { return onTextUpdate(ev, text); }, styles: textFieldStyles }, void 0));
                         setOperatorDropDownContent(_jsx(Dropdown, { placeholder: "Select Operator", options: createCompareOptions(), styles: dropdownStyles, onChange: onSelectOperator, selectedKey: operator ? operator.key : null }, void 0));
                         break;
-                    case 'date':
+                    case DataType.date:
                         setInputFieldContent(_jsx(Dropdown, { placeholder: "Select the Column", options: valueOptions, styles: dropdownStyles, onChange: onSelectValue }, void 0));
                         setOperatorDropDownContent(_jsx(Dropdown, { placeholder: "Select Operator", options: createCompareOptions(), styles: dropdownStyles, onChange: onSelectOperator, selectedKey: operator ? operator.key : null }, void 0));
                         break;
@@ -107,12 +109,12 @@ var ColumnFilterDialog = function (props) {
         var dropdownOptions = [];
         var operatorsOptions = [];
         switch (dataType) {
-            case 'string':
-                operatorsOptions = operatorsArr.filter(function (item) { return item.type == 'string'; })[0].value;
+            case DataType.string:
+                operatorsOptions = operatorsArr.filter(function (item) { return item.type == DataType.string; })[0].value;
                 break;
-            case 'number':
-            case 'decimal':
-                operatorsOptions = operatorsArr.filter(function (item) { return item.type == 'number'; })[0].value;
+            case DataType.number:
+            case DataType.decimal:
+                operatorsOptions = operatorsArr.filter(function (item) { return item.type == DataType.number; })[0].value;
                 break;
         }
         operatorsOptions.forEach(function (item, index) {

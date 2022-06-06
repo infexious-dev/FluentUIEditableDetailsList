@@ -1227,7 +1227,7 @@ var EditableGrid = function (props) {
                                         }));
                                         setGridEditState(true);
                                         SetGridItems(defaultGridDataTmp);
-                                    }, iconProps: { iconName: "" + (item._is_muted_ ? 'RedEye' : 'Hide') }, title: "" + (item._is_muted_ ? 'Unmute' : 'Mute') }, void 0)
+                                    }, iconProps: { iconName: "" + (item._is_muted_ ? 'RedEye' : 'Hide') }, title: "" + (item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute') }, void 0)
                                 : null, ((_b = props.gridCopyOptions) === null || _b === void 0 ? void 0 : _b.enableRowCopy) ?
                                 _jsx(IconButton, { disabled: item._is_muted_, "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0) : null] }, void 0));
                 },

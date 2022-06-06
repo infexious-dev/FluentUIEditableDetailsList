@@ -1,10 +1,11 @@
+import { DataType } from "./datatype";
 export var operatorsArr = [
     {
-        type: 'string',
+        type: DataType.string,
         value: ['equals', 'contains', 'starts with', 'ends with', 'not equal to']
     },
     {
-        type: 'number' || 'decimal',
+        type: DataType.number || DataType.decimal,
         value: ['>', '<', '>=', '<=', '=', '!=']
     }
 ];

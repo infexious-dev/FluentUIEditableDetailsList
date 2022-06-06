@@ -1499,7 +1499,7 @@ const EditableGrid = (props: Props) => {
 
                                         setGridEditState(true);
                                         SetGridItems(defaultGridDataTmp);
-                                    }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }} title={`${item._is_muted_ ? 'Unmute' : 'Mute'}`}></IconButton>
+                                    }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }} title={`${item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute'}`}></IconButton>
                                 : null
                         }
 

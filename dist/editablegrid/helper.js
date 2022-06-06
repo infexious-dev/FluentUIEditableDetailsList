@@ -19,6 +19,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
         to[j] = from[i];
     return to;
 };
+import { DataType } from "../types/datatype";
 import { dateOperatorEval, numberOperatorEval, stringOperatorEval } from "../types/filterstype";
 export var filterGridData = function (data, filters) {
     var dataTmp = __spreadArray([], __read(data));
@@ -28,11 +29,11 @@ export var filterGridData = function (data, filters) {
             if (isRowIncluded) {
                 var columnType = item.column.dataType;
                 switch (columnType) {
-                    case 'number':
-                    case 'decimal':
+                    case DataType.number:
+                    case DataType.decimal:
                         isRowIncluded = isRowIncluded && numberOperatorEval(row[item.column.key], item.value, item.operator);
                         break;
-                    case 'string':
+                    case DataType.string:
                         isRowIncluded = isRowIncluded && stringOperatorEval(row[item.column.key], item.value, item.operator);
                         break;
                 }
@@ -61,10 +62,10 @@ export var applyGridColumnFilter = function (data, gridColumnFilterArr) {
 };
 export var isColumnDataTypeSupportedForFilter = function (datatype) {
     switch (datatype) {
-        case 'number':
-        case 'decimal':
+        case DataType.number:
+        case DataType.decimal:
             return true;
-        case 'string':
+        case DataType.string:
             return true;
         default:
             return false;
@@ -73,10 +74,10 @@ export var isColumnDataTypeSupportedForFilter = function (datatype) {
 export var IsValidDataType = function (type, text) {
     var isValid = true;
     switch (type) {
-        case 'number':
+        case DataType.number:
             isValid = !isNaN(Number(text));
             break;
-        case 'decimal':
+        case DataType.decimal:
             var regex = new RegExp(/^[0-9.]*$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
@@ -85,17 +86,17 @@ export var IsValidDataType = function (type, text) {
     }
     return isValid;
 };
-export var EvaluateRule = function (datatType, cellValue, styleRule) {
+export var EvaluateRule = function (dataType, cellValue, styleRule) {
     if (!styleRule) {
         return false;
     }
-    switch (datatType) {
-        case 'number':
-        case 'decimal':
+    switch (dataType) {
+        case DataType.number:
+        case DataType.decimal:
             return numberOperatorEval(Number(cellValue), styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.value, styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.operator);
-        case 'string':
+        case DataType.string:
             return stringOperatorEval(String(cellValue), styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.value, styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.operator);
-        case 'date':
+        case DataType.date:
             return dateOperatorEval(new Date(String(cellValue)), new Date(styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.value), styleRule === null || styleRule === void 0 ? void 0 : styleRule.rule.operator);
         default:
             return false;
@@ -113,9 +114,9 @@ export var ParseType = function (type, text) {
         return null;
     }
     switch (type) {
-        case 'number':
+        case DataType.number:
             return Number(text);
-        case 'decimal':
+        case DataType.decimal:
             var regex = new RegExp(/^-?[0-9]*\.[0-9]{0,1}$/, 'g');
             if (text !== '0' && text !== "0" && regex.test(text)) {
                 return text; // keep as string until more decimals are added
@@ -123,14 +124,14 @@ export var ParseType = function (type, text) {
             else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
-        case 'date':
+        case DataType.date:
             return Date.parse(text);
     }
     return text;
 };
 export var GetDefault = function (type) {
     switch (type) {
-        case 'date':
+        case DataType.date:
             return new Date();
         default:
             return null;
@@ -138,7 +139,7 @@ export var GetDefault = function (type) {
 };
 export var GetValue = function (type, value) {
     switch (type) {
-        case 'date':
+        case DataType.date:
             return new Date(value);
         default:
             return value;
