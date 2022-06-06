@@ -6,6 +6,7 @@ import { NumberAndDateOperators, StringOperators } from "../../libs/types/cellst
 import { IColumnConfig } from "../../libs/types/columnconfigtype";
 import { EditControlType } from "../../libs/types/editcontroltype";
 import { CellHover } from "./hoverComponent";
+import { DataType } from "../../libs/types/datatype";
 
 export const GridColumnConfig: IColumnConfig[] =
     [
@@ -14,7 +15,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'ID',
             text: 'ID',
             editable: false,
-            dataType: 'number',
+            dataType: DataType.number,
             minWidth: 40,
             maxWidth: 80,
             isResizable: true,
@@ -112,7 +113,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'Salary',
             text: 'Salary',
             editable: true,
-            dataType: 'decimal',
+            dataType: DataType.decimal,
             minWidth: 100,
             maxWidth: 100,
             isResizable: true,
@@ -202,7 +203,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'Employee Profile Link',
             text: 'Employee Profile Link',
             editable: false,
-            dataType: 'string',
+            dataType: DataType.string,
             minWidth: 150,
             maxWidth: 150,
             isResizable: true,
@@ -227,7 +228,7 @@ export const GridColumnConfigCustomPanelEdit: IColumnConfig[] =
             name: 'Date of Joining',
             text: 'Date of Joining',
             editable: true,
-            dataType: 'date',
+            dataType: DataType.date,
             minWidth: 150,
             maxWidth: 150,
             isResizable: true,

@@ -2,6 +2,7 @@ import { DefaultButton, Dialog, DialogFooter, Dropdown, IDialogStyleProps, IDial
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { IColumnConfig } from "../../types/columnconfigtype";
+import { DataType } from "../../types/datatype";
 import { IFilter, IOperators, operatorsArr } from "../../types/filterstype";
 import { controlClass, dropdownStyles, modelProps, stackTokens, textFieldStyles } from "./columnfilterdialogStyles";
 
@@ -25,14 +26,15 @@ const ColumnFilterDialog = (props: Props) => {
         setGridColumn(gridColumn);
 
         switch (gridColumn?.dataType) {
-            case 'number':
-                doOperatorTypeChange('number');
+            case DataType.number:
+            case DataType.decimal:
+                doOperatorTypeChange(DataType.number);
                 break;
-            case 'string':
-                doOperatorTypeChange('string');
+            case DataType.string:
+                doOperatorTypeChange(DataType.string);
                 break;
-            case 'date':
-                doOperatorTypeChange('date');
+            case DataType.date:
+                doOperatorTypeChange(DataType.date);
                 break;
         }
 
@@ -64,8 +66,8 @@ const ColumnFilterDialog = (props: Props) => {
             if (column.length > 0) {
                 var valueOptions = createValueOptions(column[0]);
                 switch (column[0].dataType) {
-                    case 'number':
-                    case 'decimal':
+                    case DataType.number:
+                    case DataType.decimal:
                         setInputFieldContent(
                             <TextField
                                 className={controlClass.textFieldClass}
@@ -82,7 +84,7 @@ const ColumnFilterDialog = (props: Props) => {
                             selectedKey={operator ? operator.key : null}
                         />);
                         break;
-                    case 'string':
+                    case DataType.string:
                         setInputFieldContent(
                             <TextField
                                 className={controlClass.textFieldClass}
@@ -99,7 +101,7 @@ const ColumnFilterDialog = (props: Props) => {
                             selectedKey={operator ? operator.key : null}
                         />);
                         break;
-                    case 'date':
+                    case DataType.date:
                         setInputFieldContent(<Dropdown
                             placeholder="Select the Column"
                             options={valueOptions}
@@ -139,12 +141,12 @@ const ColumnFilterDialog = (props: Props) => {
         let dropdownOptions: IDropdownOption[] = [];
         let operatorsOptions: any[] = [];
         switch (dataType) {
-            case 'string':
-                operatorsOptions = operatorsArr.filter((item) => item.type == 'string')[0].value;
+            case DataType.string:
+                operatorsOptions = operatorsArr.filter((item) => item.type == DataType.string)[0].value;
                 break;
-            case 'number':
-            case 'decimal':
-                operatorsOptions = operatorsArr.filter((item) => item.type == 'number')[0].value;
+            case DataType.number:
+            case DataType.decimal:
+                operatorsOptions = operatorsArr.filter((item) => item.type == DataType.number)[0].value;
                 break;
         }
         operatorsOptions.forEach((item, index) => {

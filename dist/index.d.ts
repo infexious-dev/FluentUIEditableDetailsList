@@ -8,3 +8,4 @@ export { NumberAndDateOperators, StringOperators } from './types/cellstylerulety
 export type { ICellStyleRulesType } from './types/cellstyleruletype';
 export type { ICellHoverProps } from './types/cellhoverpropstype';
 export { Operation } from './types/operation';
+export { DataType } from './types/datatype';

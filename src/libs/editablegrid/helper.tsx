@@ -1,6 +1,7 @@
 import { ICellStyleRulesType } from "../types/cellstyleruletype";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { IGridColumnFilter } from "../types/columnfilterstype";
+import { DataType } from "../types/datatype";
 import { dateOperatorEval, IFilter, numberOperatorEval, stringOperatorEval } from "../types/filterstype";
 
 export const filterGridData = (data: any[], filters: IFilter[]): any[] => {
@@ -11,11 +12,11 @@ export const filterGridData = (data: any[], filters: IFilter[]): any[] => {
             if (isRowIncluded) {
                 var columnType = item.column.dataType;
                 switch (columnType) {
-                    case 'number':
-                    case 'decimal':
+                    case DataType.number:
+                    case DataType.decimal:
                         isRowIncluded = isRowIncluded && numberOperatorEval(row[item.column.key], item.value, item.operator);
                         break;
-                    case 'string':
+                    case DataType.string:
                         isRowIncluded = isRowIncluded && stringOperatorEval(row[item.column.key], item.value, item.operator);
                         break;
                 }
@@ -50,10 +51,10 @@ export const applyGridColumnFilter = (data: any[], gridColumnFilterArr: IGridCol
 
 export const isColumnDataTypeSupportedForFilter = (datatype: string | undefined): boolean => {
     switch (datatype) {
-        case 'number':
-        case 'decimal':
+        case DataType.number:
+        case DataType.decimal:
             return true;
-        case 'string':
+        case DataType.string:
             return true;
         default:
             return false;
@@ -63,10 +64,10 @@ export const isColumnDataTypeSupportedForFilter = (datatype: string | undefined)
 export const IsValidDataType = (type: string | undefined, text: string): boolean => {
     var isValid = true;
     switch (type) {
-        case 'number':
+        case DataType.number:
             isValid = !isNaN(Number(text));
             break;
-        case 'decimal':
+        case DataType.decimal:
             let regex = new RegExp(/^[0-9.]*$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
@@ -77,18 +78,18 @@ export const IsValidDataType = (type: string | undefined, text: string): boolean
     return isValid;
 };
 
-export const EvaluateRule = (datatType: string, cellValue: string | number | undefined, styleRule: ICellStyleRulesType | undefined): boolean => {
+export const EvaluateRule = (dataType: string, cellValue: string | number | undefined, styleRule: ICellStyleRulesType | undefined): boolean => {
     if (!styleRule) {
         return false;
     }
 
-    switch (datatType) {
-        case 'number':
-        case 'decimal':
+    switch (dataType) {
+        case DataType.number:
+        case DataType.decimal:
             return numberOperatorEval(Number(cellValue), styleRule?.rule!.value as number, styleRule?.rule!.operator);
-        case 'string':
+        case DataType.string:
             return stringOperatorEval(String(cellValue), styleRule?.rule!.value as string, styleRule?.rule!.operator)
-        case 'date':
+        case DataType.date:
             return dateOperatorEval(new Date(String(cellValue)), new Date(styleRule?.rule!.value), styleRule?.rule!.operator);
         default:
             return false;
@@ -111,16 +112,16 @@ export const ParseType = (type: string | undefined, text: string): any => {
     }
 
     switch (type) {
-        case 'number':
+        case DataType.number:
             return Number(text);
-        case 'decimal':
+        case DataType.decimal:
             let regex = new RegExp(/^-?[0-9]*\.[0-9]{0,1}$/, 'g');
             if (text !== '0' && text !== "0" && regex.test(text)) {
                 return text // keep as string until more decimals are added
             } else {
                 return parseFloat(parseFloat(text).toFixed(2));
             }
-        case 'date':
+        case DataType.date:
             return Date.parse(text);
     }
 
@@ -129,7 +130,7 @@ export const ParseType = (type: string | undefined, text: string): any => {
 
 export const GetDefault = (type: string | undefined): any => {
     switch (type) {
-        case 'date':
+        case DataType.date:
             return new Date();
         default:
             return null;
@@ -138,7 +139,7 @@ export const GetDefault = (type: string | undefined): any => {
 
 export const GetValue = (type: string | undefined, value: any): any => {
     switch (type) {
-        case 'date':
+        case DataType.date:
             return new Date(value);
         default:
             return value;

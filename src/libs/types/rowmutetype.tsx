@@ -1,6 +1,8 @@
 export interface IRowMute {
-    enableRowMute? : boolean;
-    rowMuteOpacity? : number;
-    rowMuteClass? : string;
-    rowUnmuteClass? : string;
+    enableRowMute?: boolean;
+    rowMuteText?: string;
+    rowUnmuteText?: string;
+    rowMuteOpacity?: number;
+    rowMuteClass?: string;
+    rowUnmuteClass?: string;
 }

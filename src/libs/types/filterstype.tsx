@@ -1,4 +1,5 @@
 import { IColumnConfig } from "./columnconfigtype";
+import { DataType } from "./datatype";
 
 export interface IOperators {
     type: string;
@@ -13,11 +14,11 @@ export interface IFilter {
 
 export const operatorsArr: IOperators[] = [
     {
-        type: 'string',
+        type: DataType.string,
         value: ['equals', 'contains', 'starts with', 'ends with', 'not equal to']
     },
     {
-        type: 'number' || 'decimal',
+        type: DataType.number || DataType.decimal,
         value: ['>', '<', '>=', '<=', '=', '!=']
     }
 ]
