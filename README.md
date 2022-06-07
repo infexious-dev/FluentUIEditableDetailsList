@@ -15,6 +15,7 @@ Updates include:
 >- New callback function "onGridReset" runs after grid data is reset. Useful for clear search box text etc. Returns backup grid data after it has been reset.
 >- New callback function "onGridEditStateChange" runs after grid edit state is changed. Useful to track data manipulation. Returns a boolean.
 >- New callback function "onGridSort" runs after grid data is sorted. Returns sorted grid data as it is currently displayed.
+>- New callback function "onGridFilter" runs after grid data is filtered. Returns filtered grid data as it is currently displayed.
 >- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.2" and apply a grayscale filter. This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation. As such, mute and umute classes applied to the row are customisable - as is the default opacity applied. Furthermore, the icon text of "Mute"/"Unmute" is customisable too. 
 
 ### New "IColumnConfig" Features
@@ -33,7 +34,7 @@ Updates include:
 
 ### Enhancements
 >- Updated office-ui-fabric-react version to latest.
->- Added exported enum "DataType" that acts as a string. This can be used in the "IColumnConfig" prop "dataType" to easily know data types available. Currently contains 'string', 'number', 'decimal', 'date', and 'calculated'. Calculated data types do not appear in edit panels regardless of their "editable" state. Useful when adding new row data but a column exists only as a calculation/amalgamation of other column data.
+>- Added exported enum "DataType" that acts as a string. This can be used in the "IColumnConfig" prop "dataType" to easily know data types available. Currently contains 'string', 'number', 'decimal', 'date', and 'calculated'. "calculated" data types do not appear in edit panels regardless of their "editable" state. Useful when adding new row data but a column exists only as a calculation/amalgamation of other column data.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
 >- IColumnConfig can utilise inherited "className" and "headerClassName" props correctly from IColumn when rendering in EditableGrid.
