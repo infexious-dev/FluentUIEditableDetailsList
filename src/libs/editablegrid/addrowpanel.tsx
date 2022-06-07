@@ -1,6 +1,7 @@
-import { ConstrainMode, DatePicker, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, mergeStyleSets, Position, PrimaryButton, SpinButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, ConstrainMode, DatePicker, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, Position, PrimaryButton, SpinButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
+import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
 import { controlClass, horizontalGapStackTokens, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
@@ -16,38 +17,42 @@ interface Props {
 const AddRowPanel = (props: Props) => {
     let AddSpinRef: any = React.createRef();
 
-    const updateObj : any = {};
+    const updateObj: any = {};
     const [columnValuesObj, setColumnValuesObj] = useState<any>(null);
 
     useEffect(() => {
-        let tmpColumnValuesObj : any = {};
+        let tmpColumnValuesObj: any = {};
         props.columnConfigurationData.forEach((item, index) => {
-            tmpColumnValuesObj[item.key] = { 'value' : GetDefault(item.dataType), 'isChanged' : false, 'error': null };
+            tmpColumnValuesObj[item.key] = { 'value': GetDefault(item.dataType), 'isChanged': false, 'error': null };
         })
         setColumnValuesObj(tmpColumnValuesObj);
     }, [props.columnConfigurationData]);
 
-    const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null) : void => {
-        setColumnValuesObj({...columnValuesObj, [key]: { 'value' :  value, 'isChanged' : isChanged, 'error': errorMessage }})
+    const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null): void => {
+        setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage } })
     }
 
-    const onDropDownChange = (event: React.FormEvent<HTMLDivElement>, selectedDropdownItem: IDropdownOption | undefined, item : any): void => {
+    const onDropDownChange = (event: React.FormEvent<HTMLDivElement>, selectedDropdownItem: IDropdownOption | undefined, item: any): void => {
         SetObjValues(item.key, selectedDropdownItem?.text);
     }
 
-    const onTextUpdate = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string, column : IColumnConfig): void => {
-        if(!IsValidDataType(column.dataType, text)){
+    const onCheckboxChange = (checked: boolean | undefined, item: any): void => {
+        SetObjValues(item.key, checked);
+    }
+
+    const onTextUpdate = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string, column: IColumnConfig): void => {
+        if (!IsValidDataType(column.dataType, text)) {
             SetObjValues((ev.target as Element).id, text, false, `Data should be of type '${column.dataType}'`);
             return;
         }
-        
+
         SetObjValues((ev.target as Element).id, ParseType(column.dataType, text));
     };
 
     const onPanelSubmit = (): void => {
         var objectKeys = Object.keys(columnValuesObj);
         objectKeys.forEach((objKey) => {
-            if(columnValuesObj[objKey]['isChanged']){
+            if (columnValuesObj[objKey]['isChanged']) {
                 updateObj[objKey] = columnValuesObj[objKey]['value']
             }
         });
@@ -55,21 +60,21 @@ const AddRowPanel = (props: Props) => {
         props.onChange(updateObj, props.enableRowsCounterField ? AddSpinRef.current.value : 1);
     };
 
-    const onCellPickerTagListChanged = (cellPickerTagList: ITag[] | undefined, item : any) : void => {
-        if(cellPickerTagList && cellPickerTagList[0] && cellPickerTagList[0].name)
+    const onCellPickerTagListChanged = (cellPickerTagList: ITag[] | undefined, item: any): void => {
+        if (cellPickerTagList && cellPickerTagList[0] && cellPickerTagList[0].name)
             SetObjValues(item.key, cellPickerTagList[0].name);
         else
             SetObjValues(item.key, '');
     }
 
-    const onCellDateChange = (date: Date | null | undefined, item : any): void => {
+    const onCellDateChange = (date: Date | null | undefined, item: any): void => {
         SetObjValues(item.key, date);
     };
 
-    const createTextFields = () : any[] => {
-        let tmpRenderObj : any[] = [];
-        props.columnConfigurationData.forEach((item, index) => {
-            switch(item.inputType){
+    const createTextFields = (): any[] => {
+        let tmpRenderObj: any[] = [];
+        props.columnConfigurationData.filter(x => x.dataType !== DataType.calculated).forEach((item, index) => {
+            switch (item.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
                         label={item.text}
@@ -93,14 +98,27 @@ const AddRowPanel = (props: Props) => {
                 case EditControlType.Picker:
                     tmpRenderObj.push(<div>
                         <span className={controlClass.pickerLabel}>{item.text}</span>
-                        <PickerControl 
+                        <PickerControl
                             arialabel={item.text}
                             selectedItemsLimit={1}
                             pickerTags={item.pickerOptions?.pickerTags ?? []}
                             minCharLimitForSuggestions={2}
                             onTaglistChanged={(selectedItem: ITag[] | undefined) => onCellPickerTagListChanged(selectedItem, item)}
                             pickerDescriptionOptions={item.pickerOptions?.pickerDescriptionOptions}
-                    /></div>);
+                        /></div>);
+                    break;
+                case EditControlType.Checkbox:
+                    tmpRenderObj.push(
+                        <div key={item.key}>
+                            <Label>{item.text}</Label>
+                            <Checkbox
+                                styles={{ root: { marginTop: 0 } }}
+                                disabled={!item.editable}
+                                checked={columnValuesObj[item.key].value || false}
+                                onChange={(ev, checked) => onCheckboxChange(checked, item)}
+                            />
+                        </div>
+                    );
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(<TextField
@@ -113,7 +131,7 @@ const AddRowPanel = (props: Props) => {
                         styles={textFieldStyles}
                         onChange={(ev, text) => onTextUpdate(ev, text!, item)}
                         value={columnValuesObj[item.key].value || ''}
-                        />);
+                    />);
                     break;
                 default:
                     tmpRenderObj.push(<TextField
@@ -124,15 +142,15 @@ const AddRowPanel = (props: Props) => {
                         styles={textFieldStyles}
                         onChange={(ev, text) => onTextUpdate(ev, text!, item)}
                         value={columnValuesObj[item.key].value || ''}
-                        />);
+                    />);
                     break;
             }
         });
 
-        if(props.enableRowsCounterField){
+        if (props.enableRowsCounterField) {
             tmpRenderObj.push(
                 <SpinButton
-                    componentRef = {AddSpinRef}
+                    componentRef={AddSpinRef}
                     label="# of Rows to Add"
                     labelPosition={Position.top}
                     defaultValue="1"
@@ -145,7 +163,7 @@ const AddRowPanel = (props: Props) => {
                 />
             );
         }
-        
+
         return tmpRenderObj;
     }
 
@@ -155,13 +173,13 @@ const AddRowPanel = (props: Props) => {
                 {columnValuesObj && createTextFields()}
             </Stack>
             <Stack horizontal disableShrink styles={stackStyles} tokens={horizontalGapStackTokens}>
-            <PrimaryButton
-                text="Save To Grid"
-                className={controlClass.submitStylesEditpanel}
-                onClick={onPanelSubmit}
-                allowDisabledFocus
-                disabled={columnValuesObj && Object.keys(columnValuesObj).some(k => columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0) || false}
-            />
+                <PrimaryButton
+                    text="Save To Grid"
+                    className={controlClass.submitStylesEditpanel}
+                    onClick={onPanelSubmit}
+                    allowDisabledFocus
+                    disabled={columnValuesObj && Object.keys(columnValuesObj).some(k => columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0) || false}
+                />
             </Stack>
         </Stack>
     );

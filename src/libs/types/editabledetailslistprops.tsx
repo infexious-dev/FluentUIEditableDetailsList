@@ -22,10 +22,12 @@ export interface Props extends IDetailsListProps {
     enablePanelEdit?: boolean; // like bulk edit but for one item only
     enableBulkEdit?: boolean;
     enableCellEdit?: boolean;
-    onGridEditStateChange? : any;
+    onGridEditStateChange?: any;
     onGridSelectionChange?: any;
     onGridUpdate?: any;
     onGridSave?: any
+    onGridSort?: any;
+    onGridFilter?: any;
     enableGridRowsDelete?: boolean;
     enableGridRowsAdd?: boolean;
     enableRowAddWithValues?: IRowAddWithValues;

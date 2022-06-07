@@ -124,7 +124,7 @@ const EditableGrid = (props: Props) => {
                         }
                     }
                 );
-
+                CheckOnFilter();
                 setDefaultGridData(searchResult);
             } else {
                 var gridDataTmp: any[] = [...defaultGridData];
@@ -259,6 +259,7 @@ const EditableGrid = (props: Props) => {
     const SetFilteredGridData = (filters: IFilter[]): void => {
         var filteredData = filterGridData(defaultGridData, filters);
         var activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridData, activateCellEdit);
+        CheckOnFilter();
         setDefaultGridData(filteredData);
         setActivateCellEdit(activateCellEditTmp);
         setGridData(filteredData);
@@ -973,6 +974,7 @@ const EditableGrid = (props: Props) => {
 
         const newItems = _copyAndSort(defaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         SetGridItems(newItems);
+        onGridSort(newItems);
         setSortColObj({ key: column!.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
     }
 
@@ -980,9 +982,29 @@ const EditableGrid = (props: Props) => {
         const key = columnKey as keyof T;
         return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
     }
+
+    const onGridSort = async (data: Array<any>): Promise<void> => {
+        if (props.onGridSort) {
+            const sortedAndFilteredData = data.filter(x => x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_);
+            await props.onGridSort(sortedAndFilteredData);
+        }
+    };
     /* #endregion */
 
     /* #region [Column Filter] */
+    const CheckOnFilter = async () => {
+        const filteredData: Array<any> = defaultGridData.filter(x => x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_);
+        if (filteredData.length > 0) {
+            await onGridFilter(filteredData);
+        }
+    };
+
+    const onGridFilter = async (data: Array<any>): Promise<void> => {
+        if (props.onGridFilter) {
+            await props.onGridFilter(data);
+        }
+    };
+
     const getFilterStoreRef = (): IFilter[] => {
         return filterStoreRef.current;
     };
@@ -996,7 +1018,6 @@ const EditableGrid = (props: Props) => {
     }
 
     const CloseColumnFilterDialog = (): void => {
-
         setIsColumnFilterClicked(false);
     };
 
@@ -1005,7 +1026,6 @@ const EditableGrid = (props: Props) => {
     };
 
     const onFilterApplied = (filter: IFilter): void => {
-
         var tags: ITag[] = [...defaultTag];
         tags.push({
             name: '\'' + filter.column.key + '\' ' + filter.operator + ' ' + '\'' + filter.value + '\'',
@@ -1014,7 +1034,6 @@ const EditableGrid = (props: Props) => {
 
         var filterStoreTmp: IFilter[] = getFilterStoreRef();;
         filterStoreTmp.push(filter);
-
         setFilterStoreRef(filterStoreTmp);
         setFilteredColumns(filteredColumns => [...filteredColumns, filter.column]);
         setDefaultTag(tags);
@@ -1073,6 +1092,7 @@ const EditableGrid = (props: Props) => {
         UpdateColumnFilterValues(filter);
         var GridColumnFilterArr: IGridColumnFilter[] = getColumnFiltersRef();
         var filteredData = applyGridColumnFilter(defaultGridData, GridColumnFilterArr);
+        CheckOnFilter();
         getColumnFiltersRefForColumnKey(filter.columnKey).isApplied = filter.filterList.filter(i => i.isChecked).length > 0 && filter.filterList.filter(i => i.isChecked).length < filter.filterList.length ? true : false;
         var activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridData, activateCellEdit);
         setDefaultGridData(filteredData);

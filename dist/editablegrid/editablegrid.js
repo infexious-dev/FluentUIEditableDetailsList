@@ -164,6 +164,7 @@ var EditableGrid = function (props) {
                         // if (e !== BreakException) throw e;
                     }
                 });
+                CheckOnFilter();
                 setDefaultGridData(searchResult);
             }
             else {
@@ -305,6 +306,7 @@ var EditableGrid = function (props) {
     var SetFilteredGridData = function (filters) {
         var filteredData = filterGridData(defaultGridData, filters);
         var activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridData, activateCellEdit);
+        CheckOnFilter();
         setDefaultGridData(filteredData);
         setActivateCellEdit(activateCellEditTmp);
         setGridData(filteredData);
@@ -889,14 +891,58 @@ var EditableGrid = function (props) {
         });
         var newItems = _copyAndSort(defaultGridData, currColumn.fieldName, currColumn.isSortedDescending);
         SetGridItems(newItems);
+        onGridSort(newItems);
         setSortColObj({ key: column.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
     };
     function _copyAndSort(items, columnKey, isSortedDescending) {
         var key = columnKey;
         return items.slice(0).sort(function (a, b) { return ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1); });
     }
+    var onGridSort = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+        var sortedAndFilteredData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!props.onGridSort) return [3 /*break*/, 2];
+                    sortedAndFilteredData = data.filter(function (x) { return x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_; });
+                    return [4 /*yield*/, props.onGridSort(sortedAndFilteredData)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    }); };
     /* #endregion */
     /* #region [Column Filter] */
+    var CheckOnFilter = function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filteredData;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filteredData = defaultGridData.filter(function (x) { return x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_; });
+                    if (!(filteredData.length > 0)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, onGridFilter(filteredData)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    }); };
+    var onGridFilter = function (data) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!props.onGridFilter) return [3 /*break*/, 2];
+                    return [4 /*yield*/, props.onGridFilter(data)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    }); };
     var getFilterStoreRef = function () {
         return filterStoreRef.current;
     };
@@ -969,6 +1015,7 @@ var EditableGrid = function (props) {
         UpdateColumnFilterValues(filter);
         var GridColumnFilterArr = getColumnFiltersRef();
         var filteredData = applyGridColumnFilter(defaultGridData, GridColumnFilterArr);
+        CheckOnFilter();
         getColumnFiltersRefForColumnKey(filter.columnKey).isApplied = filter.filterList.filter(function (i) { return i.isChecked; }).length > 0 && filter.filterList.filter(function (i) { return i.isChecked; }).length < filter.filterList.length ? true : false;
         var activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridData, activateCellEdit);
         setDefaultGridData(filteredData);

@@ -6,4 +6,5 @@ export var DataType;
     DataType["number"] = "number";
     DataType["decimal"] = "decimal";
     DataType["date"] = "date";
+    DataType["calculated"] = "calculated";
 })(DataType || (DataType = {}));

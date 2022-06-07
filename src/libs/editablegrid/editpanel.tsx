@@ -4,6 +4,7 @@
 import { Checkbox, DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
+import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
 import { controlClass, horizontalGapStackTokens, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
@@ -79,7 +80,7 @@ const EditPanel = (props: Props) => {
 
     const createTextFields = (): any[] => {
         let tmpRenderObj: any[] = [];
-        props.columnConfigurationData.filter(x => x.editable == true).forEach((item) => {
+        props.columnConfigurationData.filter(x => x.editable == true && x.dataType !== DataType.calculated).forEach((item) => {
             switch (item.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
@@ -126,11 +127,10 @@ const EditPanel = (props: Props) => {
                     break;
                 case EditControlType.Checkbox:
                     tmpRenderObj.push(
-                        <div>
+                        <div key={item.key}>
                             <Label>{item.text}</Label>
                             <Checkbox
                                 styles={{ root: { marginTop: 0 } }}
-                                key={item.key}
                                 disabled={!item.editable}
                                 checked={columnValuesObj[item.key].value || false}
                                 onChange={(ev, checked) => onCheckboxChange(checked, item)}

@@ -85,7 +85,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'Name // Age',
             text: 'Name // Age',
             editable: false,
-            dataType: 'string',
+            dataType: DataType.calculated,
             minWidth: 100,
             maxWidth: 100,
             isResizable: true,

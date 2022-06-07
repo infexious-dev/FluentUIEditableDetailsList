@@ -30,6 +30,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // Licensed under the MIT License.
 import { Checkbox, DatePicker, Dropdown, Label, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
 import { useEffect, useState } from "react";
+import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
 import { controlClass, horizontalGapStackTokens, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
@@ -88,7 +89,7 @@ var EditPanel = function (props) {
     };
     var createTextFields = function () {
         var tmpRenderObj = [];
-        props.columnConfigurationData.filter(function (x) { return x.editable == true; }).forEach(function (item) {
+        props.columnConfigurationData.filter(function (x) { return x.editable == true && x.dataType !== DataType.calculated; }).forEach(function (item) {
             var _a, _b, _c, _d, _e;
             switch (item.inputType) {
                 case EditControlType.Date:
@@ -107,7 +108,7 @@ var EditPanel = function (props) {
                     tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: (_e = item.dropdownValues) !== null && _e !== void 0 ? _e : [], selectedKey: selectedKey || null, onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, item.key));
                     break;
                 case EditControlType.Checkbox:
-                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, item.key)] }, void 0));
+                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, void 0)] }, item.key));
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, multiline: true, rows: 1, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }, item.key));
