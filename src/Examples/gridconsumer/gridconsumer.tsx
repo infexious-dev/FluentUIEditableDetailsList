@@ -429,6 +429,8 @@ const Consumer = () => {
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
                 aboveStickyContent={aboveContent}
                 belowStickyContent={belowContent}
+                onGridSort={(data) => { console.log('Grid has been sorted with items:'); console.log(data); }}
+                onGridFilter={(data) => { console.log('Grid has been filtered with items:'); console.log(data); }}
             />
 
             {teachingBubbleVisible && (

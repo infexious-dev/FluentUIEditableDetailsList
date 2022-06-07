@@ -26,8 +26,9 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { DatePicker, Dropdown, Position, PrimaryButton, SpinButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, DatePicker, Dropdown, Label, Position, PrimaryButton, SpinButton, Stack, TextField } from "office-ui-fabric-react";
 import React, { useEffect, useState } from "react";
+import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
 import { controlClass, horizontalGapStackTokens, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
@@ -52,6 +53,9 @@ var AddRowPanel = function (props) {
     };
     var onDropDownChange = function (event, selectedDropdownItem, item) {
         SetObjValues(item.key, selectedDropdownItem === null || selectedDropdownItem === void 0 ? void 0 : selectedDropdownItem.text);
+    };
+    var onCheckboxChange = function (checked, item) {
+        SetObjValues(item.key, checked);
     };
     var onTextUpdate = function (ev, text, column) {
         if (!IsValidDataType(column.dataType, text)) {
@@ -80,7 +84,7 @@ var AddRowPanel = function (props) {
     };
     var createTextFields = function () {
         var tmpRenderObj = [];
-        props.columnConfigurationData.forEach(function (item, index) {
+        props.columnConfigurationData.filter(function (x) { return x.dataType !== DataType.calculated; }).forEach(function (item, index) {
             var _a, _b, _c, _d;
             switch (item.inputType) {
                 case EditControlType.Date:
@@ -93,6 +97,9 @@ var AddRowPanel = function (props) {
                     break;
                 case EditControlType.Picker:
                     tmpRenderObj.push(_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item.text }), void 0), _jsx(PickerControl, { arialabel: item.text, selectedItemsLimit: 1, pickerTags: (_c = (_b = item.pickerOptions) === null || _b === void 0 ? void 0 : _b.pickerTags) !== null && _c !== void 0 ? _c : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item); }, pickerDescriptionOptions: (_d = item.pickerOptions) === null || _d === void 0 ? void 0 : _d.pickerDescriptionOptions }, void 0)] }, void 0));
+                    break;
+                case EditControlType.Checkbox:
+                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, void 0)] }, item.key));
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, multiline: true, rows: 1, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }, void 0));
