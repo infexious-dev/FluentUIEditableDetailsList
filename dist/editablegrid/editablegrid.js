@@ -891,21 +891,21 @@ var EditableGrid = function (props) {
         });
         var newItems = _copyAndSort(defaultGridData, currColumn.fieldName, currColumn.isSortedDescending);
         SetGridItems(newItems);
-        onGridSort(newItems);
+        onGridSort(newItems, currColumn);
         setSortColObj({ key: column.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
     };
     function _copyAndSort(items, columnKey, isSortedDescending) {
         var key = columnKey;
         return items.slice(0).sort(function (a, b) { return ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1); });
     }
-    var onGridSort = function (data) { return __awaiter(void 0, void 0, void 0, function () {
-        var sortedAndFilteredData;
+    var onGridSort = function (data, column) { return __awaiter(void 0, void 0, void 0, function () {
+        var sortedData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     if (!props.onGridSort) return [3 /*break*/, 2];
-                    sortedAndFilteredData = data.filter(function (x) { return x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_; });
-                    return [4 /*yield*/, props.onGridSort(sortedAndFilteredData)];
+                    sortedData = data.filter(function (x) { return x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_; });
+                    return [4 /*yield*/, props.onGridSort(sortedData, column)];
                 case 1:
                     _a.sent();
                     _a.label = 2;
@@ -1458,7 +1458,7 @@ var EditableGrid = function (props) {
             commandBarItems.push({
                 id: 'info',
                 key: 'info',
-                text: isGridStateEdited ? 'Grid has unsaved data. Click on \'Submit\' to save' : '',
+                text: isGridStateEdited ? "Grid has unsaved data. Click on " + (props.enableSaveText ? '"' + props.enableSaveText + '"' : '"Submit"') + " to save" : '',
                 // This needs an ariaLabel since it's icon-only
                 ariaLabel: 'Info',
                 disabled: !isGridStateEdited,
