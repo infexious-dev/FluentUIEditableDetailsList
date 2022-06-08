@@ -429,7 +429,7 @@ const Consumer = () => {
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
                 aboveStickyContent={aboveContent}
                 belowStickyContent={belowContent}
-                onGridSort={(data) => { console.log('Grid has been sorted with items:'); console.log(data); }}
+                onGridSort={(data, column) => { console.log('Grid has been sorted with items:'); console.log(data); console.log('Current sorted column is:'); console.log(column); }}
                 onGridFilter={(data) => { console.log('Grid has been filtered with items:'); console.log(data); }}
             />
 

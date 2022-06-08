@@ -974,7 +974,7 @@ const EditableGrid = (props: Props) => {
 
         const newItems = _copyAndSort(defaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         SetGridItems(newItems);
-        onGridSort(newItems);
+        onGridSort(newItems, currColumn);
         setSortColObj({ key: column!.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
     }
 
@@ -983,10 +983,10 @@ const EditableGrid = (props: Props) => {
         return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
     }
 
-    const onGridSort = async (data: Array<any>): Promise<void> => {
+    const onGridSort = async (data: Array<any>, column: IColumn): Promise<void> => {
         if (props.onGridSort) {
-            const sortedAndFilteredData = data.filter(x => x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_);
-            await props.onGridSort(sortedAndFilteredData);
+            const sortedData = data.filter(x => x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_);
+            await props.onGridSort(sortedData, column);
         }
     };
     /* #endregion */
@@ -1735,7 +1735,7 @@ const EditableGrid = (props: Props) => {
             commandBarItems.push({
                 id: 'info',
                 key: 'info',
-                text: isGridStateEdited ? 'Grid has unsaved data. Click on \'Submit\' to save' : '',
+                text: isGridStateEdited ? `Grid has unsaved data. Click on ${props.enableSaveText ? '"' + props.enableSaveText + '"' : '"Submit"'} to save` : '',
                 // This needs an ariaLabel since it's icon-only
                 ariaLabel: 'Info',
                 disabled: !isGridStateEdited,
