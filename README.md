@@ -20,7 +20,7 @@ Updates include:
 
 ### New "IColumnConfig" Features
 >- "onCustomRender" prop on IColumnConfig allows for custom rendering of the column without breaking "editing" capabilities
->- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted (including showing the sort indicator) when the grid is initially rendered.
+>- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted by default by showing the sort indicator when the grid is initially rendered. Note: this does not dynamically sort the grid, just a visual indicator of the current data and how it is sorted when grid initialises. 
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
 
@@ -42,6 +42,7 @@ Updates include:
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
 >- "Actions" buttons now render independently as long as at least one option is enabled (i.e. no longer dependent on "enableRowEdit" to be shown).
 >- Back up grid data is now copied via a deep copy mechanism, copying the object as is, including prototype methods in the tree.
+>- Back up grid data is sorted in the background when a column's sorting is triggered. This way, resetting grid data is able to keep the correct and current sort state that the grid is in.
 
 ### Experimental
 >- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
