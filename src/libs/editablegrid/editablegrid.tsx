@@ -974,8 +974,12 @@ const EditableGrid = (props: Props) => {
 
         const newItems = _copyAndSort(defaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         SetGridItems(newItems);
-        onGridSort(newItems, currColumn);
+
+        const newItemsBackup = _copyAndSort(backupDefaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
+        setBackupDefaultGridData(newItemsBackup);
+        
         setSortColObj({ key: column!.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
+        onGridSort(newItems, currColumn);
     }
 
     function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
