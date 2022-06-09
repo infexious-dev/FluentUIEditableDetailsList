@@ -891,8 +891,10 @@ var EditableGrid = function (props) {
         });
         var newItems = _copyAndSort(defaultGridData, currColumn.fieldName, currColumn.isSortedDescending);
         SetGridItems(newItems);
-        onGridSort(newItems, currColumn);
+        var newItemsBackup = _copyAndSort(backupDefaultGridData, currColumn.fieldName, currColumn.isSortedDescending);
+        setBackupDefaultGridData(newItemsBackup);
         setSortColObj({ key: column.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
+        onGridSort(newItems, currColumn);
     };
     function _copyAndSort(items, columnKey, isSortedDescending) {
         var key = columnKey;

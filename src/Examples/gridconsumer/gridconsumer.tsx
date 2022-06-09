@@ -183,9 +183,11 @@ const Consumer = () => {
     const onGridSave = (data: any[]): void => {
         alert('Grid Data Saved');
         LogRows(data);
-        setItems([...data.filter(y => y._grid_row_operation_ != Operation.Delete).map(x => {
-            return { ...x, '_grid_row_operation_': Operation.None }
-        })]);
+        data = data.filter(y => y._grid_row_operation_ != Operation.Delete);
+        data.map((x, index) => {
+            data[index]._grid_row_operation_ = Operation.None
+        });
+        setItems(data);
     };
 
     const onGridUpdate = async (data: any[]): Promise<void> => {
