@@ -1164,18 +1164,23 @@ var EditableGrid = function (props) {
                                     :
                                         (_jsx("span", __assign({ onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onCellPickerDoubleClickEvent(column.key, rowNum, false) : null; } }, { children: _jsx(PickerControl, { arialabel: column.key, selectedItemsLimit: (_j = column.pickerOptions) === null || _j === void 0 ? void 0 : _j.tagsLimit, pickerTags: (_l = (_k = column.pickerOptions) === null || _k === void 0 ? void 0 : _k.pickerTags) !== null && _l !== void 0 ? _l : [], defaultTags: item[column.key] ? item[column.key].split(";") : [], minCharLimitForSuggestions: (_m = column.pickerOptions) === null || _m === void 0 ? void 0 : _m.minCharLimitForSuggestions, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, rowNum, column); }, pickerDescriptionOptions: (_o = column.pickerOptions) === null || _o === void 0 ? void 0 : _o.pickerDescriptionOptions, suggestionRule: (_p = column.pickerOptions) === null || _p === void 0 ? void 0 : _p.suggestionsRule }, void 0) }), void 0)) }, void 0);
                         case EditControlType.Checkbox:
+                            var isCheckboxDisabled = false;
+                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || item._is_muted_;
+                            if (column.editable && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])) {
+                                isCheckboxDisabled = false;
+                            }
                             return _jsx("span", { children: (((_q = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _q === void 0 ? void 0 : _q.enable) ?
                                     (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                             onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
                                         }, instantOpenOnClick: true }, { children: _jsx(Checkbox, { inputProps: {
                                                 // @ts-ignore
                                                 "data-is-focusable": false
-                                            }, ariaLabel: column.key, disabled: !column.editable || item._is_muted_, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0) }), void 0))
+                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0) }), void 0))
                                     :
                                         _jsx(Checkbox, { inputProps: {
                                                 // @ts-ignore
                                                 "data-is-focusable": false
-                                            }, ariaLabel: column.key, disabled: !column.editable || item._is_muted_, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0)) }, void 0);
+                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0)) }, void 0);
                         case EditControlType.Link:
                             return _jsx("span", { children: (((_r = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _r === void 0 ? void 0 : _r.enable) ?
                                     (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {

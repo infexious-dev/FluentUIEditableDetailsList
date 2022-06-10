@@ -977,7 +977,7 @@ const EditableGrid = (props: Props) => {
 
         const newItemsBackup = _copyAndSort(backupDefaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         setBackupDefaultGridData(newItemsBackup);
-        
+
         setSortColObj({ key: column!.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
         onGridSort(newItems, currColumn);
     }
@@ -1335,6 +1335,14 @@ const EditableGrid = (props: Props) => {
                                     </span>)
                             }</span>
                         case EditControlType.Checkbox:
+                            let isCheckboxDisabled: boolean = false;
+
+                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || item._is_muted_;
+
+                            if (column.editable && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])) {
+                                isCheckboxDisabled = false;
+                            }
+
                             return <span>{
                                 (column?.hoverComponentOptions?.enable ?
                                     (<HoverCard
@@ -1350,7 +1358,7 @@ const EditableGrid = (props: Props) => {
                                                 "data-is-focusable": false
                                             }}
                                             ariaLabel={column.key}
-                                            disabled={!column.editable || item._is_muted_}
+                                            disabled={isCheckboxDisabled}
                                             checked={activateCellEdit[rowNum!].properties[column.key].value || false}
                                             onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
                                         />
@@ -1362,7 +1370,7 @@ const EditableGrid = (props: Props) => {
                                             "data-is-focusable": false
                                         }}
                                         ariaLabel={column.key}
-                                        disabled={!column.editable || item._is_muted_}
+                                        disabled={isCheckboxDisabled}
                                         checked={activateCellEdit[rowNum!].properties[column.key].value || false}
                                         onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
                                     />
