@@ -38,6 +38,7 @@ Updates include:
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
 >- IColumnConfig can utilise inherited "className" and "headerClassName" props correctly from IColumn when rendering in EditableGrid.
+>- IColumnConfig can utilise inherited "styles" prop correctly from IColumn when rendering in EditableGrid.
 >- IColumnConfig can now utilise inherited "isMultiline" prop correctly from IColumn and render a span which has "white-space: pre-line".
 >- enableSave "Submit" button now only becomes enabled when the grid's state is "edited". Before, you could submit data without actual changes to the grid (i.e. no items being "dirty").
 >- "Actions" buttons now render independently as long as at least one option is enabled (i.e. no longer dependent on "enableRowEdit" to be shown).
