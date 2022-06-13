@@ -7,6 +7,9 @@ import { IColumnConfig } from "../../libs/types/columnconfigtype";
 import { EditControlType } from "../../libs/types/editcontroltype";
 import { CellHover } from "./hoverComponent";
 import { DataType } from "../../libs/types/datatype";
+import { IDetailsColumnStyles } from "office-ui-fabric-react";
+
+const headerStyle: Partial<IDetailsColumnStyles> = { cellTitle: { backgroundColor: "rgb(0, 120, 212)", color: "#fff" }, sortIcon:{ color: '#fff'} };
 
 export const GridColumnConfig: IColumnConfig[] =
     [
@@ -23,7 +26,8 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInSearch: true,
             applyColumnFilter: true,
             disableSort: false,
-            isSortedByDefault: true
+            isSortedByDefault: true,
+            styles: headerStyle
         },
         {
             key: 'check',
