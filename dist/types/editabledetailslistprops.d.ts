@@ -21,7 +21,8 @@ export interface Props extends IDetailsListProps {
     enablePanelEdit?: boolean;
     enableBulkEdit?: boolean;
     enableCellEdit?: boolean;
-    onGridEditStateChange?: any;
+    onGridInEditChange?: any;
+    onGridStateEditedChange?: any;
     onGridSelectionChange?: any;
     onGridUpdate?: any;
     onGridSave?: any;
