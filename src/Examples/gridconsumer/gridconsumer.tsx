@@ -431,6 +431,8 @@ const Consumer = () => {
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
                 aboveStickyContent={aboveContent}
                 belowStickyContent={belowContent}
+                onGridInEditChange={(gridInEdit: boolean) => { console.log('%c Grid in edit mode? ', 'background: #222; color: #bada55'); console.log(gridInEdit ? 'yes' : 'no'); }}
+                onGridStateEditedChange={(gridStateEdited: boolean) => { console.log('%c Has grid been editted? ', 'background: #222; color: #bada55'); console.log(gridStateEdited ? 'yes' : 'no'); }}
                 onGridSort={(data, column) => { console.log('Grid has been sorted with items:'); console.log(data); console.log('Current sorted column is:'); console.log(column); }}
                 onGridFilter={(data) => { console.log('Grid has been filtered with items:'); console.log(data); }}
             />

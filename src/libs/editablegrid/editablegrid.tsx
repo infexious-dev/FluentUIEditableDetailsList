@@ -234,6 +234,7 @@ const EditableGrid = (props: Props) => {
 
         if ((!isGridInEdit && gridEditStatus) || (isGridInEdit && !gridEditStatus)) {
             setIsGridInEdit(gridEditStatus);
+            onGridInEditChange(gridEditStatus);
         }
     }
 
@@ -243,16 +244,27 @@ const EditableGrid = (props: Props) => {
         setActivateCellEdit(InitializeInternalGridEditStructure(data));
     }
 
+    const setGridEditMode = (editMode: boolean): void => {
+        setEditMode(editMode);
+        onGridInEditChange(editMode);
+    }
+
     const setGridEditState = (editState: boolean): void => {
         if (isGridStateEdited != editState) {
             setIsGridStateEdited(editState);
-            onGridEditStateChange(editState);
+            onGridStateEditedChange(editState);
         }
     }
 
-    const onGridEditStateChange = async (editState: boolean): Promise<void> => {
-        if (props.onGridEditStateChange) {
-            await props.onGridEditStateChange(editState);
+    const onGridInEditChange = async (gridInEdit: boolean): Promise<void> => {
+        if (props.onGridInEditChange) {
+            await props.onGridInEditChange(gridInEdit);
+        }
+    };
+
+    const onGridStateEditedChange = async (editState: boolean): Promise<void> => {
+        if (props.onGridStateEditedChange) {
+            await props.onGridStateEditedChange(editState);
         }
     };
 
@@ -828,13 +840,13 @@ const EditableGrid = (props: Props) => {
             setDefaultGridData(defaultGridDataTmp);
         }
 
-        setEditMode(newEditModeValue);
+        setGridEditMode(newEditModeValue);
     }
 
     const CancelGridEditMode = (): void => {
         SetGridItems(cancellableRows);
         setCancellableRows([]);
-        setEditMode(false);
+        setGridEditMode(false);
     }
     /* #endregion */
 

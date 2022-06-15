@@ -277,6 +277,7 @@ var EditableGrid = function (props) {
         }
         if ((!isGridInEdit && gridEditStatus) || (isGridInEdit && !gridEditStatus)) {
             setIsGridInEdit(gridEditStatus);
+            onGridInEditChange(gridEditStatus);
         }
     };
     var SetGridItems = function (data) {
@@ -284,18 +285,35 @@ var EditableGrid = function (props) {
         setDefaultGridData(data);
         setActivateCellEdit(InitializeInternalGridEditStructure(data));
     };
+    var setGridEditMode = function (editMode) {
+        setEditMode(editMode);
+        onGridInEditChange(editMode);
+    };
     var setGridEditState = function (editState) {
         if (isGridStateEdited != editState) {
             setIsGridStateEdited(editState);
-            onGridEditStateChange(editState);
+            onGridStateEditedChange(editState);
         }
     };
-    var onGridEditStateChange = function (editState) { return __awaiter(void 0, void 0, void 0, function () {
+    var onGridInEditChange = function (gridInEdit) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!props.onGridEditStateChange) return [3 /*break*/, 2];
-                    return [4 /*yield*/, props.onGridEditStateChange(editState)];
+                    if (!props.onGridInEditChange) return [3 /*break*/, 2];
+                    return [4 /*yield*/, props.onGridInEditChange(gridInEdit)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    }); };
+    var onGridStateEditedChange = function (editState) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!props.onGridStateEditedChange) return [3 /*break*/, 2];
+                    return [4 /*yield*/, props.onGridStateEditedChange(editState)];
                 case 1:
                     _a.sent();
                     _a.label = 2;
@@ -756,12 +774,12 @@ var EditableGrid = function (props) {
             });
             setDefaultGridData(defaultGridDataTmp);
         }
-        setEditMode(newEditModeValue);
+        setGridEditMode(newEditModeValue);
     };
     var CancelGridEditMode = function () {
         SetGridItems(cancellableRows);
         setCancellableRows([]);
-        setEditMode(false);
+        setGridEditMode(false);
     };
     /* #endregion */
     /* #region [Grid Copy Functions] */
