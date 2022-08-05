@@ -4,6 +4,7 @@ interface Props {
     columnConfigurationData: IColumnConfig[];
     onDialogCancel?: any;
     onDialogSave?: any;
+    selectedItem: any;
 }
 declare const ColumnUpdateDialog: (props: Props) => JSX.Element;
 export default ColumnUpdateDialog;

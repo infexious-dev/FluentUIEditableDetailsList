@@ -1309,8 +1309,8 @@ const EditableGrid = (props: Props) => {
                                     :
                                     (<Dropdown
                                         ariaLabel={column.key}
-                                        placeholder={( typeof column.dropdownValues === 'function' ? column.dropdownValues() as IDropdownOption[] : column.dropdownValues ?? [])?.filter(x => x.text == item[column.key])[0]?.text ?? 'Select an option'}
-                                        options={typeof column.dropdownValues === 'function' ? column.dropdownValues() as IDropdownOption[] : column.dropdownValues ?? []}
+                                        placeholder={(typeof column.dropdownValues === 'function' ? column.dropdownValues(item) as IDropdownOption[] : column.dropdownValues ?? [])?.filter(x => x.text == item[column.key])[0]?.text ?? 'Select an option'}
+                                        options={typeof column.dropdownValues === 'function' ? column.dropdownValues(item) as IDropdownOption[] : column.dropdownValues ?? []}
                                         styles={dropdownStyles}
                                         dropdownWidth={'auto'}
                                         onChange={(ev, selectedItem) => onDropDownChange(ev, selectedItem, rowNum!, column)}
@@ -1679,7 +1679,7 @@ const EditableGrid = (props: Props) => {
                 id: 'bulkedit',
                 key: 'bulkedit',
                 text: "Bulk Edit",
-                disabled: isGridInEdit || editMode || selectionCount == 0,
+                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount === 1,
                 iconProps: { iconName: "TripleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.BulkEdit, {})
             });
@@ -2175,6 +2175,7 @@ const EditableGrid = (props: Props) => {
                     columnConfigurationData={props.columns}
                     onDialogCancel={CloseColumnUpdateDialog}
                     onDialogSave={UpdateGridColumnData}
+                    selectedItem={selectedItems && selectedItems.length === 1 ? selectedItems[0] : null}
                 />
                 :
                 null

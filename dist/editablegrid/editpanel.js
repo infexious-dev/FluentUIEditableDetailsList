@@ -100,12 +100,16 @@ var EditPanel = function (props) {
                     break;
                 case EditControlType.DropDown:
                     var selectedKey = null;
-                    (_e = (typeof item.dropdownValues === 'function' ? item.dropdownValues() : (_d = item.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.map(function (option) {
+                    var sanitisedColumnItem = {};
+                    Object.keys(columnValuesObj).forEach(function (key) {
+                        sanitisedColumnItem[key] = columnValuesObj[key].value;
+                    });
+                    (_e = (typeof item.dropdownValues === 'function' ? item.dropdownValues(sanitisedColumnItem) : (_d = item.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.map(function (option) {
                         if (option.text === columnValuesObj[item.key].value) {
                             selectedKey = option.key;
                         }
                     });
-                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: typeof item.dropdownValues === 'function' ? item.dropdownValues() : (_f = item.dropdownValues) !== null && _f !== void 0 ? _f : [], selectedKey: selectedKey || null, onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, item.key));
+                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: typeof item.dropdownValues === 'function' ? item.dropdownValues(sanitisedColumnItem) : (_f = item.dropdownValues) !== null && _f !== void 0 ? _f : [], selectedKey: selectedKey || null, onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, item.key));
                     break;
                 case EditControlType.Checkbox:
                     tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, void 0)] }, item.key));
