@@ -1170,7 +1170,7 @@ var EditableGrid = function (props) {
                                             :
                                                 (RenderDropdownSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx(Dropdown, { ariaLabel: column.key, placeholder: (_g = (_f = (_e = (typeof column.dropdownValues === 'function' ? column.dropdownValues() : (_d = column.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.filter(function (x) { return x.text == item[column.key]; })[0]) === null || _f === void 0 ? void 0 : _f.text) !== null && _g !== void 0 ? _g : 'Select an option', options: typeof column.dropdownValues === 'function' ? column.dropdownValues() : (_h = column.dropdownValues) !== null && _h !== void 0 ? _h : [], styles: dropdownStyles, dropdownWidth: 'auto', onChange: function (ev, selectedItem) { return onDropDownChange(ev, selectedItem, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum, false) : null; } }, void 0)) }), void 0);
+                                        (_jsx(Dropdown, { ariaLabel: column.key, placeholder: (_g = (_f = (_e = (typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_d = column.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.filter(function (x) { return x.text == item[column.key]; })[0]) === null || _f === void 0 ? void 0 : _f.text) !== null && _g !== void 0 ? _g : 'Select an option', options: typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_h = column.dropdownValues) !== null && _h !== void 0 ? _h : [], styles: dropdownStyles, dropdownWidth: 'auto', onChange: function (ev, selectedItem) { return onDropDownChange(ev, selectedItem, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum, false) : null; } }, void 0)) }), void 0);
                         case EditControlType.Picker:
                             return _jsx("span", { children: (ShouldRenderSpan())
                                     ?
@@ -1411,7 +1411,7 @@ var EditableGrid = function (props) {
                 id: 'bulkedit',
                 key: 'bulkedit',
                 text: "Bulk Edit",
-                disabled: isGridInEdit || editMode || selectionCount == 0,
+                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount === 1,
                 iconProps: { iconName: "TripleColumnEdit" },
                 onClick: function () { return RowSelectOperations(EditType.BulkEdit, {}); }
             });
@@ -1683,7 +1683,7 @@ var EditableGrid = function (props) {
                     _jsx(MessageDialog, { message: messageDialogProps.message, subMessage: messageDialogProps.subMessage, onDialogClose: CloseMessageDialog }, void 0)
                 :
                     null, props.enableColumnEdit && isUpdateColumnClicked ?
-                _jsx(ColumnUpdateDialog, { columnConfigurationData: props.columns, onDialogCancel: CloseColumnUpdateDialog, onDialogSave: UpdateGridColumnData }, void 0)
+                _jsx(ColumnUpdateDialog, { columnConfigurationData: props.columns, onDialogCancel: CloseColumnUpdateDialog, onDialogSave: UpdateGridColumnData, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }, void 0)
                 :
                     null, props.enableColumnFilterRules && isColumnFilterClicked ?
                 _jsx(ColumnFilterDialog, { columnConfigurationData: props.columns.filter(function (item) { return filteredColumns.indexOf(item) < 0 && isColumnDataTypeSupportedForFilter(item.dataType); }), onDialogCancel: CloseColumnFilterDialog, onDialogSave: onFilterApplied, gridData: defaultGridData }, void 0)

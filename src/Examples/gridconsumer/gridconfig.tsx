@@ -96,7 +96,7 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInExport: true,
             includeColumnInSearch: true,
             applyColumnFilter: true,
-            onCustomRender: (item: GridItemsType) => { return item.getNameAndAge() },
+            //onCustomRender: (item: GridItemsType) => { return item.getNameAndAge() },
         },
         {
             key: 'designation',
@@ -133,7 +133,7 @@ export const GridColumnConfig: IColumnConfig[] =
                 whenTrue: { textColor: '#EF5350', fontWeight: 'bold' },
                 whenFalse: { textColor: '#9CCC65' }
             },
-            onCustomRender: (item) => { return "$" + item.salary }
+            onCustomRender: (item) => { return item.salary ? "$" + item.salary : null }
         },
         {
             key: 'dateofjoining',
@@ -160,9 +160,9 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInExport: true,
             includeColumnInSearch: true,
             inputType: EditControlType.DropDown,
-            dropdownValues: () => {
+            dropdownValues: (item: any) => { // function type dropdown values
                 return ([
-                    { key: 'weekly', text: 'Weekly Weekly Weekly Weekly' },
+                    { key: 'weekly', text: item.name + ' dropdown' },
                     { key: 'biweekly', text: 'Bi-Weekly' },
                     { key: 'monthly', text: 'Monthly' }
                 ])
@@ -173,7 +173,6 @@ export const GridColumnConfig: IColumnConfig[] =
             //         { key: 'biweekly', text: 'Bi-Weekly' },
             //         { key: 'monthly', text: 'Monthly' }
             //     ]
-
         },
         {
             key: 'employmenttype',
@@ -264,7 +263,7 @@ export class GridItemsType {
     employmenttype: string;
     employeelink: string;
 
-    public getNameAndAge(): string {
-        return this.name + ' with ' + this.age + ' years of age';
-    };
+    // public getNameAndAge(): string {
+    //     return this.name + ' with ' + this.age + ' years of age';
+    // };
 };
