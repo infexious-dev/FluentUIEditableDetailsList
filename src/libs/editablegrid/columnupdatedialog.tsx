@@ -156,7 +156,7 @@ const ColumnUpdateDialog = (props : Props) => {
                     return (
                         <Dropdown
                             label={column[0].text}
-                            options={column[0].dropdownValues ?? []}
+                            options={typeof column[0].dropdownValues === 'function' ? column[0].dropdownValues() as IDropdownOption[] : column[0].dropdownValues ?? []}
                             onChange={(ev, selected) => onDropDownChange(ev, selected, column[0])}
                         />
                     );

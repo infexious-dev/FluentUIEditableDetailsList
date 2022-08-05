@@ -109,7 +109,7 @@ const EditPanel = (props: Props) => {
                 case EditControlType.DropDown:
                     var selectedKey = null;
 
-                    item.dropdownValues?.map((option) => {
+                    (typeof item.dropdownValues === 'function' ? item.dropdownValues() as IDropdownOption[] : item.dropdownValues ?? [])?.map((option) => {
                         if (option.text === columnValuesObj[item.key].value) {
                             selectedKey = option.key
                         }
@@ -119,7 +119,7 @@ const EditPanel = (props: Props) => {
                         <Dropdown
                             key={item.key}
                             label={item.text}
-                            options={item.dropdownValues ?? []}
+                            options={typeof item.dropdownValues === 'function' ? item.dropdownValues() as IDropdownOption[] : item.dropdownValues ?? []}
                             selectedKey={selectedKey || null}
                             onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
                         />

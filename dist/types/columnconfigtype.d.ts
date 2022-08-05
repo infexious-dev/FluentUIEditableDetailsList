@@ -21,7 +21,7 @@ export interface IColumnConfig extends IColumn {
     maxLength?: number;
     applyColumnFilter?: boolean;
     cellStyleRule?: ICellStyleRulesType;
-    dropdownValues?: IDropdownOption[];
+    dropdownValues?: IDropdownOption[] | ((item?: any) => any);
     pickerOptions?: IPickerOptions;
     disableSort?: boolean;
     hoverComponentOptions?: IHoverOptions;

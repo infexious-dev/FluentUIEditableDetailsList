@@ -1309,9 +1309,10 @@ const EditableGrid = (props: Props) => {
                                     :
                                     (<Dropdown
                                         ariaLabel={column.key}
-                                        placeholder={column.dropdownValues?.filter(x => x.text == item[column.key])[0]?.text ?? 'Select an option'}
-                                        options={column.dropdownValues ?? []}
+                                        placeholder={( typeof column.dropdownValues === 'function' ? column.dropdownValues() as IDropdownOption[] : column.dropdownValues ?? [])?.filter(x => x.text == item[column.key])[0]?.text ?? 'Select an option'}
+                                        options={typeof column.dropdownValues === 'function' ? column.dropdownValues() as IDropdownOption[] : column.dropdownValues ?? []}
                                         styles={dropdownStyles}
+                                        dropdownWidth={'auto'}
                                         onChange={(ev, selectedItem) => onDropDownChange(ev, selectedItem, rowNum!, column)}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)
