@@ -9,7 +9,7 @@ import { CellHover } from "./hoverComponent";
 import { DataType } from "../../libs/types/datatype";
 import { IDetailsColumnStyles } from "office-ui-fabric-react";
 
-const headerStyle: Partial<IDetailsColumnStyles> = { cellTitle: { backgroundColor: "rgb(0, 120, 212)", color: "#fff" }, sortIcon:{ color: '#fff'} };
+const headerStyle: Partial<IDetailsColumnStyles> = { cellTitle: { backgroundColor: "rgb(0, 120, 212)", color: "#fff" }, sortIcon: { color: '#fff' } };
 
 export const GridColumnConfig: IColumnConfig[] =
     [
@@ -160,11 +160,20 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInExport: true,
             includeColumnInSearch: true,
             inputType: EditControlType.DropDown,
-            dropdownValues: [
-                { key: 'weekly', text: 'Weekly' },
-                { key: 'biweekly', text: 'Bi-Weekly' },
-                { key: 'monthly', text: 'Monthly' }
-            ]
+            dropdownValues: () => {
+                return ([
+                    { key: 'weekly', text: 'Weekly Weekly Weekly Weekly' },
+                    { key: 'biweekly', text: 'Bi-Weekly' },
+                    { key: 'monthly', text: 'Monthly' }
+                ])
+            },
+            // dropdownValues:
+            //     [
+            //         { key: 'weekly', text: 'Weekly1' },
+            //         { key: 'biweekly', text: 'Bi-Weekly' },
+            //         { key: 'monthly', text: 'Monthly' }
+            //     ]
+
         },
         {
             key: 'employmenttype',

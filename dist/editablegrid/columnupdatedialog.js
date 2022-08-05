@@ -138,7 +138,7 @@ var ColumnUpdateDialog = function (props) {
                 case EditControlType.Picker:
                     return (_jsx("div", { children: _jsx(PickerControl, { arialabel: column[0].text, selectedItemsLimit: 1, pickerTags: (_b = (_a = column[0].pickerOptions) === null || _a === void 0 ? void 0 : _a.pickerTags) !== null && _b !== void 0 ? _b : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, column[0]); }, pickerDescriptionOptions: (_c = column[0].pickerOptions) === null || _c === void 0 ? void 0 : _c.pickerDescriptionOptions }, void 0) }, void 0));
                 case EditControlType.DropDown:
-                    return (_jsx(Dropdown, { label: column[0].text, options: (_d = column[0].dropdownValues) !== null && _d !== void 0 ? _d : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, column[0]); } }, void 0));
+                    return (_jsx(Dropdown, { label: column[0].text, options: typeof column[0].dropdownValues === 'function' ? column[0].dropdownValues() : (_d = column[0].dropdownValues) !== null && _d !== void 0 ? _d : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, column[0]); } }, void 0));
                 case EditControlType.MultilineTextField:
                     return (_jsx(TextField, { errorMessage: inputValue[column[0].key].error, className: controlClass.inputClass, multiline: true, rows: 1, placeholder: "Enter '" + column[0].text + "'...", id: column[0].key, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, column[0]); }, value: inputValue[column[0].key].value || '' }, void 0));
                 default:

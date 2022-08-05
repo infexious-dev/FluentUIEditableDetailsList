@@ -93,7 +93,7 @@ var AddRowPanel = function (props) {
                         value: new Date() }, void 0));
                     break;
                 case EditControlType.DropDown:
-                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: (_a = item.dropdownValues) !== null && _a !== void 0 ? _a : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, void 0));
+                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: typeof item.dropdownValues === 'function' ? item.dropdownValues() : (_a = item.dropdownValues) !== null && _a !== void 0 ? _a : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, void 0));
                     break;
                 case EditControlType.Picker:
                     tmpRenderObj.push(_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item.text }), void 0), _jsx(PickerControl, { arialabel: item.text, selectedItemsLimit: 1, pickerTags: (_c = (_b = item.pickerOptions) === null || _b === void 0 ? void 0 : _b.pickerTags) !== null && _c !== void 0 ? _c : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item); }, pickerDescriptionOptions: (_d = item.pickerOptions) === null || _d === void 0 ? void 0 : _d.pickerDescriptionOptions }, void 0)] }, void 0));

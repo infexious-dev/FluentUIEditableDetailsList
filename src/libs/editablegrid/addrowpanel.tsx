@@ -90,7 +90,7 @@ const AddRowPanel = (props: Props) => {
                     tmpRenderObj.push(
                         <Dropdown
                             label={item.text}
-                            options={item.dropdownValues ?? []}
+                            options={typeof item.dropdownValues === 'function' ? item.dropdownValues() as IDropdownOption[] : item.dropdownValues ?? []}
                             onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
                         />
                     );
