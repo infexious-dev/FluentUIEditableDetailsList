@@ -7,7 +7,9 @@ Updates include:
 
 ### New "EditableGrid" Features
 >- "enablePanelEdit" prop on EditableGrid allows for editing all or custom fields (see below) for a selected grid row via an edit panel that **prepopulates** fields with current values. This acts similar to "enableBulkEdit" but is only allowed for one row selection and also prefills data.
+>- "enableColumnEdit" prop on EditableGrid now prefills data.
 >- "customEditPanelColumns" prop on EditableGrid allows user to define custom fields to show when editing rows via the panel. This affects both "enablePanelEdit" and "enableBulkEdit" options. This enables the grid to show a subset of the fields per item while the panel editing to show a larger subset - particularly useful when there are over 50 fields to edit, but we only want to actually display 10 fields in the grid.
+>- "enableBulkEdit" now only works when there are two or more items selected in the grid.
 >- Added "aboveStickyContent" and "belowStickyContent" props to EditableGrid. This provides ability to have above/below sticky content render in the grid. This is done via manipulation of the ScrollablePane ref. Above/Below content will apply padding to the ScrollablePane DIV element so rows don't become obstructed. This content can be dynamic - the grid will update the sticky content if you pass in a new HTMLDivElement.
 >- Provided "prependRowEditActions" prop on EditableGrid when "enableRowEdit" is set to TRUE. This allows the "Actions" column to appear as the first column on the grid (rather than the last).
 >- "EnableSaveText" prop added to EditableGrid which allows customisation of the "Submit" button text and arial-label.
@@ -24,6 +26,7 @@ Updates include:
 >- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted by default by showing the sort indicator when the grid is initially rendered. Note: this does not dynamically sort the grid, just a visual indicator of the current data and how it is sorted when grid initialises. 
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
+>- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties;
 
 ### Bug Fixes
 >- Reset Data now properly updates currently selected item with changes.
@@ -49,8 +52,12 @@ Updates include:
 ### Experimental
 >- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
 
+### Gotchas
+>- With the newly added functionality of having dropdown values on the IColumnConfig object to be populated with a function, this means bulk updating items' dropdowns will lead to blank values if the dropdown values are based off of other item properties.
+
 ### New Bugs and Issues (newly introduced)
 >- "Decimal" data type will return a string if the inputted value contains one period and no decimals ("81.") or contains one period and exactly one decimal ("81.0").
+
 
 ### Existing Bugs and Issues (from original code)
 >- "onChange" on IColumnConfig causes filtered items to reset filtered state, thus showing all grid data.
