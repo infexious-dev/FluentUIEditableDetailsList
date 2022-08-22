@@ -1,4 +1,4 @@
-# FluentUI Editable DetailsList
+# UPDATES IN THIS FORK
 
 ## Overview
 Forks the main FluentUI Editable DetailsList to add new functionality
