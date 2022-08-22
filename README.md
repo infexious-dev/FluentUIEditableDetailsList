@@ -64,8 +64,11 @@ Updates include:
 >- Adding a row, either blank or with data, does not use deeply copied grid data causing "prototype" methods to get lost.
 
 
-# Original
 ---
+# Original
+
+
+
 # FluentUI Editable DetailsList
 
 ## Overview
