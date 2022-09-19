@@ -941,12 +941,10 @@ var EditableGrid = function (props) {
             switch (_a.label) {
                 case 0:
                     filteredData = defaultGridData.filter(function (x) { return x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_; });
-                    if (!(filteredData.length > 0)) return [3 /*break*/, 2];
                     return [4 /*yield*/, onGridFilter(filteredData)];
                 case 1:
                     _a.sent();
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
+                    return [2 /*return*/];
             }
         });
     }); };

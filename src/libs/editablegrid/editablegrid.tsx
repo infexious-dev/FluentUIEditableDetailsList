@@ -1010,9 +1010,7 @@ const EditableGrid = (props: Props) => {
     /* #region [Column Filter] */
     const CheckOnFilter = async () => {
         const filteredData: Array<any> = defaultGridData.filter(x => x._grid_row_operation_ != Operation.Delete && x._is_filtered_in_ && x._is_filtered_in_column_filter_ && x._is_filtered_in_grid_search_);
-        if (filteredData.length > 0) {
-            await onGridFilter(filteredData);
-        }
+        await onGridFilter(filteredData);
     };
 
     const onGridFilter = async (data: Array<any>): Promise<void> => {
