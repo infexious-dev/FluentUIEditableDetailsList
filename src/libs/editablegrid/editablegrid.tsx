@@ -951,6 +951,11 @@ const EditableGrid = (props: Props) => {
 
     const ResetGridData = (): void => {
         let deeplyCopiedData = DeepCopy(backupDefaultGridData);
+
+        defaultGridData.filter(item => item._is_muted_ === true).forEach((item) => {
+            deeplyCopiedData.find((findItem: any) => findItem.id === item.id)._is_muted_ = true;
+        });
+
         setGridEditState(false);
         ClearFilters();
         SetGridItems(deeplyCopiedData);
@@ -1435,7 +1440,7 @@ const EditableGrid = (props: Props) => {
                     }
 
                     function ShouldRenderSpan() {
-                        return ((!column.editable) || (!props.enableDefaultEditMode && !(activateCellEdit?.[rowNum!]?.isActivated) && !(activateCellEdit?.[rowNum!]?.['properties'][column.key]?.activated)));
+                        return ((!column.editable || item._is_muted_) || (!props.enableDefaultEditMode && !(activateCellEdit?.[rowNum!]?.isActivated) && !(activateCellEdit?.[rowNum!]?.['properties'][column.key]?.activated)));
                     }
                 }
             });
@@ -1541,7 +1546,7 @@ const EditableGrid = (props: Props) => {
                                             }
                                         ));
 
-                                        setGridEditState(true);
+                                        //setGridEditState(true);
                                         SetGridItems(defaultGridDataTmp);
                                     }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }} title={`${item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute'}`}></IconButton>
                                 : null
@@ -1839,7 +1844,7 @@ const EditableGrid = (props: Props) => {
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
-            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum)}
+            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
             {
                 column.linkOptions?.onClick
@@ -1871,7 +1876,7 @@ const EditableGrid = (props: Props) => {
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
-            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum)}
+            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
             {item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null}
         </span>;
@@ -1884,13 +1889,13 @@ const EditableGrid = (props: Props) => {
     const RenderSpan = (props: Props, index: number, rowNum: number, column: IColumnConfig, item: any,
         HandleCellOnClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number) => React.MouseEventHandler<HTMLSpanElement> | undefined,
         EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void,
-        HandleCellOnDoubleClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number) => React.MouseEventHandler<HTMLSpanElement> | undefined,
+        HandleCellOnDoubleClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any) => React.MouseEventHandler<HTMLSpanElement> | undefined,
         customRender?: React.ReactNode): React.ReactNode => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
-            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum)}
+            onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
             style={{ whiteSpace: column.isMultiline ? 'pre-line' : 'normal' }}
         >
             {customRender ? customRender : item[column.key]}
@@ -1899,8 +1904,8 @@ const EditableGrid = (props: Props) => {
     /* #endregion */
 
     /* #region [Utilities] */
-    function HandleCellOnDoubleClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && !props.enableSingleClickCellEdit)
+    function HandleCellOnDoubleClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any): React.MouseEventHandler<HTMLSpanElement> | undefined {
+        return () => (props.enableCellEdit == true && column.editable == true && !props.enableSingleClickCellEdit && !item._is_muted_)
             ?
             EditCellValue(column.key, rowNum!, true)
             :
