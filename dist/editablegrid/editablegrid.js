@@ -869,6 +869,9 @@ var EditableGrid = function (props) {
     };
     var ResetGridData = function () {
         var deeplyCopiedData = DeepCopy(backupDefaultGridData);
+        defaultGridData.filter(function (item) { return item._is_muted_ === true; }).forEach(function (item) {
+            deeplyCopiedData.find(function (findItem) { return findItem.id === item.id; })._is_muted_ = true;
+        });
         setGridEditState(false);
         ClearFilters();
         SetGridItems(deeplyCopiedData);
@@ -1218,7 +1221,7 @@ var EditableGrid = function (props) {
                     }
                     function ShouldRenderSpan() {
                         var _a, _b, _c;
-                        return ((!column.editable) || (!props.enableDefaultEditMode && !((_a = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[rowNum]) === null || _a === void 0 ? void 0 : _a.isActivated) && !((_c = (_b = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[rowNum]) === null || _b === void 0 ? void 0 : _b['properties'][column.key]) === null || _c === void 0 ? void 0 : _c.activated)));
+                        return ((!column.editable || item._is_muted_) || (!props.enableDefaultEditMode && !((_a = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[rowNum]) === null || _a === void 0 ? void 0 : _a.isActivated) && !((_c = (_b = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[rowNum]) === null || _b === void 0 ? void 0 : _b['properties'][column.key]) === null || _c === void 0 ? void 0 : _c.activated)));
                     }
                 }
             });
@@ -1296,7 +1299,7 @@ var EditableGrid = function (props) {
                                             x._is_muted_ = !x._is_muted_;
                                             x._grid_row_operation_ = x._is_muted_ ? Operation.Mute : Operation.Update;
                                         }));
-                                        setGridEditState(true);
+                                        //setGridEditState(true);
                                         SetGridItems(defaultGridDataTmp);
                                     }, iconProps: { iconName: "" + (item._is_muted_ ? 'RedEye' : 'Hide') }, title: "" + (item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute') }, void 0)
                                 : null, ((_b = props.gridCopyOptions) === null || _b === void 0 ? void 0 : _b.enableRowCopy) ?
@@ -1538,7 +1541,7 @@ var EditableGrid = function (props) {
     /* #region [Span Renders] */
     var RenderLinkSpan = function (props, index, rowNum, column, item, EditCellValue) {
         var _a, _b, _c, _d, _e;
-        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum) }, { children: ((_a = column.linkOptions) === null || _a === void 0 ? void 0 : _a.onClick)
+        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item) }, { children: ((_a = column.linkOptions) === null || _a === void 0 ? void 0 : _a.onClick)
                 ?
                     _jsx(Link, __assign({ "data-is-focusable": column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled) || item._is_muted_, underline: true, onClick: function () {
                             var params = { rowindex: [rowNum], data: defaultGridData, triggerkey: column.key, activatetriggercell: false };
@@ -1557,18 +1560,18 @@ var EditableGrid = function (props) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
     };
     var RenderDateSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
-        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum) }, { children: item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null }), void 0);
+        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item) }, { children: item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null }), void 0);
     };
     var RenderMultilineTextFieldSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
     };
     var RenderSpan = function (props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender) {
-        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum), style: { whiteSpace: column.isMultiline ? 'pre-line' : 'normal' } }, { children: customRender ? customRender : item[column.key] }), void 0);
+        return _jsx("span", __assign({ id: "id-" + props.id + "-col-" + index + "-row-" + rowNum, className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item), style: { whiteSpace: column.isMultiline ? 'pre-line' : 'normal' } }, { children: customRender ? customRender : item[column.key] }), void 0);
     };
     /* #endregion */
     /* #region [Utilities] */
-    function HandleCellOnDoubleClick(props, column, EditCellValue, rowNum) {
-        return function () { return (props.enableCellEdit == true && column.editable == true && !props.enableSingleClickCellEdit)
+    function HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item) {
+        return function () { return (props.enableCellEdit == true && column.editable == true && !props.enableSingleClickCellEdit && !item._is_muted_)
             ?
                 EditCellValue(column.key, rowNum, true)
             :
