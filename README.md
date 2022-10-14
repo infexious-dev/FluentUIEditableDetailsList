@@ -19,7 +19,7 @@ Updates include:
 >- New callback function "onGridStateEditedChange" runs after grid "edited" state is changed. Useful to track data manipulation. Returns a boolean.
 >- New callback function "onGridSort" runs after grid data is sorted. Returns sorted grid data as it is currently displayed and the column that is currently sorted by (as an "IColumn").
 >- New callback function "onGridFilter" runs after grid data is filtered. Returns filtered grid data as it is currently displayed.
->- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.2" and apply a grayscale filter. This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation. As such, mute and umute classes applied to the row are customisable - as is the default opacity applied. Furthermore, the icon text of "Mute"/"Unmute" is customisable too. 
+>- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.2" and apply a grayscale filter. This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation. As such, mute and umute classes applied to the row are customisable - as is the default opacity applied. Furthermore, the icon text of "Mute"/"Unmute" is customisable too.
 
 ### New "IColumnConfig" Features
 >- "onCustomRender" prop on IColumnConfig allows for custom rendering of the column without breaking "editing" capabilities
@@ -57,6 +57,8 @@ Updates include:
 
 ### New Bugs and Issues (newly introduced)
 >- "Decimal" data type will return a string if the inputted value contains one period and no decimals ("81.") or contains one period and exactly one decimal ("81.0").
+>- "Muted" rows cannot be edited but can be selected and can trigger "Edit Item", "Bulk Edit", and "Update Column"
+>- When using Dropdowns within the grid with the newly introduced function to populate "options", the Grid's "Edit Mode" will not dynamically update other dependent dropdowns.
 
 ### Existing Bugs and Issues (from original code)
 >- "onChange" on IColumnConfig causes filtered items to reset filtered state, thus showing all grid data.
