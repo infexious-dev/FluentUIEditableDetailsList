@@ -44,6 +44,7 @@ import AddRowPanel from './addrowpanel';
 import { Props } from '../types/editabledetailslistprops';
 import SearchableDropdown from './searchabledropdown/searchabledropdown';
 import PickerControl from './pickercontrol/picker';
+import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 
 interface SortOptions {
     key: string;
@@ -2006,7 +2007,7 @@ const EditableGrid = (props: Props) => {
     }, [scrollablePaneRef, props.aboveStickyContent, props.belowStickyContent])
 
     return (
-        <Fabric>
+        <ThemeProvider theme={props.theme}>
             <Panel
                 isOpen={isOpenForEdit}
                 onDismiss={dismissPanelForEdit}
@@ -2070,7 +2071,7 @@ const EditableGrid = (props: Props) => {
                 <ScrollablePane styles={{ contentContainer: { paddingTop: aboveContentHeight, paddingBottom: belowContentHeight } }} componentRef={scrollablePaneRef} scrollbarVisibility={ScrollbarVisibility.auto}>
                     <MarqueeSelection isDraggingConstrainedToRoot={true} selection={_selection} isEnabled={props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true} >
                         <DetailsList
-                            compact={true}
+                             compact={true}
                             items={defaultGridData.length > 0 ? defaultGridData.filter((x) => (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_ == true) && (x._is_filtered_in_grid_search_ == true) && (x._is_filtered_in_column_filter_ == true)) : []}
                             columns={GridColumns}
                             selectionMode={props.selectionMode}
@@ -2194,7 +2195,7 @@ const EditableGrid = (props: Props) => {
                 :
                 null
             }
-        </Fabric>
+        </ThemeProvider>
     );
 };
 

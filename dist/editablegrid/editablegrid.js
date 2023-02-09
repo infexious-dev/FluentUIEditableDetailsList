@@ -77,7 +77,7 @@ import { CommandBar } from 'office-ui-fabric-react/lib/CommandBar';
 import { DetailsListLayoutMode, Selection, } from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 import { IconButton } from 'office-ui-fabric-react/lib/components/Button/IconButton/IconButton';
-import { PrimaryButton, Panel, PanelType, Fabric, Dropdown, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, HoverCard, HoverCardType, Link, Checkbox } from 'office-ui-fabric-react';
+import { PrimaryButton, Panel, PanelType, Dropdown, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, HoverCard, HoverCardType, Link, Checkbox } from 'office-ui-fabric-react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { controlClass, dropdownStyles, GetDynamicSpanStyles, textFieldStyles } from './editablegridstyles';
 import { Operation } from '../types/operation';
@@ -96,6 +96,7 @@ import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault,
 import FilterCallout from './columnfiltercallout/filtercallout';
 import AddRowPanel from './addrowpanel';
 import PickerControl from './pickercontrol/picker';
+import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 var EditableGrid = function (props) {
     var _a = __read(React.useState(false), 2), editMode = _a[0], setEditMode = _a[1];
     var _b = __read(React.useState(false), 2), isOpenForEdit = _b[0], setIsOpenForEdit = _b[1];
@@ -1655,7 +1656,7 @@ var EditableGrid = function (props) {
             }
         }
     }, [scrollablePaneRef, props.aboveStickyContent, props.belowStickyContent]);
-    return (_jsxs(Fabric, { children: [_jsx(Panel, __assign({ isOpen: isOpenForEdit, onDismiss: dismissPanelForEdit, isLightDismiss: true, headerText: "Edit Grid Data", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(EditPanel, { onChange: onEditPanelChange, columnConfigurationData: props.customEditPanelColumns ? props.customEditPanelColumns : props.columns, isBulk: isBulkPanelEdit, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }, void 0) }), void 0), props.enableRowAddWithValues && props.enableRowAddWithValues.enable
+    return (_jsxs(ThemeProvider, __assign({ theme: props.theme }, { children: [_jsx(Panel, __assign({ isOpen: isOpenForEdit, onDismiss: dismissPanelForEdit, isLightDismiss: true, headerText: "Edit Grid Data", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(EditPanel, { onChange: onEditPanelChange, columnConfigurationData: props.customEditPanelColumns ? props.customEditPanelColumns : props.columns, isBulk: isBulkPanelEdit, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }, void 0) }), void 0), props.enableRowAddWithValues && props.enableRowAddWithValues.enable
                 ?
                     _jsx(Panel, __assign({ isOpen: isOpenForAdd, onDismiss: dismissPanelForAdd, isLightDismiss: true, headerText: "Add Rows", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(AddRowPanel, { onChange: onAddPanelChange, columnConfigurationData: props.columns, enableRowsCounterField: props.enableRowAddWithValues.enableRowsCounterInPanel }, void 0) }), void 0)
                 :
@@ -1689,6 +1690,6 @@ var EditableGrid = function (props) {
                     null, props.enableColumnFilterRules && isColumnFilterClicked ?
                 _jsx(ColumnFilterDialog, { columnConfigurationData: props.columns.filter(function (item) { return filteredColumns.indexOf(item) < 0 && isColumnDataTypeSupportedForFilter(item.dataType); }), onDialogCancel: CloseColumnFilterDialog, onDialogSave: onFilterApplied, gridData: defaultGridData }, void 0)
                 :
-                    null] }, void 0));
+                    null] }), void 0));
 };
 export default EditableGrid;
