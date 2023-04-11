@@ -14,15 +14,19 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import { DataType } from "../types/datatype";
 import { dateOperatorEval, numberOperatorEval, stringOperatorEval } from "../types/filterstype";
 export var filterGridData = function (data, filters) {
-    var dataTmp = __spreadArray([], __read(data));
+    var dataTmp = __spreadArray([], __read(data), false);
     dataTmp.forEach(function (row) {
         var isRowIncluded = true;
         filters.forEach(function (item) {
@@ -49,7 +53,7 @@ export var filterGridData = function (data, filters) {
     return dataTmp;
 };
 export var applyGridColumnFilter = function (data, gridColumnFilterArr) {
-    var dataTmp = __spreadArray([], __read(data));
+    var dataTmp = __spreadArray([], __read(data), false);
     if (gridColumnFilterArr.filter(function (item) { return item.isApplied == true; }).length > 0) {
         dataTmp.map(function (row) { return row._is_filtered_in_column_filter_ = true; });
     }

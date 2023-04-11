@@ -25,10 +25,14 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { Callout, DirectionalHint, Dropdown, DropdownMenuItemType, mergeStyles, ScrollablePane, ScrollbarVisibility, Stack, TextField } from "office-ui-fabric-react";
@@ -45,13 +49,13 @@ var SearchableDropdown = function (props) {
         setPlaceHolder(props.placeholder);
     }, [props.options]);
     var onFilterTextUpdate = function (ev, searchText) {
-        var dropdownOptionsTmp = __spreadArray([], __read(props.options.filter(function (x) { return x.itemType != DropdownMenuItemType.Header; })));
+        var dropdownOptionsTmp = __spreadArray([], __read(props.options.filter(function (x) { return x.itemType != DropdownMenuItemType.Header; })), false);
         var matches = dropdownOptionsTmp.filter(function (x) { var _a; return x.text.toLowerCase().indexOf((_a = searchText === null || searchText === void 0 ? void 0 : searchText.toLowerCase()) !== null && _a !== void 0 ? _a : '') > -1; });
-        setPlaceHolder("[" + matches.length.toString() + " match" + (matches.length != 1 ? 'es' : '') + " found]");
+        setPlaceHolder("[".concat(matches.length.toString(), " match").concat(matches.length != 1 ? 'es' : '', " found]"));
         setDropdownOptions(matches);
     };
     var labelId = useId('dropdown-callout-label');
     var descriptionId = useId('dropdown-callout-description');
-    return (_jsx(_Fragment, { children: _jsx(Callout, __assign({ className: styles.callout, ariaLabelledBy: labelId, ariaDescribedBy: descriptionId, role: "filtercallout", gapSpace: 10, target: "." + props.className, isBeakVisible: true, directionalHint: DirectionalHint.bottomCenter }, { children: _jsxs(Stack, __assign({ verticalAlign: "start", tokens: stackTokens }, { children: [_jsx(TextField, { id: "id-" + props.className, className: styles.textFieldClass, placeholder: "Search " + ((_a = props.field) !== null && _a !== void 0 ? _a : ''), onChange: function (ev, text) { return onFilterTextUpdate(ev, text); } }, void 0), _jsx("div", __assign({ className: mergeStyles({ height: '10vh', width: '30vh', position: 'relative', backgroundColor: 'white' }) }, { children: _jsx(ScrollablePane, __assign({ scrollbarVisibility: ScrollbarVisibility.auto }, { children: _jsx(Dropdown, { label: props.label, placeholder: placeholder, options: dropdownOptions !== null && dropdownOptions !== void 0 ? dropdownOptions : [], styles: props.styles, onChange: props.onChange, onDoubleClick: props.onDoubleClick }, void 0) }), void 0) }), void 0)] }), void 0) }), void 0) }, void 0));
+    return (_jsx(_Fragment, { children: _jsx(Callout, __assign({ className: styles.callout, ariaLabelledBy: labelId, ariaDescribedBy: descriptionId, role: "filtercallout", gapSpace: 10, target: ".".concat(props.className), isBeakVisible: true, directionalHint: DirectionalHint.bottomCenter }, { children: _jsxs(Stack, __assign({ verticalAlign: "start", tokens: stackTokens }, { children: [_jsx(TextField, { id: "id-".concat(props.className), className: styles.textFieldClass, placeholder: "Search ".concat((_a = props.field) !== null && _a !== void 0 ? _a : ''), onChange: function (ev, text) { return onFilterTextUpdate(ev, text); } }), _jsx("div", __assign({ className: mergeStyles({ height: '10vh', width: '30vh', position: 'relative', backgroundColor: 'white' }) }, { children: _jsx(ScrollablePane, __assign({ scrollbarVisibility: ScrollbarVisibility.auto }, { children: _jsx(Dropdown, { label: props.label, placeholder: placeholder, options: dropdownOptions !== null && dropdownOptions !== void 0 ? dropdownOptions : [], styles: props.styles, onChange: props.onChange, onDoubleClick: props.onDoubleClick }) })) }))] })) })) }));
 };
 export default SearchableDropdown;

@@ -25,7 +25,7 @@ export var ExportToCSVUtil = function (exportData, fileName) {
                     ? cell.toLocaleString()
                     : cell.toString().replace(/"/g, '""');
                 if (cell.search(/("|,|\n)/g) >= 0) {
-                    cell = "\"" + cell + "\"";
+                    cell = "\"".concat(cell, "\"");
                 }
                 return cell;
             }).join(separator);

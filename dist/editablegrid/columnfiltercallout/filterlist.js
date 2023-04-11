@@ -25,10 +25,14 @@ var __read = (this && this.__read) || function (o, n) {
     }
     return ar;
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { ActionButton, Checkbox, mergeStyles, ScrollablePane, ScrollbarVisibility, Stack, TextField } from "office-ui-fabric-react";
@@ -88,26 +92,26 @@ var FilterList = function (props) {
         }
     };
     function onCheckChanged(ev, isChecked, key, text) {
-        var filterItemsListTmp = __spreadArray([], __read(filterItemsList));
+        var filterItemsListTmp = __spreadArray([], __read(filterItemsList), false);
         filterItemsListTmp.filter(function (item) { return item.key == key; }).map(function (item) { return item.isChecked = isChecked; });
         setFilterItemsList(filterItemsListTmp);
-        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters));
+        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters), false);
         appliedFiltersTmp.filter(function (item) { return item.text == text; }).map(function (item) { return item.isChecked = isChecked; });
         setAppliedFilters(appliedFiltersTmp);
     }
     var onSelectAllCheckChanged = function (ev, isChecked) {
-        var filterItemsListTmp = __spreadArray([], __read(filterItemsList));
+        var filterItemsListTmp = __spreadArray([], __read(filterItemsList), false);
         filterItemsListTmp.map(function (item) { return item.isChecked = isChecked; });
         setFilterItemsList(filterItemsListTmp);
-        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters));
+        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters), false);
         appliedFiltersTmp.map(function (item) { return item.isChecked = isChecked; });
         setAppliedFilters(appliedFiltersTmp);
     };
     var onReset = function () {
-        var filterItemsListTmp = __spreadArray([], __read(filterItemsList));
+        var filterItemsListTmp = __spreadArray([], __read(filterItemsList), false);
         filterItemsListTmp.map(function (item) { return item.isChecked = false; });
         setFilterItemsList(filterItemsListTmp);
-        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters));
+        var appliedFiltersTmp = __spreadArray([], __read(appliedFilters), false);
         appliedFiltersTmp.map(function (item) { return item.isChecked = false; });
         setAppliedFilters(appliedFiltersTmp);
     };
@@ -119,7 +123,7 @@ var FilterList = function (props) {
     };
     var onFilterTextUpdate = function (ev, text) {
         if (text) {
-            var searchResult = __spreadArray([], __read(filterItemsList));
+            var searchResult = __spreadArray([], __read(filterItemsList), false);
             searchResult.filter(function (_data, index) {
                 var BreakException = {};
                 try {
@@ -138,11 +142,11 @@ var FilterList = function (props) {
             setFilterItemsList(searchResult);
         }
         else {
-            var filterItemsListTmp = __spreadArray([], __read(filterItemsList));
+            var filterItemsListTmp = __spreadArray([], __read(filterItemsList), false);
             filterItemsListTmp.map(function (item) { return item.isFilteredIn = true; });
             setFilterItemsList(filterItemsListTmp);
         }
     };
-    return (_jsx(_Fragment, { children: _jsxs(Stack, __assign({ verticalAlign: "start", tokens: stackTokens }, { children: [_jsx(TextField, { placeholder: "Filter " + props.columnName, onChange: function (ev, text) { return onFilterTextUpdate(ev, text); } }, void 0), _jsx("div", __assign({ className: mergeStyles({ height: '25vh', width: '30vh', position: 'relative', backgroundColor: 'white' }) }, { children: _jsxs(ScrollablePane, __assign({ scrollbarVisibility: ScrollbarVisibility.auto }, { children: [_jsx(Checkbox, { label: "(Select All)", indeterminate: isSelectAllIndeterminate, checked: isSelectAllChecked, className: styles.selectAllCheckbox, onChange: function (ev, checked) { return onSelectAllCheckChanged(ev, checked); } }, 'SelectAll'), filterListContent] }), void 0) }), void 0), _jsxs(Stack, __assign({ horizontal: true, horizontalAlign: "start" }, { children: [_jsx(ActionButton, { className: styles.button, onClick: onApply, text: "Apply" }, void 0), _jsx(ActionButton, { text: "Clear All", className: styles.button, onClick: onReset, disabled: appliedFilters.filter(function (item) { return item.isChecked == true; }).length == 0 }, void 0), _jsx(ActionButton, { text: "Cancel", className: styles.button, onClick: props.onCancel }, void 0)] }), void 0)] }), void 0) }, void 0));
+    return (_jsx(_Fragment, { children: _jsxs(Stack, __assign({ verticalAlign: "start", tokens: stackTokens }, { children: [_jsx(TextField, { placeholder: "Filter ".concat(props.columnName), onChange: function (ev, text) { return onFilterTextUpdate(ev, text); } }), _jsx("div", __assign({ className: mergeStyles({ height: '25vh', width: '30vh', position: 'relative', backgroundColor: 'white' }) }, { children: _jsxs(ScrollablePane, __assign({ scrollbarVisibility: ScrollbarVisibility.auto }, { children: [_jsx(Checkbox, { label: "(Select All)", indeterminate: isSelectAllIndeterminate, checked: isSelectAllChecked, className: styles.selectAllCheckbox, onChange: function (ev, checked) { return onSelectAllCheckChanged(ev, checked); } }, 'SelectAll'), filterListContent] })) })), _jsxs(Stack, __assign({ horizontal: true, horizontalAlign: "start" }, { children: [_jsx(ActionButton, { className: styles.button, onClick: onApply, text: "Apply" }), _jsx(ActionButton, { text: "Clear All", className: styles.button, onClick: onReset, disabled: appliedFilters.filter(function (item) { return item.isChecked == true; }).length == 0 }), _jsx(ActionButton, { text: "Cancel", className: styles.button, onClick: props.onCancel })] }))] })) }));
 };
 export default FilterList;

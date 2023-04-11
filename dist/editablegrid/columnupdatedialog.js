@@ -72,12 +72,12 @@ var ColumnUpdateDialog = function (props) {
     };
     var onTextUpdate = function (ev, text, column) {
         if (!IsValidDataType(column === null || column === void 0 ? void 0 : column.dataType, text)) {
-            SetObjValues(ev.target.id, text, false, "Data should be of type '" + column.dataType + "'");
+            SetObjValues(ev.target.id, text, false, "Data should be of type '".concat(column.dataType, "'"));
             return;
         }
         SetObjValues(ev.target.id, ParseType(column.dataType, text));
     };
-    var _c = __read(React.useState(_jsx(_Fragment, {}, void 0)), 2), inputFieldContent = _c[0], setInputFieldContent = _c[1];
+    var _c = __read(React.useState(_jsx(_Fragment, {})), 2), inputFieldContent = _c[0], setInputFieldContent = _c[1];
     var onSelectDate = function (date, item) {
         SetObjValues(item.key, date);
     };
@@ -141,7 +141,7 @@ var ColumnUpdateDialog = function (props) {
                 case EditControlType.Date:
                     return (_jsx(DatePicker, { label: item_1.text, strings: DayPickerStrings, placeholder: "Select a date...", ariaLabel: "Select a date", onSelectDate: function (date) { return onSelectDate(date, item_1); }, value: columnValuesObj[item_1.key].value }, item_1.key));
                 case EditControlType.Picker:
-                    return (_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item_1.text }), void 0), _jsx(PickerControl, { arialabel: item_1.text, selectedItemsLimit: 1, defaultTags: columnValuesObj[item_1.key].value ? [columnValuesObj[item_1.key].value] : undefined, pickerTags: (_b = (_a = item_1.pickerOptions) === null || _a === void 0 ? void 0 : _a.pickerTags) !== null && _b !== void 0 ? _b : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item_1); }, pickerDescriptionOptions: (_c = item_1.pickerOptions) === null || _c === void 0 ? void 0 : _c.pickerDescriptionOptions }, void 0)] }, item_1.key));
+                    return (_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item_1.text })), _jsx(PickerControl, { arialabel: item_1.text, selectedItemsLimit: 1, defaultTags: columnValuesObj[item_1.key].value ? [columnValuesObj[item_1.key].value] : undefined, pickerTags: (_b = (_a = item_1.pickerOptions) === null || _a === void 0 ? void 0 : _a.pickerTags) !== null && _b !== void 0 ? _b : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item_1); }, pickerDescriptionOptions: (_c = item_1.pickerOptions) === null || _c === void 0 ? void 0 : _c.pickerDescriptionOptions })] }, item_1.key));
                 case EditControlType.DropDown:
                     var selectedKey = null;
                     var sanitisedColumnItem = {};
@@ -153,21 +153,21 @@ var ColumnUpdateDialog = function (props) {
                             selectedKey = option.key;
                         }
                     });
-                    return (_jsx(Dropdown, { label: item_1.text, options: typeof item_1.dropdownValues === 'function' ? item_1.dropdownValues(sanitisedColumnItem) : (_f = item_1.dropdownValues) !== null && _f !== void 0 ? _f : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item_1); }, selectedKey: selectedKey || null, placeholder: !selectedKey ? "Enter '" + item_1.text + "'..." : '' }, void 0));
+                    return (_jsx(Dropdown, { label: item_1.text, options: typeof item_1.dropdownValues === 'function' ? item_1.dropdownValues(sanitisedColumnItem) : (_f = item_1.dropdownValues) !== null && _f !== void 0 ? _f : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item_1); }, selectedKey: selectedKey || null, placeholder: !selectedKey ? "Enter '".concat(item_1.text, "'...") : '' }));
                 case EditControlType.Checkbox:
-                    return (_jsxs("div", { children: [_jsx(Label, { children: item_1.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item_1.editable, checked: columnValuesObj[item_1.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item_1); } }, void 0)] }, item_1.key));
+                    return (_jsxs("div", { children: [_jsx(Label, { children: item_1.text }), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item_1.editable, checked: columnValuesObj[item_1.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item_1); } })] }, item_1.key));
                 case EditControlType.MultilineTextField:
-                    return (_jsx(TextField, { errorMessage: columnValuesObj[item_1.key].error, className: localControlClass.inputClass, multiline: true, rows: 1, placeholder: "Enter '" + item_1.text + "'...", id: item_1.key, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item_1); }, value: columnValuesObj[item_1.key].value || '' }, void 0));
+                    return (_jsx(TextField, { errorMessage: columnValuesObj[item_1.key].error, className: localControlClass.inputClass, multiline: true, rows: 1, placeholder: "Enter '".concat(item_1.text, "'..."), id: item_1.key, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item_1); }, value: columnValuesObj[item_1.key].value || '' }));
                 default:
-                    return (_jsx(TextField, { errorMessage: columnValuesObj[item_1.key].error, className: localControlClass.inputClass, placeholder: "Enter '" + item_1.text + "'...", onChange: function (ev, text) { return onTextUpdate(ev, text, item_1); }, styles: textFieldStyles, id: item_1.key, value: columnValuesObj[item_1.key].value || '' }, void 0));
+                    return (_jsx(TextField, { errorMessage: columnValuesObj[item_1.key].error, className: localControlClass.inputClass, placeholder: "Enter '".concat(item_1.text, "'..."), onChange: function (ev, text) { return onTextUpdate(ev, text, item_1); }, styles: textFieldStyles, id: item_1.key, value: columnValuesObj[item_1.key].value || '' }));
             }
         }
-        return (_jsx(_Fragment, {}, void 0));
+        return (_jsx(_Fragment, {}));
     };
-    return (_jsx(Dialog, __assign({ hidden: !inputFieldContent, onDismiss: closeDialog, closeButtonAriaLabel: "Close" }, { children: _jsxs(Stack, __assign({ grow: true, verticalAlign: "space-between", tokens: stackTokens }, { children: [_jsx(Stack.Item, __assign({ grow: 1 }, { children: _jsx(Dropdown, { placeholder: "Select the Column", options: options, styles: dropdownStyles, onChange: onSelectGridColumn }, void 0) }), void 0), _jsx(Stack.Item, __assign({ grow: 1 }, { children: GetInputFieldContent() }), void 0), _jsx(Stack.Item, { children: _jsxs(DialogFooter, __assign({ className: localControlClass.inputClass }, { children: [_jsx(PrimaryButton
+    return (_jsx(Dialog, __assign({ hidden: !inputFieldContent, onDismiss: closeDialog, closeButtonAriaLabel: "Close" }, { children: _jsxs(Stack, __assign({ grow: true, verticalAlign: "space-between", tokens: stackTokens }, { children: [_jsx(Stack.Item, __assign({ grow: 1 }, { children: _jsx(Dropdown, { placeholder: "Select the Column", options: options, styles: dropdownStyles, onChange: onSelectGridColumn }) })), _jsx(Stack.Item, __assign({ grow: 1 }, { children: GetInputFieldContent() })), _jsx(Stack.Item, { children: _jsxs(DialogFooter, __assign({ className: localControlClass.inputClass }, { children: [_jsx(PrimaryButton
                             // eslint-disable-next-line react/jsx-no-bind
                             , { 
                                 // eslint-disable-next-line react/jsx-no-bind
-                                onClick: saveDialog, text: "Save", disabled: (gridColumn) ? (columnValuesObj[gridColumn].error != null && columnValuesObj[gridColumn].error.length > 0) : false }, void 0), _jsx(DefaultButton, { onClick: closeDialog, text: "Cancel" }, void 0)] }), void 0) }, void 0)] }), void 0) }), void 0));
+                                onClick: saveDialog, text: "Save", disabled: (gridColumn) ? (columnValuesObj[gridColumn].error != null && columnValuesObj[gridColumn].error.length > 0) : false }), _jsx(DefaultButton, { onClick: closeDialog, text: "Cancel" })] })) })] })) })));
 };
 export default ColumnUpdateDialog;

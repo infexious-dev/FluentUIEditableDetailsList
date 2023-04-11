@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { IDropdownProps } from "@fluentui/react";
+import { IDropdownProps } from "office-ui-fabric-react";
 interface Props extends IDropdownProps {
     field?: string;
     minCharLengthBeforeSuggestion?: number;
