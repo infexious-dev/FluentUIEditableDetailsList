@@ -90,30 +90,30 @@ var AddRowPanel = function (props) {
                 case EditControlType.Date:
                     tmpRenderObj.push(_jsx(DatePicker, { label: item.text, strings: DayPickerStrings, placeholder: "Select a date...", ariaLabel: "Select a date", onSelectDate: function (date) { return onCellDateChange(date, item); }, 
                         //value={props != null && props.panelValues != null ? new Date(props.panelValues[item.key]) : new Date()}
-                        value: new Date() }));
+                        value: new Date() }, void 0));
                     break;
                 case EditControlType.DropDown:
-                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: typeof item.dropdownValues === 'function' ? item.dropdownValues() : (_a = item.dropdownValues) !== null && _a !== void 0 ? _a : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }));
+                    tmpRenderObj.push(_jsx(Dropdown, { label: item.text, options: typeof item.dropdownValues === 'function' ? item.dropdownValues() : (_a = item.dropdownValues) !== null && _a !== void 0 ? _a : [], onChange: function (ev, selected) { return onDropDownChange(ev, selected, item); } }, void 0));
                     break;
                 case EditControlType.Picker:
-                    tmpRenderObj.push(_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item.text })), _jsx(PickerControl, { arialabel: item.text, selectedItemsLimit: 1, pickerTags: (_c = (_b = item.pickerOptions) === null || _b === void 0 ? void 0 : _b.pickerTags) !== null && _c !== void 0 ? _c : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item); }, pickerDescriptionOptions: (_d = item.pickerOptions) === null || _d === void 0 ? void 0 : _d.pickerDescriptionOptions })] }));
+                    tmpRenderObj.push(_jsxs("div", { children: [_jsx("span", __assign({ className: controlClass.pickerLabel }, { children: item.text }), void 0), _jsx(PickerControl, { arialabel: item.text, selectedItemsLimit: 1, pickerTags: (_c = (_b = item.pickerOptions) === null || _b === void 0 ? void 0 : _b.pickerTags) !== null && _c !== void 0 ? _c : [], minCharLimitForSuggestions: 2, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, item); }, pickerDescriptionOptions: (_d = item.pickerOptions) === null || _d === void 0 ? void 0 : _d.pickerDescriptionOptions }, void 0)] }, void 0));
                     break;
                 case EditControlType.Checkbox:
-                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } })] }, item.key));
+                    tmpRenderObj.push(_jsxs("div", { children: [_jsx(Label, { children: item.text }, void 0), _jsx(Checkbox, { styles: { root: { marginTop: 0 } }, disabled: !item.editable, checked: columnValuesObj[item.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, item); } }, void 0)] }, item.key));
                     break;
                 case EditControlType.MultilineTextField:
-                    tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, multiline: true, rows: 1, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }));
+                    tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, multiline: true, rows: 1, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }, void 0));
                     break;
                 default:
-                    tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }));
+                    tmpRenderObj.push(_jsx(TextField, { errorMessage: columnValuesObj[item.key].error, name: item.text, id: item.key, label: item.text, styles: textFieldStyles, onChange: function (ev, text) { return onTextUpdate(ev, text, item); }, value: columnValuesObj[item.key].value || '' }, void 0));
                     break;
             }
         });
         if (props.enableRowsCounterField) {
-            tmpRenderObj.push(_jsx(SpinButton, { componentRef: AddSpinRef, label: "# of Rows to Add", labelPosition: Position.top, defaultValue: "1", min: 0, max: 100, step: 1, incrementButtonAriaLabel: "Increase value by 1", decrementButtonAriaLabel: "Decrease value by 1", styles: { spinButtonWrapper: { width: 75 } } }));
+            tmpRenderObj.push(_jsx(SpinButton, { componentRef: AddSpinRef, label: "# of Rows to Add", labelPosition: Position.top, defaultValue: "1", min: 0, max: 100, step: 1, incrementButtonAriaLabel: "Increase value by 1", decrementButtonAriaLabel: "Decrease value by 1", styles: { spinButtonWrapper: { width: 75 } } }, void 0));
         }
         return tmpRenderObj;
     };
-    return (_jsxs(Stack, { children: [_jsx(Stack, __assign({ tokens: verticalGapStackTokens }, { children: columnValuesObj && createTextFields() })), _jsx(Stack, __assign({ horizontal: true, disableShrink: true, styles: stackStyles, tokens: horizontalGapStackTokens }, { children: _jsx(PrimaryButton, { text: "Save To Grid", className: controlClass.submitStylesEditpanel, onClick: onPanelSubmit, allowDisabledFocus: true, disabled: columnValuesObj && Object.keys(columnValuesObj).some(function (k) { return columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0; }) || false }) }))] }));
+    return (_jsxs(Stack, { children: [_jsx(Stack, __assign({ tokens: verticalGapStackTokens }, { children: columnValuesObj && createTextFields() }), void 0), _jsx(Stack, __assign({ horizontal: true, disableShrink: true, styles: stackStyles, tokens: horizontalGapStackTokens }, { children: _jsx(PrimaryButton, { text: "Save To Grid", className: controlClass.submitStylesEditpanel, onClick: onPanelSubmit, allowDisabledFocus: true, disabled: columnValuesObj && Object.keys(columnValuesObj).some(function (k) { return columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0; }) || false }, void 0) }), void 0)] }, void 0));
 };
 export default AddRowPanel;

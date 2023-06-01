@@ -78,7 +78,7 @@ var PickerControl = function (props) {
         }
     };
     var onRenderPlainCard = function (item) {
-        return (_jsx("div", __assign({ className: classNames.plainCard }, { children: pickerDescriptions.filter(function (x) { return x.key == item.key; })[0].description })));
+        return (_jsx("div", __assign({ className: classNames.plainCard }, { children: pickerDescriptions.filter(function (x) { return x.key == item.key; })[0].description }), void 0));
     };
     var onRenderSuggestionsItem = function (tag, itemProps) {
         var plainCardProps = {
@@ -86,11 +86,11 @@ var PickerControl = function (props) {
             renderData: tag
         };
         if (pickerDescriptions && pickerDescriptions.length > 0) {
-            return (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: plainCardProps, instantOpenOnClick: true }, { children: _jsx("div", __assign({ style: { padding: '10px' } }, { children: tag.name }), tag.key) })));
+            return (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: plainCardProps, instantOpenOnClick: true }, { children: _jsx("div", __assign({ style: { padding: '10px' } }, { children: tag.name }), tag.key) }), void 0));
         }
         return _jsx("div", __assign({ style: { padding: '10px' } }, { children: tag.name }), tag.key);
     };
-    return (_jsx(_Fragment, { children: _jsx(TagPicker, { removeButtonAriaLabel: "Remove", onResolveSuggestions: filterSuggestedTags, getTextFromItem: getTextFromItem, pickerSuggestionsProps: pickerSuggestionsProps, itemLimit: (_a = props.selectedItemsLimit) !== null && _a !== void 0 ? _a : 1, onChange: onFilterTagListChanged, selectedItems: defaultTags, inputProps: inputProps, onRenderSuggestionsItem: onRenderSuggestionsItem }) }));
+    return (_jsx(_Fragment, { children: _jsx(TagPicker, { removeButtonAriaLabel: "Remove", onResolveSuggestions: filterSuggestedTags, getTextFromItem: getTextFromItem, pickerSuggestionsProps: pickerSuggestionsProps, itemLimit: (_a = props.selectedItemsLimit) !== null && _a !== void 0 ? _a : 1, onChange: onFilterTagListChanged, selectedItems: defaultTags, inputProps: inputProps, onRenderSuggestionsItem: onRenderSuggestionsItem }, void 0) }, void 0));
 };
 export default PickerControl;
 function GetMatchingPickerTags(filterText, pickerTags, rule, listContainsTagList, tagList) {

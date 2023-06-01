@@ -47,8 +47,8 @@ var MessageDialog = function (props) {
         }
     });
     useEffect(function () {
-        setMessageDialogContent(_jsxs(_Fragment, { children: [_jsxs("div", { children: [_jsx("h3", __assign({ className: controlClass.dialogHeaderStyles }, { children: props && props.message ? props.message : '' })), _jsx("div", __assign({ className: controlClass.dialogSubMessageStyles }, { children: props && props.subMessage ? props.subMessage : '' }))] }), _jsx(DialogFooter, { children: _jsx(DefaultButton, { onClick: function () { return closeDialog(); }, text: "Close" }) })] }));
+        setMessageDialogContent(_jsxs(_Fragment, { children: [_jsxs("div", { children: [_jsx("h3", __assign({ className: controlClass.dialogHeaderStyles }, { children: props && props.message ? props.message : '' }), void 0), _jsx("div", __assign({ className: controlClass.dialogSubMessageStyles }, { children: props && props.subMessage ? props.subMessage : '' }), void 0)] }, void 0), _jsx(DialogFooter, { children: _jsx(DefaultButton, { onClick: function () { return closeDialog(); }, text: "Close" }, void 0) }, void 0)] }, void 0));
     }, [props]);
-    return (_jsx(Dialog, __assign({ hidden: !messageDialogContent, onDismiss: closeDialog, closeButtonAriaLabel: "Close" }, { children: messageDialogContent })));
+    return (_jsx(Dialog, __assign({ hidden: !messageDialogContent, onDismiss: closeDialog, closeButtonAriaLabel: "Close" }, { children: messageDialogContent }), void 0));
 };
 export default MessageDialog;

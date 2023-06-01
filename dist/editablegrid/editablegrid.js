@@ -24,7 +24,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -417,7 +417,7 @@ var EditableGrid = function (props) {
         var updateItemName = function () {
             if (SpinRef && SpinRef.current.value) {
                 setDialogContent(undefined);
-                setAnnounced(_jsx(Announced, { message: "Rows Added", "aria-live": "assertive" }));
+                setAnnounced(_jsx(Announced, { message: "Rows Added", "aria-live": "assertive" }, void 0));
                 var rowCount = parseInt(SpinRef.current.value, 10);
                 var addedRows = GetDefaultRowObject(rowCount);
                 var newGridData = __spreadArray(__spreadArray([], __read(defaultGridData), false), __read(addedRows), false);
@@ -425,11 +425,11 @@ var EditableGrid = function (props) {
                 SetGridItems(newGridData);
             }
         };
-        setDialogContent(_jsxs(_Fragment, { children: [_jsx(SpinButton, { componentRef: SpinRef, defaultValue: "0", label: 'Row Count:', min: 0, max: 100, step: 1, incrementButtonAriaLabel: 'Increase value by 1', decrementButtonAriaLabel: 'Decrease value by 1' }), _jsx(DialogFooter, { children: _jsx(PrimaryButton
+        setDialogContent(_jsxs(_Fragment, { children: [_jsx(SpinButton, { componentRef: SpinRef, defaultValue: "0", label: 'Row Count:', min: 0, max: 100, step: 1, incrementButtonAriaLabel: 'Increase value by 1', decrementButtonAriaLabel: 'Decrease value by 1' }, void 0), _jsx(DialogFooter, { children: _jsx(PrimaryButton
                     // eslint-disable-next-line react/jsx-no-bind
                     , { 
                         // eslint-disable-next-line react/jsx-no-bind
-                        onClick: updateItemName, text: "Save" }) })] }));
+                        onClick: updateItemName, text: "Save" }, void 0) }, void 0)] }, void 0));
     };
     var onAddPanelChange = function (item, noOfRows) {
         dismissPanelForAdd();
@@ -1066,7 +1066,7 @@ var EditableGrid = function (props) {
         filters.filter(function (item) { return item.index != filter.index && item.column.key != filter.column.key; })
             .map(function (item) { return item.isHidden = true; });
         filter.filterCalloutProps.filterList = GetUniqueColumnValues(column, filter.filterCalloutProps.filterList);
-        setFilterCalloutComponent(_jsx(FilterCallout, { onCancel: function () { setFilterCalloutComponent(undefined); }, onApply: onFilterApply, columnKey: filter.filterCalloutProps.columnKey, columnName: filter.filterCalloutProps.columnName, filterList: filter.filterCalloutProps.filterList, columnClass: filter.filterCalloutProps.columnClass }));
+        setFilterCalloutComponent(_jsx(FilterCallout, { onCancel: function () { setFilterCalloutComponent(undefined); }, onApply: onFilterApply, columnKey: filter.filterCalloutProps.columnKey, columnName: filter.filterCalloutProps.columnName, filterList: filter.filterCalloutProps.filterList, columnClass: filter.filterCalloutProps.columnClass }, void 0));
     };
     var GetUniqueColumnValues = function (column, prevFilters) {
         var uniqueVals = __spreadArray([], __read(new Set(defaultGridData.filter(function (x) { return (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_column_filter_ == true) && (x._is_filtered_in_grid_search_ == true); })
@@ -1150,44 +1150,44 @@ var EditableGrid = function (props) {
                                         (((_a = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _a === void 0 ? void 0 : _a.enable) ?
                                             (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                                     onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                                }, instantOpenOnClick: true }, { children: RenderMultilineTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) })))
+                                                }, instantOpenOnClick: true }, { children: RenderMultilineTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) }), void 0))
                                             :
                                                 (RenderMultilineTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx(TextField, { errorMessage: activateCellEdit[rowNum]['properties'][column.key].error, label: item.text, ariaLabel: column.key, multiline: true, rows: 1, styles: textFieldStyles, onChange: function (ev, text) { return onCellValueChange(ev, text, item, rowNum, column.key, column); }, autoFocus: !props.enableDefaultEditMode && !editMode && !(activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated']), value: activateCellEdit[rowNum]['properties'][column.key].value, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDoubleClickEvent(column.key, rowNum, false) : null; }, maxLength: column.maxLength != null ? column.maxLength : 10000 })) });
+                                        (_jsx(TextField, { errorMessage: activateCellEdit[rowNum]['properties'][column.key].error, label: item.text, ariaLabel: column.key, multiline: true, rows: 1, styles: textFieldStyles, onChange: function (ev, text) { return onCellValueChange(ev, text, item, rowNum, column.key, column); }, autoFocus: !props.enableDefaultEditMode && !editMode && !(activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated']), value: activateCellEdit[rowNum]['properties'][column.key].value, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDoubleClickEvent(column.key, rowNum, false) : null; }, maxLength: column.maxLength != null ? column.maxLength : 10000 }, void 0)) }, void 0);
                         case EditControlType.Date:
                             return _jsx("span", { children: (ShouldRenderSpan())
                                     ?
                                         (((_b = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _b === void 0 ? void 0 : _b.enable) ?
                                             (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                                     onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                                }, instantOpenOnClick: true }, { children: RenderDateSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) })))
+                                                }, instantOpenOnClick: true }, { children: RenderDateSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) }), void 0))
                                             :
                                                 (RenderDateSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx(DatePicker, { strings: DayPickerStrings, placeholder: "Select a date...", ariaLabel: column.key, value: new Date(activateCellEdit[rowNum].properties[column.key].value), onSelectDate: function (date) { return onCellDateChange(date, item, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDoubleClickEvent(column.key, rowNum, false) : null; } })) });
+                                        (_jsx(DatePicker, { strings: DayPickerStrings, placeholder: "Select a date...", ariaLabel: column.key, value: new Date(activateCellEdit[rowNum].properties[column.key].value), onSelectDate: function (date) { return onCellDateChange(date, item, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDoubleClickEvent(column.key, rowNum, false) : null; } }, void 0)) }, void 0);
                         case EditControlType.DropDown:
                             return _jsx("span", __assign({ className: 'row-' + rowNum + '-col-' + index }, { children: (ShouldRenderSpan())
                                     ?
                                         (((_c = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _c === void 0 ? void 0 : _c.enable) ?
                                             (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                                     onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                                }, instantOpenOnClick: true }, { children: RenderDropdownSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) })))
+                                                }, instantOpenOnClick: true }, { children: RenderDropdownSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) }), void 0))
                                             :
                                                 (RenderDropdownSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx(Dropdown, { ariaLabel: column.key, placeholder: (_g = (_f = (_e = (typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_d = column.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.filter(function (x) { return x.text == item[column.key]; })[0]) === null || _f === void 0 ? void 0 : _f.text) !== null && _g !== void 0 ? _g : 'Select an option', options: typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_h = column.dropdownValues) !== null && _h !== void 0 ? _h : [], styles: dropdownStyles, dropdownWidth: 'auto', onChange: function (ev, selectedItem) { return onDropDownChange(ev, selectedItem, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum, false) : null; } })) }));
+                                        (_jsx(Dropdown, { ariaLabel: column.key, placeholder: (_g = (_f = (_e = (typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_d = column.dropdownValues) !== null && _d !== void 0 ? _d : [])) === null || _e === void 0 ? void 0 : _e.filter(function (x) { return x.text == item[column.key]; })[0]) === null || _f === void 0 ? void 0 : _f.text) !== null && _g !== void 0 ? _g : 'Select an option', options: typeof column.dropdownValues === 'function' ? column.dropdownValues(item) : (_h = column.dropdownValues) !== null && _h !== void 0 ? _h : [], styles: dropdownStyles, dropdownWidth: 'auto', onChange: function (ev, selectedItem) { return onDropDownChange(ev, selectedItem, rowNum, column); }, onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum, false) : null; } }, void 0)) }), void 0);
                         case EditControlType.Picker:
                             return _jsx("span", { children: (ShouldRenderSpan())
                                     ?
                                         (((_j = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _j === void 0 ? void 0 : _j.enable) ?
                                             (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                                     onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                                }, instantOpenOnClick: true }, { children: RenderPickerSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) })))
+                                                }, instantOpenOnClick: true }, { children: RenderPickerSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) }), void 0))
                                             :
                                                 (RenderPickerSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx("span", __assign({ onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onCellPickerDoubleClickEvent(column.key, rowNum, false) : null; } }, { children: _jsx(PickerControl, { arialabel: column.key, selectedItemsLimit: (_k = column.pickerOptions) === null || _k === void 0 ? void 0 : _k.tagsLimit, pickerTags: (_m = (_l = column.pickerOptions) === null || _l === void 0 ? void 0 : _l.pickerTags) !== null && _m !== void 0 ? _m : [], defaultTags: item[column.key] ? item[column.key].split(";") : [], minCharLimitForSuggestions: (_o = column.pickerOptions) === null || _o === void 0 ? void 0 : _o.minCharLimitForSuggestions, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, rowNum, column); }, pickerDescriptionOptions: (_p = column.pickerOptions) === null || _p === void 0 ? void 0 : _p.pickerDescriptionOptions, suggestionRule: (_q = column.pickerOptions) === null || _q === void 0 ? void 0 : _q.suggestionsRule }) }))) });
+                                        (_jsx("span", __assign({ onDoubleClick: function () { return !activateCellEdit[rowNum].isActivated ? onCellPickerDoubleClickEvent(column.key, rowNum, false) : null; } }, { children: _jsx(PickerControl, { arialabel: column.key, selectedItemsLimit: (_k = column.pickerOptions) === null || _k === void 0 ? void 0 : _k.tagsLimit, pickerTags: (_m = (_l = column.pickerOptions) === null || _l === void 0 ? void 0 : _l.pickerTags) !== null && _m !== void 0 ? _m : [], defaultTags: item[column.key] ? item[column.key].split(";") : [], minCharLimitForSuggestions: (_o = column.pickerOptions) === null || _o === void 0 ? void 0 : _o.minCharLimitForSuggestions, onTaglistChanged: function (selectedItem) { return onCellPickerTagListChanged(selectedItem, rowNum, column); }, pickerDescriptionOptions: (_p = column.pickerOptions) === null || _p === void 0 ? void 0 : _p.pickerDescriptionOptions, suggestionRule: (_q = column.pickerOptions) === null || _q === void 0 ? void 0 : _q.suggestionsRule }, void 0) }), void 0)) }, void 0);
                         case EditControlType.Checkbox:
                             var isCheckboxDisabled = false;
                             isCheckboxDisabled = !props.enableCellEdit || !column.editable || item._is_muted_;
@@ -1200,29 +1200,29 @@ var EditableGrid = function (props) {
                                         }, instantOpenOnClick: true }, { children: _jsx(Checkbox, { inputProps: {
                                                 // @ts-ignore
                                                 "data-is-focusable": false
-                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }) })))
+                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0) }), void 0))
                                     :
                                         _jsx(Checkbox, { inputProps: {
                                                 // @ts-ignore
                                                 "data-is-focusable": false
-                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } })) });
+                                            }, ariaLabel: column.key, disabled: isCheckboxDisabled, checked: activateCellEdit[rowNum].properties[column.key].value || false, onChange: function (ev, checked) { return onCheckboxChange(checked, rowNum, column); } }, void 0)) }, void 0);
                         case EditControlType.Link:
                             return _jsx("span", { children: (((_s = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _s === void 0 ? void 0 : _s.enable) ?
                                     (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                             onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                        }, instantOpenOnClick: true }, { children: RenderLinkSpan(props, index, rowNum, column, item, EditCellValue) })))
+                                        }, instantOpenOnClick: true }, { children: RenderLinkSpan(props, index, rowNum, column, item, EditCellValue) }), void 0))
                                     :
-                                        (RenderLinkSpan(props, index, rowNum, column, item, EditCellValue))) });
+                                        (RenderLinkSpan(props, index, rowNum, column, item, EditCellValue))) }, void 0);
                         default:
                             return _jsx("span", { children: (ShouldRenderSpan())
                                     ?
                                         (((_t = column === null || column === void 0 ? void 0 : column.hoverComponentOptions) === null || _t === void 0 ? void 0 : _t.enable) ?
                                             (_jsx(HoverCard, __assign({ type: HoverCardType.plain, plainCardProps: {
                                                     onRenderPlainCard: function () { return onRenderPlainCard(column, rowNum, item); },
-                                                }, instantOpenOnClick: true }, { children: RenderTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) })))
+                                                }, instantOpenOnClick: true }, { children: RenderTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined) }), void 0))
                                             : (RenderTextFieldSpan(props, index, rowNum, column, item, EditCellValue, column.onCustomRender ? column.onCustomRender(item, index, column) : undefined)))
                                     :
-                                        (_jsx(TextField, { errorMessage: activateCellEdit[rowNum]['properties'][column.key].error, label: item.text, ariaLabel: column.key, styles: textFieldStyles, onChange: function (ev, text) { return onCellValueChange(ev, text, item, rowNum, column.key, column); }, autoFocus: !props.enableDefaultEditMode && !editMode && !((_u = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[Number(item['_grid_row_id_'])]) === null || _u === void 0 ? void 0 : _u['isActivated']), value: activateCellEdit[rowNum]['properties'][column.key].value, onKeyDown: function (event) { return onKeyDownEvent(event, column, rowNum, false); }, maxLength: column.maxLength != null ? column.maxLength : 1000 })) });
+                                        (_jsx(TextField, { errorMessage: activateCellEdit[rowNum]['properties'][column.key].error, label: item.text, ariaLabel: column.key, styles: textFieldStyles, onChange: function (ev, text) { return onCellValueChange(ev, text, item, rowNum, column.key, column); }, autoFocus: !props.enableDefaultEditMode && !editMode && !((_u = activateCellEdit === null || activateCellEdit === void 0 ? void 0 : activateCellEdit[Number(item['_grid_row_id_'])]) === null || _u === void 0 ? void 0 : _u['isActivated']), value: activateCellEdit[rowNum]['properties'][column.key].value, onKeyDown: function (event) { return onKeyDownEvent(event, column, rowNum, false); }, maxLength: column.maxLength != null ? column.maxLength : 1000 }, void 0)) }, void 0);
                     }
                     function ShouldRenderSpan() {
                         var _a, _b, _c;
@@ -1290,14 +1290,14 @@ var EditableGrid = function (props) {
                     return (_jsxs(_Fragment, { children: [props.enableRowEdit ?
                                 (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'])
                                     ?
-                                        _jsxs(_Fragment, { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }), props.enableRowEditCancel
+                                        _jsxs(_Fragment, { children: [_jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), false); }, iconProps: { iconName: 'Save' }, title: 'Save' }, void 0), props.enableRowEditCancel
                                                     ?
-                                                        _jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' })
+                                                        _jsx(IconButton, { "data-is-focusable": false, disabled: editMode || item._is_muted_, onClick: function () { return CancelRowEditMode(item, Number(item['_grid_row_id_'])); }, iconProps: { iconName: 'RemoveFilter' }, title: 'Cancel' }, void 0)
                                                     :
-                                                        null] })
+                                                        null] }, void 0)
                                     :
                                         _jsx(_Fragment, { children: !props.enableDefaultEditMode &&
-                                                _jsx(IconButton, { "data-is-focusable": false, disabled: item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }) }) : null, ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
+                                                _jsx(IconButton, { "data-is-focusable": false, disabled: item._is_muted_, onClick: function () { return ShowRowEditMode(item, Number(item['_grid_row_id_']), true); }, iconProps: { iconName: 'Edit' }, title: 'Edit' }, void 0) }, void 0) : null, ((_a = props.rowMuteOptions) === null || _a === void 0 ? void 0 : _a.enableRowMute) ?
                                 _jsx(IconButton, { disabled: activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])] && activateCellEdit[Number(item['_grid_row_id_'])]['isActivated'], "data-is-focusable": false, onClick: function () {
                                         var defaultGridDataTmp = __spreadArray([], __read(defaultGridData), false);
                                         defaultGridDataTmp.filter((function (x) { return x._grid_row_id_ == item._grid_row_id_; })).map((function (x) {
@@ -1306,9 +1306,9 @@ var EditableGrid = function (props) {
                                         }));
                                         //setGridEditState(true);
                                         SetGridItems(defaultGridDataTmp);
-                                    }, iconProps: { iconName: "".concat(item._is_muted_ ? 'RedEye' : 'Hide') }, title: "".concat(item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute') })
+                                    }, iconProps: { iconName: "".concat(item._is_muted_ ? 'RedEye' : 'Hide') }, title: "".concat(item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute') }, void 0)
                                 : null, ((_b = props.gridCopyOptions) === null || _b === void 0 ? void 0 : _b.enableRowCopy) ?
-                                _jsx(IconButton, { disabled: item._is_muted_, "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }) : null] }));
+                                _jsx(IconButton, { disabled: item._is_muted_, "data-is-focusable": false, onClick: function () { return HandleRowCopy(Number(item['_grid_row_id_'])); }, iconProps: { iconName: "Copy" }, title: "Copy" }, void 0) : null] }, void 0));
                 },
             };
             props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
@@ -1537,11 +1537,11 @@ var EditableGrid = function (props) {
         if (!props) {
             return null;
         }
-        var onRenderColumnHeaderTooltip = function (tooltipHostProps) { return (_jsx(TooltipHost, __assign({}, tooltipHostProps))); };
-        return (_jsx(Sticky, __assign({ stickyPosition: StickyPositionType.Header, isScrollSynced: true }, { children: defaultRender(__assign(__assign({}, props), { onRenderColumnHeaderTooltip: onRenderColumnHeaderTooltip })) })));
+        var onRenderColumnHeaderTooltip = function (tooltipHostProps) { return (_jsx(TooltipHost, __assign({}, tooltipHostProps), void 0)); };
+        return (_jsx(Sticky, __assign({ stickyPosition: StickyPositionType.Header, isScrollSynced: true }, { children: defaultRender(__assign(__assign({}, props), { onRenderColumnHeaderTooltip: onRenderColumnHeaderTooltip })) }), void 0));
     };
     var onRenderPlainCard = function (column, rowNum, rowData) {
-        return (_jsx("div", __assign({ className: controlClass.plainCard }, { children: React.cloneElement(column.hoverComponentOptions.hoverChildComponent, { column: column, rowNum: rowNum, rowData: rowData }) })));
+        return (_jsx("div", __assign({ className: controlClass.plainCard }, { children: React.cloneElement(column.hoverComponentOptions.hoverChildComponent, { column: column, rowNum: rowNum, rowData: rowData }) }), void 0));
     };
     /* #region [Span Renders] */
     var RenderLinkSpan = function (props, index, rowNum, column, item, EditCellValue) {
@@ -1551,9 +1551,9 @@ var EditableGrid = function (props) {
                     _jsx(Link, __assign({ "data-is-focusable": column.linkOptions.isFocusable !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_b = column.linkOptions) === null || _b === void 0 ? void 0 : _b.disabled) || item._is_muted_, underline: true, onClick: function () {
                             var params = { rowindex: [rowNum], data: defaultGridData, triggerkey: column.key, activatetriggercell: false };
                             column.linkOptions.onClick(params);
-                        } }, { children: item[column.key] }))
+                        } }, { children: item[column.key] }), void 0)
                 :
-                    _jsx(Link, __assign({ "data-is-focusable": ((_c = column === null || column === void 0 ? void 0 : column.linkOptions) === null || _c === void 0 ? void 0 : _c.isFocusable) !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.disabled) || item._is_muted_, underline: true, href: (_e = column.linkOptions) === null || _e === void 0 ? void 0 : _e.href }, { children: item[column.key] })) }));
+                    _jsx(Link, __assign({ "data-is-focusable": ((_c = column === null || column === void 0 ? void 0 : column.linkOptions) === null || _c === void 0 ? void 0 : _c.isFocusable) !== undefined ? column.linkOptions.isFocusable : true, target: "_blank", disabled: ((_d = column.linkOptions) === null || _d === void 0 ? void 0 : _d.disabled) || item._is_muted_, underline: true, href: (_e = column.linkOptions) === null || _e === void 0 ? void 0 : _e.href }, { children: item[column.key] }), void 0) }), void 0);
     };
     var RenderTextFieldSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
@@ -1565,13 +1565,13 @@ var EditableGrid = function (props) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
     };
     var RenderDateSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
-        return _jsx("span", __assign({ id: "id-".concat(props.id, "-col-").concat(index, "-row-").concat(rowNum), className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item) }, { children: item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null }));
+        return _jsx("span", __assign({ id: "id-".concat(props.id, "-col-").concat(index, "-row-").concat(rowNum), className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item) }, { children: item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null }), void 0);
     };
     var RenderMultilineTextFieldSpan = function (props, index, rowNum, column, item, EditCellValue, customRender) {
         return RenderSpan(props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender);
     };
     var RenderSpan = function (props, index, rowNum, column, item, HandleCellOnClick, EditCellValue, HandleCellOnDoubleClick, customRender) {
-        return _jsx("span", __assign({ id: "id-".concat(props.id, "-col-").concat(index, "-row-").concat(rowNum), className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item), style: { whiteSpace: column.isMultiline ? 'pre-line' : 'normal' } }, { children: customRender ? customRender : item[column.key] }));
+        return _jsx("span", __assign({ id: "id-".concat(props.id, "-col-").concat(index, "-row-").concat(rowNum), className: GetDynamicSpanStyles(column, item[column.key]), onClick: HandleCellOnClick(props, column, EditCellValue, rowNum), onDoubleClick: HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item), style: { whiteSpace: column.isMultiline ? 'pre-line' : 'normal' } }, { children: customRender ? customRender : item[column.key] }), void 0);
     };
     /* #endregion */
     /* #region [Utilities] */
@@ -1660,13 +1660,13 @@ var EditableGrid = function (props) {
             }
         }
     }, [scrollablePaneRef, props.aboveStickyContent, props.belowStickyContent]);
-    return (_jsxs(ThemeProvider, __assign({ theme: props.theme }, { children: [_jsx(Panel, __assign({ isOpen: isOpenForEdit, onDismiss: dismissPanelForEdit, isLightDismiss: true, headerText: "Edit Grid Data", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(EditPanel, { onChange: onEditPanelChange, columnConfigurationData: props.customEditPanelColumns ? props.customEditPanelColumns : props.columns, isBulk: isBulkPanelEdit, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }) })), props.enableRowAddWithValues && props.enableRowAddWithValues.enable
+    return (_jsxs(ThemeProvider, __assign({ theme: props.theme }, { children: [_jsx(Panel, __assign({ isOpen: isOpenForEdit, onDismiss: dismissPanelForEdit, isLightDismiss: true, headerText: "Edit Grid Data", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(EditPanel, { onChange: onEditPanelChange, columnConfigurationData: props.customEditPanelColumns ? props.customEditPanelColumns : props.columns, isBulk: isBulkPanelEdit, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }, void 0) }), void 0), props.enableRowAddWithValues && props.enableRowAddWithValues.enable
                 ?
-                    _jsx(Panel, __assign({ isOpen: isOpenForAdd, onDismiss: dismissPanelForAdd, isLightDismiss: true, headerText: "Add Rows", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(AddRowPanel, { onChange: onAddPanelChange, columnConfigurationData: props.columns, enableRowsCounterField: props.enableRowAddWithValues.enableRowsCounterInPanel }) }))
+                    _jsx(Panel, __assign({ isOpen: isOpenForAdd, onDismiss: dismissPanelForAdd, isLightDismiss: true, headerText: "Add Rows", closeButtonAriaLabel: "Close", type: PanelType.smallFixedFar }, { children: _jsx(AddRowPanel, { onChange: onAddPanelChange, columnConfigurationData: props.columns, enableRowsCounterField: props.enableRowAddWithValues.enableRowsCounterInPanel }, void 0) }), void 0)
                 :
                     null, defaultTag.length > 0 ?
-                _jsx(TagPicker, { onResolveSuggestions: onFilterChanged, getTextFromItem: getTextFromItem, pickerSuggestionsProps: pickerSuggestionsProps, inputProps: inputProps, selectedItems: defaultTag, onChange: onFilterTagListChanged }) : null, props.enableCommandBar === undefined || props.enableCommandBar === true ? _jsx(CommandBar, { items: CommandBarItemProps, ariaLabel: "Command Bar", farItems: CommandBarFarItemProps }) : null, showSpinner ?
-                _jsx(Spinner, { label: "Updating...", ariaLive: "assertive", labelPosition: "right", size: SpinnerSize.large })
+                _jsx(TagPicker, { onResolveSuggestions: onFilterChanged, getTextFromItem: getTextFromItem, pickerSuggestionsProps: pickerSuggestionsProps, inputProps: inputProps, selectedItems: defaultTag, onChange: onFilterTagListChanged }, void 0) : null, props.enableCommandBar === undefined || props.enableCommandBar === true ? _jsx(CommandBar, { items: CommandBarItemProps, ariaLabel: "Command Bar", farItems: CommandBarFarItemProps }, void 0) : null, showSpinner ?
+                _jsx(Spinner, { label: "Updating...", ariaLive: "assertive", labelPosition: "right", size: SpinnerSize.large }, void 0)
                 :
                     null, showFilterCallout && filterCalloutComponent, _jsx("div", __assign({ className: mergeStyles({ height: props.height != null ? props.height : '70vh', width: props.width != null ? props.width : '130vh', position: 'relative', backgroundColor: 'white', }) }, { children: _jsx(ScrollablePane, __assign({ styles: { contentContainer: { paddingTop: aboveContentHeight, paddingBottom: belowContentHeight } }, componentRef: scrollablePaneRef, scrollbarVisibility: ScrollbarVisibility.auto }, { children: _jsx(MarqueeSelection, __assign({ isDraggingConstrainedToRoot: true, selection: _selection, isEnabled: props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true }, { children: _jsx(DetailsList, { compact: true, items: defaultGridData.length > 0 ? defaultGridData.filter(function (x) { return (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_ == true) && (x._is_filtered_in_grid_search_ == true) && (x._is_filtered_in_column_filter_ == true); }) : [], columns: GridColumns, selectionMode: props.selectionMode, 
                             // layoutMode={props.layoutMode}
@@ -1683,17 +1683,17 @@ var EditableGrid = function (props) {
                                                         }
                                                     }
                                                 } }))
-                                            : defaultRender(__assign({}, rowProps)) : null });
-                            }, onRowDidMount: props.onRowDidMount, onRowWillUnmount: props.onRowWillUnmount, onShouldVirtualize: props.onShouldVirtualize, rowElementEventMap: props.rowElementEventMap, selectionPreservedOnEmptyClick: props.selectionPreservedOnEmptyClick, selectionZoneProps: props.selectionZoneProps, shouldApplyApplicationRole: props.shouldApplyApplicationRole, styles: props.styles, useFastIcons: props.useFastIcons, usePageCache: props.usePageCache, useReducedRowRenderer: props.useReducedRowRenderer, viewport: props.viewport }) })) })) })), _jsx(Dialog, __assign({ hidden: !dialogContent, onDismiss: CloseRenameDialog, closeButtonAriaLabel: "Close" }, { children: dialogContent })), messageDialogProps.visible
+                                            : defaultRender(__assign({}, rowProps)) : null }, void 0);
+                            }, onRowDidMount: props.onRowDidMount, onRowWillUnmount: props.onRowWillUnmount, onShouldVirtualize: props.onShouldVirtualize, rowElementEventMap: props.rowElementEventMap, selectionPreservedOnEmptyClick: props.selectionPreservedOnEmptyClick, selectionZoneProps: props.selectionZoneProps, shouldApplyApplicationRole: props.shouldApplyApplicationRole, styles: props.styles, useFastIcons: props.useFastIcons, usePageCache: props.usePageCache, useReducedRowRenderer: props.useReducedRowRenderer, viewport: props.viewport }, void 0) }), void 0) }), void 0) }), void 0), _jsx(Dialog, __assign({ hidden: !dialogContent, onDismiss: CloseRenameDialog, closeButtonAriaLabel: "Close" }, { children: dialogContent }), void 0), messageDialogProps.visible
                 ?
-                    _jsx(MessageDialog, { message: messageDialogProps.message, subMessage: messageDialogProps.subMessage, onDialogClose: CloseMessageDialog })
+                    _jsx(MessageDialog, { message: messageDialogProps.message, subMessage: messageDialogProps.subMessage, onDialogClose: CloseMessageDialog }, void 0)
                 :
                     null, props.enableColumnEdit && isUpdateColumnClicked ?
-                _jsx(ColumnUpdateDialog, { columnConfigurationData: props.columns, onDialogCancel: CloseColumnUpdateDialog, onDialogSave: UpdateGridColumnData, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null })
+                _jsx(ColumnUpdateDialog, { columnConfigurationData: props.columns, onDialogCancel: CloseColumnUpdateDialog, onDialogSave: UpdateGridColumnData, selectedItem: selectedItems && selectedItems.length === 1 ? selectedItems[0] : null }, void 0)
                 :
                     null, props.enableColumnFilterRules && isColumnFilterClicked ?
-                _jsx(ColumnFilterDialog, { columnConfigurationData: props.columns.filter(function (item) { return filteredColumns.indexOf(item) < 0 && isColumnDataTypeSupportedForFilter(item.dataType); }), onDialogCancel: CloseColumnFilterDialog, onDialogSave: onFilterApplied, gridData: defaultGridData })
+                _jsx(ColumnFilterDialog, { columnConfigurationData: props.columns.filter(function (item) { return filteredColumns.indexOf(item) < 0 && isColumnDataTypeSupportedForFilter(item.dataType); }), onDialogCancel: CloseColumnFilterDialog, onDialogSave: onFilterApplied, gridData: defaultGridData }, void 0)
                 :
-                    null] })));
+                    null] }), void 0));
 };
 export default EditableGrid;

@@ -17,6 +17,6 @@ import FilterList from "./filterlist";
 var FilterCallout = function (props) {
     var labelId = useId('callout-label');
     var descriptionId = useId('callout-description');
-    return (_jsx(_Fragment, { children: _jsx(Callout, __assign({ className: styles.callout, ariaLabelledBy: labelId, ariaDescribedBy: descriptionId, role: "filtercallout", gapSpace: 5, target: ".".concat(props.columnClass), isBeakVisible: true, directionalHint: DirectionalHint.topCenter }, { children: _jsx(FilterList, { onCancel: props.onCancel, onApply: props.onApply, columnKey: props.columnKey, columnName: props.columnName, filterList: props.filterList }) })) }));
+    return (_jsx(_Fragment, { children: _jsx(Callout, __assign({ className: styles.callout, ariaLabelledBy: labelId, ariaDescribedBy: descriptionId, role: "filtercallout", gapSpace: 5, target: ".".concat(props.columnClass), isBeakVisible: true, directionalHint: DirectionalHint.topCenter }, { children: _jsx(FilterList, { onCancel: props.onCancel, onApply: props.onApply, columnKey: props.columnKey, columnName: props.columnName, filterList: props.filterList }, void 0) }), void 0) }, void 0));
 };
 export default FilterCallout;
