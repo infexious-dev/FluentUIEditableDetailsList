@@ -52,6 +52,11 @@ interface SortOptions {
     isEnabled: boolean;
 }
 
+interface IEventFilterList {
+    columnKey: string;
+    queryText: string;
+}
+
 const EditableGrid = (props: Props) => {
     const [editMode, setEditMode] = React.useState(false);
     const [isOpenForEdit, setIsOpenForEdit] = React.useState(false);
@@ -99,26 +104,101 @@ const EditableGrid = (props: Props) => {
         onSelectionChanged: () => setSelectionDetails(_getSelectionDetails()),
     });
 
+    const eventFilterList = React.useRef<IEventFilterList[]>([]);
+    const eventSearchQuery = React.useRef<string>("");
+
+    const onFilterHandler = (data: { columnName: string, queryText: string }) => {
+        if (data.columnName) {
+            const searchableColumn = props.columns.filter(x => x.includeColumnInSearch == true && x.name === data.columnName)[0];
+
+            if (searchableColumn) {
+                let searchResult: any[] = [...defaultGridData];
+                const index = eventFilterList.current.findIndex(filter => filter.columnKey === searchableColumn.key);
+
+                if (data.queryText) {
+                    // add to or update filter list
+                    if (index === -1) {
+                        eventFilterList.current.push({
+                            columnKey: searchableColumn.key,
+                            queryText: data.queryText
+                        })
+                    } else { // column exists in filter list
+                        eventFilterList.current[index].queryText = data.queryText
+                    }
+                }
+                else {
+                    // remove from filter list
+                    if (index !== -1)
+                        eventFilterList.current.splice(index, 1)
+                }
+
+                let searchableColumns = props.columns.filter(x => x.includeColumnInSearch == true).map(x => x.key);
+
+                searchResult.filter(item => {
+
+                    try {
+                        let filteredIn = true;
+
+                        eventFilterList.current.map(filter => {
+                            if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                                filteredIn = false;
+                        });
+
+                        // now check event emitter search
+                        if (filteredIn && eventSearchQuery.current && eventSearchQuery.current !== "") {
+                            var BreakException = {};
+                            try {
+                                searchableColumns.forEach(column => {
+                                    filteredIn = item[column] && item[column].toString().toLowerCase() && item[column].toString().toLowerCase().includes(eventSearchQuery.current.trim().toLowerCase());
+
+                                    if (filteredIn)
+                                        throw BreakException;
+                                })
+                            } catch (e) {
+                                // silently continue...
+                            }
+                        }
+
+                        item._is_filtered_in_grid_search_ = filteredIn;
+                    } catch (e) {
+                        // silently continue...
+                    }
+                });
+
+                CheckOnFilter();
+                setDefaultGridData(searchResult);
+            }
+        }
+    }
+
     const onSearchHandler = (event: any) => {
         if (event && event.target) {
 
             let queryText = event.target.value;
             if (queryText) {
+                eventSearchQuery.current = queryText;
                 let searchableColumns = props.columns.filter(x => x.includeColumnInSearch == true).map(x => x.key);
-
                 let searchResult: any[] = [...defaultGridData];
                 searchResult.filter(
-                    (_gridData, index) => {
+                    (item, index) => {
                         var BreakException = {};
                         try {
-                            searchableColumns.forEach((item2, index2) => {
-                                if (_gridData[item2] && _gridData[item2].toString().toLowerCase() && _gridData[item2].toString().toLowerCase().includes(queryText.trim().toLowerCase())) {
-                                    _gridData._is_filtered_in_grid_search_ = true;
+                            searchableColumns.forEach(column => {
+                                let filteredIn = item[column] && item[column].toString().toLowerCase() && item[column].toString().toLowerCase().includes(queryText.trim().toLowerCase());
+
+                                // now check event emitter filters
+                                if (filteredIn) {
+                                    eventFilterList.current.map(filter => {
+                                        console.log(item[column]);
+                                        if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                                            filteredIn = false;
+                                    })
+                                }
+
+                                item._is_filtered_in_grid_search_ = filteredIn;
+
+                                if (filteredIn)
                                     throw BreakException;
-                                }
-                                else {
-                                    _gridData._is_filtered_in_grid_search_ = false;
-                                }
                             });
                         } catch (e) {
                             // if (e !== BreakException) throw e;
@@ -128,21 +208,44 @@ const EditableGrid = (props: Props) => {
                 CheckOnFilter();
                 setDefaultGridData(searchResult);
             } else {
+                eventSearchQuery.current = "";
                 var gridDataTmp: any[] = [...defaultGridData];
-                gridDataTmp.map((item) => item._is_filtered_in_grid_search_ = true);
+                gridDataTmp.map(item => {
+                    let filteredIn = true;
+
+                    // ensure to respect event filters
+                    eventFilterList.current.map(filter => {
+                        if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                            filteredIn = false;
+                    });
+
+                    item._is_filtered_in_grid_search_ = filteredIn
+                });
                 setDefaultGridData(gridDataTmp);
             }
         } else {
             var gridDataTmp: any[] = [...defaultGridData];
-            gridDataTmp.map((item) => item._is_filtered_in_grid_search_ = true);
+            gridDataTmp.map(item => {
+                let filteredIn = true;
+
+                // ensure to respect event filters
+                eventFilterList.current.map(filter => {
+                    if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                        filteredIn = false;
+                });
+
+                item._is_filtered_in_grid_search_ = filteredIn
+            });
             setDefaultGridData(gridDataTmp);
         }
     };
 
     React.useEffect(() => {
         EventEmitter.subscribe(EventType.onSearch, onSearchHandler);
+        EventEmitter.subscribe(EventType.onFilter, onFilterHandler);
         return function cleanup() {
             EventEmitter.unsubscribe(EventType.onSearch, onSearchHandler);
+            EventEmitter.unsubscribe(EventType.onFilter, onFilterHandler);
         };
     });
 
@@ -2071,7 +2174,7 @@ const EditableGrid = (props: Props) => {
                 <ScrollablePane styles={{ contentContainer: { paddingTop: aboveContentHeight, paddingBottom: belowContentHeight } }} componentRef={scrollablePaneRef} scrollbarVisibility={ScrollbarVisibility.auto}>
                     <MarqueeSelection isDraggingConstrainedToRoot={true} selection={_selection} isEnabled={props.enableMarqueeSelection !== undefined ? props.enableMarqueeSelection : true} >
                         <DetailsList
-                             compact={true}
+                            compact={true}
                             items={defaultGridData.length > 0 ? defaultGridData.filter((x) => (x._grid_row_operation_ != Operation.Delete) && (x._is_filtered_in_ == true) && (x._is_filtered_in_grid_search_ == true) && (x._is_filtered_in_column_filter_ == true)) : []}
                             columns={GridColumns}
                             selectionMode={props.selectionMode}

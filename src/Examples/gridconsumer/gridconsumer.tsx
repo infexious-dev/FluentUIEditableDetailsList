@@ -14,6 +14,8 @@ import { ITeachingBubbleConfig, ITeachingBubblePropsExtended, teachingBubbleConf
 import { useBoolean } from '@fluentui/react-hooks';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ComboBox } from '@fluentui/react';
+import _ from 'lodash';
 
 interface GridConfigOptions {
     enableCellEdit: boolean;
@@ -370,6 +372,24 @@ const Consumer = () => {
                     </Stack.Item>
                 </Stack>
             </fieldset>
+            <div style={{ display: 'flex', textAlign: 'left', marginBottom: 20 }}>
+                <ComboBox styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
+                    return ({
+                        key: item.name,
+                        text: item.name
+                    })
+                }), 'text')} label='Name' onChange={(event, option) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Name', queryText: option?.text })
+                }} />
+
+                <TextField styles={{ root: { marginRight: 20 } }} onChange={(event, newValue) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Age', queryText: (event.target as any).value })
+                }} label="Age" />
+
+                <TextField onChange={(event, newValue) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Designation', queryText: (event.target as any).value })
+                }} label="Designation" />
+            </div>
             <div className={classNames.controlWrapper}>
                 <TextField value={gridSearchText} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={
                     (event, value) => {

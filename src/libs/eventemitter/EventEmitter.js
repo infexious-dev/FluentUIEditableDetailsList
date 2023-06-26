@@ -3,7 +3,8 @@
 
 export const EventType = {
     onSearch: 'onSearch',
-    onClick: 'onClick'
+    onClick: 'onClick',
+    onFilter: 'onFilter'
 };
 
 export const EventEmitter = {

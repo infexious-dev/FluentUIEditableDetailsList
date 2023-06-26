@@ -11,6 +11,9 @@ mergeStyles({
     padding: 0,
     height: '100vh',
   },
+  ':global(iframe)': {
+    display: 'none'
+  }
 });
 
 ReactDOM.render(<App />, document.getElementById('root'));
