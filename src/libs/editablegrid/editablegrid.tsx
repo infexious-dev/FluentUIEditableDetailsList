@@ -107,67 +107,72 @@ const EditableGrid = (props: Props) => {
     const eventFilterList = React.useRef<IEventFilterList[]>([]);
     const eventSearchQuery = React.useRef<string>("");
 
-    const onFilterHandler = (data: { columnName: string, queryText: string }) => {
-        if (data.columnName) {
-            const searchableColumn = props.columns.filter(x => x.includeColumnInSearch == true && x.name === data.columnName)[0];
+    const onFilterHandler = (data: { columnKey: string, queryText: string }) => {
+        if (data.columnKey) {
+            const searchableColumn = props.columns.filter(x => x.key === data.columnKey)[0];
 
-            if (searchableColumn) {
-                let searchResult: any[] = [...defaultGridData];
-                const index = eventFilterList.current.findIndex(filter => filter.columnKey === searchableColumn.key);
+            let _columnKey = data.columnKey;
+            if (searchableColumn)
+                _columnKey = searchableColumn.key;
 
-                if (data.queryText) {
-                    // add to or update filter list
-                    if (index === -1) {
-                        eventFilterList.current.push({
-                            columnKey: searchableColumn.key,
-                            queryText: data.queryText
-                        })
-                    } else { // column exists in filter list
-                        eventFilterList.current[index].queryText = data.queryText
-                    }
+            let searchableColumns: string[] = [];
+            if (eventSearchQuery.current && eventSearchQuery.current !== "")
+                searchableColumns = props.columns.filter(x => x.includeColumnInSearch == true).map(x => x.key);
+
+            let searchResult: any[] = [...defaultGridData];
+            const index = eventFilterList.current.findIndex(filter => filter.columnKey === _columnKey);
+
+            if (data.queryText) {
+                // add to or update filter list
+                if (index === -1) {
+                    eventFilterList.current.push({
+                        columnKey: _columnKey,
+                        queryText: data.queryText
+                    })
+                } else { // column exists in filter list
+                    eventFilterList.current[index].queryText = data.queryText
                 }
-                else {
-                    // remove from filter list
-                    if (index !== -1)
-                        eventFilterList.current.splice(index, 1)
-                }
-
-                let searchableColumns = props.columns.filter(x => x.includeColumnInSearch == true).map(x => x.key);
-
-                searchResult.filter(item => {
-
-                    try {
-                        let filteredIn = true;
-
-                        eventFilterList.current.map(filter => {
-                            if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
-                                filteredIn = false;
-                        });
-
-                        // now check event emitter search
-                        if (filteredIn && eventSearchQuery.current && eventSearchQuery.current !== "") {
-                            var BreakException = {};
-                            try {
-                                searchableColumns.forEach(column => {
-                                    filteredIn = item[column] && item[column].toString().toLowerCase() && item[column].toString().toLowerCase().includes(eventSearchQuery.current.trim().toLowerCase());
-
-                                    if (filteredIn)
-                                        throw BreakException;
-                                })
-                            } catch (e) {
-                                // silently continue...
-                            }
-                        }
-
-                        item._is_filtered_in_grid_search_ = filteredIn;
-                    } catch (e) {
-                        // silently continue...
-                    }
-                });
-
-                CheckOnFilter();
-                setDefaultGridData(searchResult);
             }
+            else {
+                // remove from filter list
+                if (index !== -1)
+                    eventFilterList.current.splice(index, 1)
+            }
+
+            searchResult.filter(item => {
+                try {
+                    let filteredIn = true;
+
+                    eventFilterList.current.map(filter => {
+                        // filter out item if it null/undefined or if it is not found
+                        if ((item[filter.columnKey] === undefined || item[filter.columnKey] === null)
+                            || !item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                            filteredIn = false;
+                    });
+
+                    // now check event emitter search
+                    if (filteredIn && eventSearchQuery.current && eventSearchQuery.current !== "") {
+                        var BreakException = {};
+                        try {
+                            searchableColumns.forEach(column => {
+                                filteredIn = item[column] && item[column].toString().toLowerCase() && item[column].toString().toLowerCase().includes(eventSearchQuery.current.trim().toLowerCase());
+
+                                if (filteredIn)
+                                    throw BreakException;
+                            })
+                        } catch (e) {
+                            // silently continue...
+                        }
+                    }
+
+                    item._is_filtered_in_grid_search_ = filteredIn;
+                } catch (e) {
+                    // silently continue...
+                }
+            });
+
+            CheckOnFilter();
+            setDefaultGridData(searchResult);
         }
     }
 
@@ -215,7 +220,7 @@ const EditableGrid = (props: Props) => {
 
                     // ensure to respect event filters
                     eventFilterList.current.map(filter => {
-                        if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                        if (!item[filter.columnKey]?.toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
                             filteredIn = false;
                     });
 

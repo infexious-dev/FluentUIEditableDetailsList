@@ -165,12 +165,13 @@ const Consumer = () => {
             newDummyData.customerhovercol = 'Hover Me';
             newDummyData.name = 'Name' + GetRandomInt(1, 10);
             newDummyData.age = GetRandomInt(20, 40);
-            newDummyData.designation = 'Designation' + GetRandomInt(1, 15);
+            newDummyData.designation = randomInt % 2 == 0 ? 'Designation' + GetRandomInt(1, 15) : undefined;
             newDummyData.salary = GetRandomInt(35000, 75000);
             newDummyData.dateofjoining = '2010-10-10T14:57:10';
             newDummyData.payrolltype = randomInt % 3 == 0 ? 'Weekly' : randomInt % 3 == 1 ? 'Bi-Weekly' : 'Monthly';
             newDummyData.employmenttype = 'Employment Type' + GetRandomInt(1, 12);
             newDummyData.employeelink = 'Link';
+            newDummyData.hiddenstring = 'Hidden' + GetRandomInt(1, 15);
 
             dummyData.push(newDummyData);
         };
@@ -379,16 +380,24 @@ const Consumer = () => {
                         text: item.name
                     })
                 }), 'text')} label='Name' onChange={(event, option) => {
-                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Name', queryText: option?.text })
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: option?.text })
                 }} />
 
                 <TextField styles={{ root: { marginRight: 20 } }} onChange={(event, newValue) => {
-                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Age', queryText: (event.target as any).value })
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'age', queryText: (event.target as any).value })
                 }} label="Age" />
 
-                <TextField onChange={(event, newValue) => {
-                    EventEmitter.dispatch(EventType.onFilter, { columnName: 'Designation', queryText: (event.target as any).value })
+                <TextField styles={{ root: { marginRight: 20 } }} onChange={(event, newValue) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'designation', queryText: (event.target as any).value })
                 }} label="Designation" />
+
+                <TextField styles={{ root: { marginRight: 20 } }} placeholder="Filter not a column!" onChange={(event, newValue) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'hiddenstring', queryText: (event.target as any).value })
+                }} label="Hidden String" />
+
+                <TextField placeholder="Incorrect column name" onChange={(event, newValue) => {
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'errorcheck', queryText: (event.target as any).value })
+                }} label="Nonexistant Field (Error Check)" />
             </div>
             <div className={classNames.controlWrapper}>
                 <TextField value={gridSearchText} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={

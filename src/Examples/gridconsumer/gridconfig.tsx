@@ -256,12 +256,13 @@ export class GridItemsType {
     customerhovercol: string;
     name: string;
     age: number;
-    designation: string;
+    designation: string | undefined;
     salary: number;
     dateofjoining: string;
     payrolltype: string;
     employmenttype: string;
     employeelink: string;
+    hiddenstring?: string;
 
     // public getNameAndAge(): string {
     //     return this.name + ' with ' + this.age + ' years of age';

@@ -22,6 +22,7 @@ const CellHoverComponent: FC<ICellHoverProps> = (props) => {
                 <h6>Date Of Joining: <span style={{ color:'blue' }}>{props.rowData['dateofjoining']}</span></h6>
                 <h6>Payroll Type: <span style={{ color:'blue' }}>{props.rowData['payrolltype']}</span></h6>
                 <h6>Employment Type: <span style={{ color:'blue' }}>{props.rowData['employmenttype']}</span></h6>
+                <h6>Hidden Field: <span style={{ color:'blue' }}>{props.rowData['hiddenstring']}</span></h6>
             </ScrollablePane>
         </div>
     );
