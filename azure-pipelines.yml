@@ -14,12 +14,6 @@ steps:
     inputs:
       versionSpec: '16.19.0'
     displayName: 'Install Node.js'
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    inputs:
-      SourceFolder: deployment
-      Contents: '*.json'
-      TargetFolder: '$(build.artifactstagingdirectory)'
   - task: Npm@1
     displayName: 'npm custom'
     inputs:
