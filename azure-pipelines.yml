@@ -6,6 +6,9 @@
 trigger:
 - main
 
+variables:
+  packageName: FluentUIEditableDetailsList
+
 pool:
   vmImage: windows-latest
 
@@ -20,10 +23,31 @@ steps:
       command: custom
       verbose: false
       customCommand: 'install --production'
-  - task: ArchiveFiles@2
-    displayName: 'Archive $(Build.SourcesDirectory)'
+  - task: CmdLine@2
     inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)'
-      includeRootFolder: false
+      script: |
+        md out
+        dir 
+        cp package.json out
+        cp README.md out
+        robocopy "lib" out/lib /e /xf
+        dir out
+  # Upload module to pipeline for next stage
+  - publish: 'out'
+    artifact: '${{ variables.packageName }}'
+    displayName: 'Publish artifact'
+  - task: npmAuthenticate@0
+    inputs:
+      workingFile: $(Build.SourcesDirectory)/.npmrc
+    displayName: Authenticate to Azure Artifacts
+   # NPM Publish - create tarball and publish to NPM registry in Azure Dev Ops          
+  - task: Npm@1
+    displayName: Create and publish npm package
+    inputs:
+      command: publish
+      workingDir: 'out'
+      verbose: true
+      publishRegistry: useFeed
+      publishFeed: 'e1878607-e070-43ae-bad2-64522806ece5'
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
