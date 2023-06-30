@@ -32,7 +32,6 @@ steps:
     displayName: Create and publish npm package
     inputs:
       command: publish
-      workingDir: 'out'
       verbose: true
       publishRegistry: useFeed
       publishFeed: 'e1878607-e070-43ae-bad2-64522806ece5'
