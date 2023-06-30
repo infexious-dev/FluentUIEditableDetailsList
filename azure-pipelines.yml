@@ -23,18 +23,6 @@ steps:
       command: custom
       verbose: false
       customCommand: 'install --production'
-  - script: |
-      npm run build
-      displayName: 'npm build'      
-  - task: CmdLine@2
-    inputs:
-      script: |
-        md out
-        dir 
-        cp package.json out
-        cp README.md out
-        robocopy "dist" out/dist /e /xf
-        dir out
   # Upload module to pipeline for next stage
   - publish: 'out'
     artifact: '${{ variables.packageName }}'
