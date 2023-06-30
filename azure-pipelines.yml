@@ -23,6 +23,9 @@ steps:
       command: custom
       verbose: false
       customCommand: 'install --production'
+  - script: |
+      npm run build
+      displayName: 'npm build'      
   - task: CmdLine@2
     inputs:
       script: |
