@@ -23,10 +23,6 @@ steps:
       command: custom
       verbose: false
       customCommand: 'install --production'
-  # Upload module to pipeline for next stage
-  - publish: 'out'
-    artifact: '${{ variables.packageName }}'
-    displayName: 'Publish artifact'
   - task: npmAuthenticate@0
     inputs:
       workingFile: $(Build.SourcesDirectory)/.npmrc
