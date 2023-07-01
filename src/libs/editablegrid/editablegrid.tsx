@@ -187,7 +187,6 @@ const EditableGrid = (props: Props) => {
                                 // now check event emitter filters
                                 if (filteredIn) {
                                     eventFilterList.current.map(filter => {
-                                        console.log(item[column]);
                                         if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
                                             filteredIn = false;
                                     })
