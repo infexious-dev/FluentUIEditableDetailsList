@@ -169,10 +169,14 @@ const EditableGrid = (props: Props) => {
         }
     }
 
-    const onSearchHandler = (event: any) => {
-        if (event && event.target) {
+    // can be event.target.value or just a string
+    const onSearchHandler = (data: any) => {
+        if (data) {
+            let queryText: string = data;
 
-            let queryText = event.target.value;
+            if (data.target?.value)
+                queryText = data.target.value;
+
             if (queryText) {
                 eventSearchQuery.current = queryText;
                 let searchableColumns = props.columns.filter(x => x.includeColumnInSearch == true).map(x => x.key);
@@ -187,7 +191,6 @@ const EditableGrid = (props: Props) => {
                                 // now check event emitter filters
                                 if (filteredIn) {
                                     eventFilterList.current.map(filter => {
-                                        console.log(item[column]);
                                         if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
                                             filteredIn = false;
                                     })
