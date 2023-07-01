@@ -4,6 +4,7 @@ import { IColumnConfig } from "./columnconfigtype";
 import { IGridCopy } from "./gridcopytype";
 import { IRowAddWithValues } from "./rowaddtype";
 import { IRowMute } from "./rowmutetype";
+import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 
 export interface Props extends IDetailsListProps {
     id: number;
@@ -54,4 +55,5 @@ export interface Props extends IDetailsListProps {
     enableMarqueeSelection?: boolean;
     aboveStickyContent?: HTMLDivElement;
     belowStickyContent?: HTMLDivElement;
+    customCommandBarButtons?: ICommandBarItemProps[];
 }

@@ -2,26 +2,21 @@
 // Licensed under the MIT License.
 
 import * as React from 'react';
-import { ColumnActionsMode, ConstrainMode, IColumn, IDetailsHeaderProps } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList.types';
+import { ConstrainMode, IColumn, IDetailsHeaderProps } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList.types';
 import { useState, useEffect } from 'react';
-import { DetailsList, IDetailsListProps } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList';
+import { DetailsList } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList';
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import {
     DetailsListLayoutMode,
     Selection,
-    SelectionMode,
-    IObjectWithKey,
     IDetailsColumnRenderTooltipProps,
 } from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 import { IconButton } from 'office-ui-fabric-react/lib/components/Button/IconButton/IconButton';
-import { PrimaryButton, Panel, PanelType, IStackTokens, Stack, mergeStyleSets, Fabric, Dropdown, IDropdownStyles, IDropdownOption, IButtonStyles, DialogFooter, Announced, Dialog, SpinButton, DefaultButton, DatePicker, IDatePickerStrings, on, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, IRefObject, IScrollablePane, ScrollablePaneBase, ScrollablePaneContext, Checkbox } from 'office-ui-fabric-react';
-import { TextField, ITextFieldStyles, ITextField } from 'office-ui-fabric-react/lib/TextField';
-import { ContextualMenu, DirectionalHint, IContextualMenu, IContextualMenuProps } from 'office-ui-fabric-react/lib/ContextualMenu';
-import { useBoolean } from '@uifabric/react-hooks';
+import { PrimaryButton, Panel, PanelType, Dropdown, IDropdownOption, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, Checkbox } from 'office-ui-fabric-react';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { IColumnConfig } from '../types/columnconfigtype';
 import { controlClass, dropdownStyles, GetDynamicSpanStyles, textFieldStyles } from './editablegridstyles';
-import { IGridItemsType } from '../types/griditemstype';
 import { Operation } from '../types/operation';
 import { InitializeInternalGrid, InitializeInternalGridEditStructure, ResetGridRowID, ShallowCopyDefaultGridToEditGrid, ShallowCopyEditGridToDefaultGrid } from './editablegridinitialize';
 import { EditControlType } from '../types/editcontroltype';
@@ -32,17 +27,15 @@ import { EditType } from '../types/edittype';
 import MessageDialog from './messagedialog';
 import ColumnUpdateDialog from './columnupdatedialog';
 import EditPanel from './editpanel';
-import { ICallBackParams, ICallBackRequestParams } from '../types/callbackparams';
+import { ICallBackParams } from '../types/callbackparams';
 import { EventEmitter, EventType } from '../eventemitter/EventEmitter';
 import ColumnFilterDialog from './columnfilterdialog/columnfilterdialog';
 import { IFilter } from '../types/filterstype';
 import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, DeepCopy } from './helper';
 import { IFilterItem, IFilterListProps, IGridColumnFilter } from '../types/columnfilterstype';
 import FilterCallout from './columnfiltercallout/filtercallout';
-import { IRowAddWithValues } from '../types/rowaddtype';
 import AddRowPanel from './addrowpanel';
 import { Props } from '../types/editabledetailslistprops';
-import SearchableDropdown from './searchabledropdown/searchabledropdown';
 import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 
@@ -1684,6 +1677,9 @@ const EditableGrid = (props: Props) => {
     const CreateCommandBarItemProps = (): ICommandBarItemProps[] => {
         let commandBarItems: ICommandBarItemProps[] = [];
 
+        props.customCommandBarButtons?.forEach(commandBarItem => {
+            commandBarItems.push(commandBarItem);
+        });
 
         if (props.enableExport) {
             commandBarItems.push({
