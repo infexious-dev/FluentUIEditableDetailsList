@@ -55,5 +55,5 @@ export interface Props extends IDetailsListProps {
     enableMarqueeSelection?: boolean;
     aboveStickyContent?: HTMLDivElement;
     belowStickyContent?: HTMLDivElement;
-    customCommandBarButtons?: ICommandBarItemProps[];
+    customCommandBarItems?: ICommandBarItemProps[];
 }
