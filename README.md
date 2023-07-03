@@ -45,6 +45,7 @@ Updates include:
 ### Enhancements
 
 >- Updated office-ui-fabric-react version to latest.
+>- Changed some import from office-ui-fabric-react to @fluentui/react to get the latest benefits.
 >- Added exported enum "DataType" that acts as a string. This can be used in the "IColumnConfig" prop "dataType" to easily know data types available. Currently contains 'string', 'number', 'decimal', 'date', and 'calculated'. "calculated" data types do not appear in edit panels regardless of their "editable" state. Useful when adding new row data but a column exists only as a calculation/amalgamation of other column data.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
 >- "Filter" modal filter button will remain disabled until all inputs are filled to prevent null exceptions during runtime.
@@ -57,6 +58,8 @@ Updates include:
 >- Back up grid data is sorted in the background when a column's sorting is triggered. This way, resetting grid data is able to keep the correct and current sort state that the grid is in.
 >- EditableGrid now utilises supplied "theme".
 >- Removed redundant NPM packages. Now works in React 17+ too.
+>- Add/Remove panels styles updated.
+>- Add/Remove panels now have a "Cancel" button.
 
 ### Experimental
 
