@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { ICallBackParams } from "../../libs/types/callbackparams";
+import * as React from 'react';
 import { NumberAndDateOperators, StringOperators } from "../../libs/types/cellstyleruletype";
 import { IColumnConfig } from "../../libs/types/columnconfigtype";
 import { EditControlType } from "../../libs/types/editcontroltype";
@@ -162,7 +162,7 @@ export const GridColumnConfig: IColumnConfig[] =
             inputType: EditControlType.DropDown,
             dropdownValues: (item: any) => { // function type dropdown values
                 return ([
-                    { key: 'weekly', text: item.name + ' dropdown' },
+                    { key: 'weekly', text: item?.name ? item.name + ' dropdown' : '' },
                     { key: 'biweekly', text: 'Bi-Weekly' },
                     { key: 'monthly', text: 'Monthly' }
                 ])

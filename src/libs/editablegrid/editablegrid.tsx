@@ -11,10 +11,10 @@ import {
     Selection,
     IDetailsColumnRenderTooltipProps,
 } from 'office-ui-fabric-react/lib/DetailsList';
-import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
-import { IconButton } from 'office-ui-fabric-react/lib/components/Button/IconButton/IconButton';
-import { PrimaryButton, Panel, PanelType, Dropdown, IDropdownOption, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, TooltipHost, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, Checkbox } from 'office-ui-fabric-react';
-import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
+import { IconButton } from '@fluentui/react/lib/components/Button/IconButton/IconButton';
+import { DefaultButton, PrimaryButton, Dropdown, IDropdownOption, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, Checkbox } from '@fluentui/react';
+import { TextField } from '@fluentui/react/lib/TextField';
 import { IColumnConfig } from '../types/columnconfigtype';
 import { controlClass, dropdownStyles, GetDynamicSpanStyles, textFieldStyles } from './editablegridstyles';
 import { Operation } from '../types/operation';
@@ -38,6 +38,8 @@ import AddRowPanel from './addrowpanel';
 import { Props } from '../types/editabledetailslistprops';
 import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
+import { Panel, PanelType } from '@fluentui/react';
+import { TooltipHost } from 'office-ui-fabric-react';
 
 interface SortOptions {
     key: string;
@@ -506,6 +508,10 @@ const EditableGrid = (props: Props) => {
                     decrementButtonAriaLabel={'Decrease value by 1'}
                 />
                 <DialogFooter>
+                    <DefaultButton
+                        onClick={() => setDialogContent(undefined)}
+                        text="Cancel"
+                    />
                     <PrimaryButton
                         // eslint-disable-next-line react/jsx-no-bind
                         onClick={updateItemName}
@@ -2120,6 +2126,7 @@ const EditableGrid = (props: Props) => {
                 type={PanelType.smallFixedFar}
             >
                 <EditPanel
+                    onDismiss={dismissPanelForEdit}
                     onChange={onEditPanelChange}
                     columnConfigurationData={props.customEditPanelColumns ? props.customEditPanelColumns : props.columns}
                     isBulk={isBulkPanelEdit}
@@ -2138,6 +2145,7 @@ const EditableGrid = (props: Props) => {
                     type={PanelType.smallFixedFar}
                 >
                     <AddRowPanel
+                        onDismiss={dismissPanelForAdd}
                         onChange={onAddPanelChange}
                         columnConfigurationData={props.columns}
                         enableRowsCounterField={props.enableRowAddWithValues.enableRowsCounterInPanel}

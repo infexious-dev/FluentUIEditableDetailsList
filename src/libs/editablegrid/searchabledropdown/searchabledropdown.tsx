@@ -1,5 +1,5 @@
-import { Callout, DirectionalHint, Dropdown, DropdownMenuItemType, IDropdownOption, IDropdownProps, mergeStyles, ScrollablePane, ScrollbarVisibility, Stack, TextField } from "office-ui-fabric-react";
-import { dropdownStyles, stackTokens, styles } from "./searchabledropdownstyles";
+import { Callout, DirectionalHint, Dropdown, DropdownMenuItemType, IDropdownOption, IDropdownProps, mergeStyles, ScrollablePane, ScrollbarVisibility, Stack, TextField } from "@fluentui/react";
+import { stackTokens, styles } from "./searchabledropdownstyles";
 import { useId } from '@uifabric/react-hooks';
 import { useEffect } from "react";
 import React from "react";
@@ -10,25 +10,25 @@ interface Props extends IDropdownProps {
 }
 
 const SearchableDropdown = (props: Props) => {
-    
+
     const [dropdownOptions, setDropdownOptions] = React.useState<IDropdownOption[]>([]);
     const [placeholder, setPlaceHolder] = React.useState<string>();
-    
+
     useEffect(() => {
         setDropdownOptions(props.options);
         setPlaceHolder(props.placeholder);
     }, [props.options]);
 
     const onFilterTextUpdate = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, searchText: string | undefined): void => {
-        var dropdownOptionsTmp : IDropdownOption[] = [...props.options.filter(x => x.itemType != DropdownMenuItemType.Header)];
-        var matches : IDropdownOption[] = dropdownOptionsTmp.filter(x => x.text.toLowerCase().indexOf(searchText?.toLowerCase() ?? '') > -1);
+        var dropdownOptionsTmp: IDropdownOption[] = [...props.options.filter(x => x.itemType != DropdownMenuItemType.Header)];
+        var matches: IDropdownOption[] = dropdownOptionsTmp.filter(x => x.text.toLowerCase().indexOf(searchText?.toLowerCase() ?? '') > -1);
         setPlaceHolder(`[${matches.length.toString()} match${matches.length != 1 ? 'es' : ''} found]`);
         setDropdownOptions(matches);
     }
 
     const labelId: string = useId('dropdown-callout-label');
     const descriptionId: string = useId('dropdown-callout-description');
-    
+
     return (
         <>
             <Callout
@@ -42,11 +42,11 @@ const SearchableDropdown = (props: Props) => {
                 directionalHint={DirectionalHint.bottomCenter}
             >
                 <Stack verticalAlign="start" tokens={stackTokens}>
-                    <TextField 
+                    <TextField
                         id={`id-${props.className}`}
                         className={styles.textFieldClass}
-                        placeholder={`Search ${props.field ?? ''}`} 
-                        onChange={(ev, text) => onFilterTextUpdate(ev, text)}    
+                        placeholder={`Search ${props.field ?? ''}`}
+                        onChange={(ev, text) => onFilterTextUpdate(ev, text)}
                     />
                     <div className={mergeStyles({ height: '10vh', width: '30vh', position: 'relative', backgroundColor: 'white' })}>
                         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
@@ -63,7 +63,7 @@ const SearchableDropdown = (props: Props) => {
                 </Stack>
             </Callout>
         </>
-        
+
     );
 }
 

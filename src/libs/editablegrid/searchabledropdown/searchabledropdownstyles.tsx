@@ -1,15 +1,15 @@
-import { IDropdownStyles, IStackTokens, mergeStyleSets } from "office-ui-fabric-react";
+import { IDropdownStyles, IStackTokens, mergeStyleSets } from "@fluentui/react";
 
 export const dropdownStyles: Partial<IDropdownStyles> = {
-    dropdown: { width: '90%', margin:10 },
+    dropdown: { width: '90%', margin: 10 },
 };
 
 export const styles = mergeStyleSets({
     callout: {
-      maxWidth: 500,
-      padding: 30
+        maxWidth: 500,
+        padding: 30
     },
-    textFieldClass:{
+    textFieldClass: {
         display: 'block',
         marginTop: 10,
         marginLeft: 10,
@@ -19,4 +19,4 @@ export const styles = mergeStyleSets({
     }
 });
 
-export const stackTokens: IStackTokens = { childrenGap: 20, maxWidth:1000 };
+export const stackTokens: IStackTokens = { childrenGap: 20, maxWidth: 1000 };

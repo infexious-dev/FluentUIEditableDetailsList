@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { IDatePickerStrings } from "office-ui-fabric-react";
+import { IDatePickerStrings } from "@fluentui/react";
 
 export const DayPickerStrings: IDatePickerStrings = {
     months: [

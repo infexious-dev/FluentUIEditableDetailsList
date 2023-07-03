@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { getTheme, IDetailsColumnStyles, IDropdownStyles, IStackStyles, IStackTokens, ITextFieldStyles, mergeStyleSets } from "office-ui-fabric-react";
-import { ICellStyleRulesType } from "../types/cellstyleruletype";
+import { IDropdownStyles, IStackStyles, IStackTokens, ITextFieldStyles, mergeStyleSets } from "@fluentui/react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EvaluateRule } from "./helper";
 
-export const stackStyles: Partial<IStackStyles> = { root: { width: 500 } };
+export const stackStyles: Partial<IStackStyles> = { root: { width: '100%', justifyContent: 'end' } };
 
 export const controlClass = mergeStyleSets({
     control: {
@@ -22,28 +21,32 @@ export const controlClass = mergeStyleSets({
         marginLeft: '10px',
     },
     buttonStyles: {
-        margin: 5 
+        margin: 5
     },
-    textFieldClass:{
+    textFieldClass: {
         display: 'block',
         margin: 10
     },
-    spanStyles:{
-        display:'inline-block',
-        width:'100%',
-        height:'100%',
+    spanStyles: {
+        display: 'inline-block',
+        width: '100%',
+        height: '100%',
         //lineHeight:'250%'
     },
-    dialogSubMessageStyles : {
+    dialogSubMessageStyles: {
         margin: 10,
     },
-    dialogHeaderStyles : {
+    dialogHeaderStyles: {
         margin: 10,
+    },
+    cancelStylesEditpanel: {
+        marginTop: '25px',
+        //marginRight: '10px',
+        maxWidth: '300px',
     },
     submitStylesEditpanel: {
-        marginTop: '20px',
+        marginTop: '25px',
         marginLeft: '10px',
-        marginRight: '10px',
         maxWidth: '300px',
     },
     labelValue: {
@@ -51,7 +54,7 @@ export const controlClass = mergeStyleSets({
     },
     pickerLabel: {
         color: '#323130',
-        fontWeight:600,
+        fontWeight: 600,
         padding: '5px 0px',
         margin: '5px 0px'
     },
@@ -65,20 +68,20 @@ export const controlClass = mergeStyleSets({
     },
 });
 
-export const GetDynamicSpanStyles = (column : IColumnConfig, cellValue : number | string | undefined) : string => {
-    
+export const GetDynamicSpanStyles = (column: IColumnConfig, cellValue: number | string | undefined): string => {
+
     var styleRule = column.cellStyleRule ?? undefined;
-    var isRuleTrue : boolean = EvaluateRule(column.dataType ?? 'string', cellValue, styleRule); 
+    var isRuleTrue: boolean = EvaluateRule(column.dataType ?? 'string', cellValue, styleRule);
     var styles = mergeStyleSets({
         dynamicSpanStyle: {
-            display:'inline-block',
-            width:'100%',
-            height:'100%',
+            display: 'inline-block',
+            width: '100%',
+            height: '100%',
             //textAlign:'center',
-            color:(!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.textColor : styleRule?.whenFalse?.textColor),
+            color: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.textColor : styleRule?.whenFalse?.textColor),
             //backgroundColor: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.backgroundColor : styleRule?.whenFalse?.backgroundColor),
             //lineHeight:'250%',
-            fontWeight:(!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.fontWeight : styleRule?.whenFalse?.fontWeight)
+            fontWeight: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.fontWeight : styleRule?.whenFalse?.fontWeight)
         }
     });
     return styles.dynamicSpanStyle;
@@ -86,7 +89,7 @@ export const GetDynamicSpanStyles = (column : IColumnConfig, cellValue : number 
 
 export const verticalGapStackTokens: IStackTokens = {
     childrenGap: 15,
-    padding: 10,
+    // padding: 10,
 };
 
 export const horizontalGapStackTokens: IStackTokens = {

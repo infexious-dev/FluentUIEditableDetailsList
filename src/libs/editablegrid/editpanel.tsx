@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { Checkbox, DatePicker, divProperties, Dropdown, IDropdownOption, IStackStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, PrimaryButton, Stack, TextField } from "office-ui-fabric-react";
+import { Checkbox, DatePicker, Dropdown, IDropdownOption, ITag, Label, PrimaryButton, Stack, TextField } from "@fluentui/react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
-import { controlClass, horizontalGapStackTokens, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
+import { controlClass, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
 import { GetDefault, GetValue, IsValidDataType, ParseType } from "./helper";
 import PickerControl from "./pickercontrol/picker";
-import SearchableDropdown from "./searchabledropdown/searchabledropdown";
+import { DefaultButton } from "@fluentui/react";
 
 interface Props {
+    onDismiss: () => any;
     onChange: any;
     columnConfigurationData: IColumnConfig[];
     isBulk: boolean;
@@ -78,7 +79,7 @@ const EditPanel = (props: Props) => {
             SetObjValues(item.key, '');
     }
 
-    const createTextFields = (): any[] => {
+    const createFields = (): any[] => {
         let tmpRenderObj: any[] = [];
         props.columnConfigurationData.filter(x => x.editable == true && x.dataType !== DataType.calculated).forEach((item) => {
             switch (item.inputType) {
@@ -175,11 +176,16 @@ const EditPanel = (props: Props) => {
     }
 
     return (
-        <Stack>
-            <Stack tokens={verticalGapStackTokens}>
-                {columnValuesObj && createTextFields()}
+        <>
+            <Stack tokens={verticalGapStackTokens} styles={{ root: { marginTop: 20 } }}>
+                {columnValuesObj && createFields()}
             </Stack>
-            <Stack horizontal disableShrink styles={stackStyles} tokens={horizontalGapStackTokens}>
+            <Stack horizontal disableShrink styles={stackStyles}>
+                <DefaultButton
+                    text="Cancel"
+                    className={controlClass.cancelStylesEditpanel}
+                    onClick={props.onDismiss}
+                />
                 <PrimaryButton
                     text="Save To Grid"
                     className={controlClass.submitStylesEditpanel}
@@ -188,7 +194,7 @@ const EditPanel = (props: Props) => {
                     disabled={columnValuesObj && Object.keys(columnValuesObj).some(k => columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0) || false}
                 />
             </Stack>
-        </Stack>
+        </>
     );
 };
 
