@@ -1,11 +1,13 @@
 # UPDATES IN THIS FORK
 
 ## Overview
+
 Forks the main FluentUI Editable DetailsList to add new functionality
 
 Updates include:
 
 ### New "EditableGrid" Features
+
 >- "enablePanelEdit" prop on EditableGrid allows for editing all or custom fields (see below) for a selected grid row via an edit panel that **prepopulates** fields with current values. This acts similar to "enableBulkEdit" but is only allowed for one row selection and also prefills data.
 >- "enableColumnEdit" prop on EditableGrid now prefills data.
 >- "customEditPanelColumns" prop on EditableGrid allows user to define custom fields to show when editing rows via the panel. This affects both "enablePanelEdit" and "enableBulkEdit" options. This enables the grid to show a subset of the fields per item while the panel editing to show a larger subset - particularly useful when there are over 50 fields to edit, but we only want to actually display 10 fields in the grid.
@@ -20,15 +22,19 @@ Updates include:
 >- New callback function "onGridSort" runs after grid data is sorted. Returns sorted grid data as it is currently displayed and the column that is currently sorted by (as an "IColumn").
 >- New callback function "onGridFilter" runs after grid data is filtered. Returns filtered grid data as it is currently displayed.
 >- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.2" and apply a grayscale filter. This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation. As such, mute and umute classes applied to the row are customisable - as is the default opacity applied. Furthermore, the icon text of "Mute"/"Unmute" is customisable too.
+>- Similar to the "onSearch" event emitter, added in "onFilter" to allow instant and custom filters outside the grid that target specific columns.
+>- Added "customCommandBarItems" prop to EditableGrid. It allows adding custom Command Bar items to the grid.
 
 ### New "IColumnConfig" Features
+
 >- "onCustomRender" prop on IColumnConfig allows for custom rendering of the column without breaking "editing" capabilities
->- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted by default by showing the sort indicator when the grid is initially rendered. Note: this does not dynamically sort the grid, just a visual indicator of the current data and how it is sorted when grid initialises. 
+>- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted by default by showing the sort indicator when the grid is initially rendered. Note: this does not dynamically sort the grid, just a visual indicator of the current data and how it is sorted when grid initialises.
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
 >- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties;
 
 ### Bug Fixes
+
 >- Reset Data now properly updates currently selected item with changes.
 >- "Filter" modal now correctly changes operators when switching between columns if the data type is the same between previous and new selected column. Otherwise, it will clear the current operator and force a new operator selection. (Example: going from "number" to "number" columns will retain the currently selected operator, but going from "number" to "string" will force user to select a new operator).
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
@@ -37,6 +43,7 @@ Updates include:
 >- Having data with a "prototype" method will no longer cause grid to crash of grid reset if method is used during rendering.
 
 ### Enhancements
+
 >- Updated office-ui-fabric-react version to latest.
 >- Added exported enum "DataType" that acts as a string. This can be used in the "IColumnConfig" prop "dataType" to easily know data types available. Currently contains 'string', 'number', 'decimal', 'date', and 'calculated'. "calculated" data types do not appear in edit panels regardless of their "editable" state. Useful when adding new row data but a column exists only as a calculation/amalgamation of other column data.
 >- "Filter" modal now provides a better UX by showing/disabling dropdowns based on state.
@@ -48,32 +55,37 @@ Updates include:
 >- "Actions" buttons now render independently as long as at least one option is enabled (i.e. no longer dependent on "enableRowEdit" to be shown).
 >- Back up grid data is now copied via a deep copy mechanism, copying the object as is, including prototype methods in the tree.
 >- Back up grid data is sorted in the background when a column's sorting is triggered. This way, resetting grid data is able to keep the correct and current sort state that the grid is in.
+>- EditableGrid now utilises supplied "theme".
+>- Removed redundant NPM packages. Now works in React 17+ too.
 
 ### Experimental
+
 >- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
 
 ### Gotchas
+
 >- With the newly added functionality of having dropdown values on the IColumnConfig object to be populated with a function, this means bulk updating items' dropdowns will lead to blank values if the dropdown values are based off of other item properties.
 
 ### New Bugs and Issues (newly introduced)
+
 >- "Decimal" data type will return a string if the inputted value contains one period and no decimals ("81.") or contains one period and exactly one decimal ("81.0").
 >- "Muted" rows cannot be edited but can be selected and can trigger "Edit Item", "Bulk Edit", and "Update Column"
 >- When using Dropdowns within the grid with the newly introduced function to populate "options", the Grid's "Edit Mode" will not dynamically update other dependent dropdowns.
 
 ### Existing Bugs and Issues (from original code)
+
 >- "onChange" on IColumnConfig causes filtered items to reset filtered state, thus showing all grid data.
 >- "onChange" on IColumnConfig does not deeply copy grid data causing "prototype" methods to get lost.
 >- Adding a row, either blank or with data, does not use deeply copied grid data causing "prototype" methods to get lost.
 
-
 ---
+
 # Original
-
-
 
 # FluentUI Editable DetailsList
 
 ## Overview
+
 FluentUI is a great UI library with some really cool controls, all adhering to Accessibility Standards.
 
 DetailsList control of FluidUI is great when your requirement is a read-only grid. However, it does not offer any in-place editability functionality just yet.
@@ -81,6 +93,7 @@ DetailsList control of FluidUI is great when your requirement is a read-only gri
 This component(Editable DetailsList) is a wrapper over the existing DetailsList that makes in-place editability work like a dream(among many other new features).
 
 Some of the features of the Editable Grid are:-
+>
 >- Single Cell Edit (in-place)
 >- Single Row Edit (in-place)
 >- Single Column Edit
@@ -100,13 +113,15 @@ Some of the features of the Editable Grid are:-
 >- Length Validations during edit
 >- Type Validations during edit
 >- Rule-Based Cell Styling
->- In-built support for controls like TextField, Multiline-Textfield, Picker, Dropdown, Calendar 
+>- In-built support for controls like TextField, Multiline-Textfield, Picker, Dropdown, Calendar
 >- The component is completely Accessible
 
 ## Demo
+
 [Fluent UI Editable DetailsList Demo](https://editabledetailslist.azurewebsites.net)
 
 ## Clone & Run
+
 - clone the repository on your local machine.
 - open the project
 - open terminal and change directory to your project path
@@ -116,9 +131,11 @@ Some of the features of the Editable Grid are:-
 This starts the project on port 3000 and you are ready to play around with the Editable DetailsList
 
 ## NPM Install
+
     npm i fluentui-editable-grid
 
 ## Usage
+
     import { DetailsListLayoutMode, mergeStyles, mergeStyleSets, SelectionMode, TextField } from '@fluentui/react';
     import { EditableGrid, EditControlType, IColumnConfig, EventEmitter, EventType, NumberAndDateOperators } from 'fluentui-editable-grid';
     import { Fabric } from 'office-ui-fabric-react';
@@ -391,7 +408,7 @@ This starts the project on port 3000 and you are ready to play around with the E
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
@@ -403,4 +420,4 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ---
 
-_For more details please check out [Fluent UI Editable DetailsList Wiki](https://github.com/microsoft/FluentUIEditableDetailsList/wiki)._
+*For more details please check out [Fluent UI Editable DetailsList Wiki](https://github.com/microsoft/FluentUIEditableDetailsList/wiki).*
