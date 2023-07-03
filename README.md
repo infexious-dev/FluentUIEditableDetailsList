@@ -38,7 +38,7 @@ Updates include:
 >- Reset Data now properly updates currently selected item with changes.
 >- "Filter" modal now correctly changes operators when switching between columns if the data type is the same between previous and new selected column. Otherwise, it will clear the current operator and force a new operator selection. (Example: going from "number" to "number" columns will retain the currently selected operator, but going from "number" to "string" will force user to select a new operator).
 >- Made "Action" column buttons non-focusable so as not to set focus on them unintentially after editing cells has completed.
->- "Key" props added to controls in edit panel to stop console errors.
+>- "Key" props added to controls in Edit and Add panels to stop console errors.
 >- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
 >- Having data with a "prototype" method will no longer cause grid to crash of grid reset if method is used during rendering.
 
