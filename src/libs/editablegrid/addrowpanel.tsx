@@ -77,6 +77,7 @@ const AddRowPanel = (props: Props) => {
             switch (item.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
+                        key={item.key}
                         label={item.text}
                         strings={DayPickerStrings}
                         placeholder="Select a date..."
@@ -86,17 +87,8 @@ const AddRowPanel = (props: Props) => {
                         value={new Date()}
                     />);
                     break;
-                case EditControlType.DropDown:
-                    tmpRenderObj.push(
-                        <Dropdown
-                            label={item.text}
-                            options={typeof item.dropdownValues === 'function' ? item.dropdownValues() as IDropdownOption[] : item.dropdownValues ?? []}
-                            onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
-                        />
-                    );
-                    break;
                 case EditControlType.Picker:
-                    tmpRenderObj.push(<div>
+                    tmpRenderObj.push(<div key={item.key}>
                         <span className={controlClass.pickerLabel}>{item.text}</span>
                         <PickerControl
                             arialabel={item.text}
@@ -106,6 +98,16 @@ const AddRowPanel = (props: Props) => {
                             onTaglistChanged={(selectedItem: ITag[] | undefined) => onCellPickerTagListChanged(selectedItem, item)}
                             pickerDescriptionOptions={item.pickerOptions?.pickerDescriptionOptions}
                         /></div>);
+                    break;
+                case EditControlType.DropDown:
+                    tmpRenderObj.push(
+                        <Dropdown
+                            key={item.key}
+                            label={item.text}
+                            options={typeof item.dropdownValues === 'function' ? item.dropdownValues() as IDropdownOption[] : item.dropdownValues ?? []}
+                            onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
+                        />
+                    );
                     break;
                 case EditControlType.Checkbox:
                     tmpRenderObj.push(
@@ -122,6 +124,7 @@ const AddRowPanel = (props: Props) => {
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(<TextField
+                        key={item.key}
                         errorMessage={columnValuesObj[item.key].error}
                         name={item.text}
                         multiline={true}
@@ -135,6 +138,7 @@ const AddRowPanel = (props: Props) => {
                     break;
                 default:
                     tmpRenderObj.push(<TextField
+                        key={item.key}
                         errorMessage={columnValuesObj[item.key].error}
                         name={item.text}
                         id={item.key}
