@@ -46,6 +46,7 @@ interface GridConfigOptions {
 const Consumer = () => {
 
     const [items, setItems] = useState<GridItemsType[]>([]);
+    const [gridInEdit, setGridInEdit] = React.useState<boolean>(false);
     const [teachingBubbleVisible, { toggle: toggleTeachingBubbleVisible }] = useBoolean(true);
     const [teachingBubblePropsConfig, setTeachingBubblePropsConfig] = useState<ITeachingBubbleConfig>({ id: 0, config: { ...teachingBubbleConfig[0], footerContent: `1 of ${teachingBubbleConfig.length}` } });
     const [gridConfigOptions, setGridConfigOptions] = useState<GridConfigOptions>({
@@ -374,7 +375,7 @@ const Consumer = () => {
                 </Stack>
             </fieldset>
             <div style={{ display: 'flex', textAlign: 'left', marginBottom: 20 }}>
-                <ComboBox styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
+                <ComboBox disabled={gridInEdit} styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
                     return ({
                         key: item.name,
                         text: item.name
@@ -383,24 +384,24 @@ const Consumer = () => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: option?.text })
                 }} />
 
-                <TextField styles={{ root: { marginRight: 20 } }} onChange={(event, newValue) => {
+                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'age', queryText: (event.target as any).value })
                 }} label="Age" />
 
-                <TextField styles={{ root: { marginRight: 20 } }} onChange={(event, newValue) => {
+                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'designation', queryText: (event.target as any).value })
                 }} label="Designation" />
 
-                <TextField styles={{ root: { marginRight: 20 } }} placeholder="Filter not a column!" onChange={(event, newValue) => {
+                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} placeholder="Filter not a column!" onChange={(event, newValue) => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'hiddenstring', queryText: (event.target as any).value })
                 }} label="Hidden String" />
 
-                <TextField placeholder="Incorrect column name" onChange={(event, newValue) => {
+                <TextField placeholder="Incorrect column name" disabled={gridInEdit} onChange={(event, newValue) => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'errorcheck', queryText: (event.target as any).value })
                 }} label="Nonexistant Field (Error Check)" />
             </div>
             <div className={classNames.controlWrapper}>
-                <TextField value={gridSearchText} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={
+                <TextField value={gridSearchText} disabled={gridInEdit} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={
                     (event, value) => {
                         setGridSearchText(value)
                         EventEmitter.dispatch(EventType.onSearch, event);
@@ -460,15 +461,17 @@ const Consumer = () => {
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
                 aboveStickyContent={aboveContent}
                 belowStickyContent={belowContent}
-                onGridInEditChange={(gridInEdit: boolean) => { console.log('%c Grid in edit mode? ', 'background: #222; color: #bada55'); console.log(gridInEdit ? 'yes' : 'no'); }}
+                onGridInEditChange={(gridInEdit: boolean) => { console.log('%c Grid in edit mode? ', 'background: #222; color: #bada55'); console.log(gridInEdit ? 'yes' : 'no'); setGridInEdit(gridInEdit) }}
                 onGridStateEditedChange={(gridStateEdited: boolean) => { console.log('%c Has grid been editted? ', 'background: #222; color: #bada55'); console.log(gridStateEdited ? 'yes' : 'no'); }}
                 onGridSort={(data, column) => { console.log('Grid has been sorted with items:'); console.log(data); console.log('Current sorted column is:'); console.log(column); }}
                 onGridFilter={(data) => { console.log('Grid has been filtered with items:'); console.log(data); }}
+                enableGridInEditIndicator
                 customCommandBarItems={[
                     {
                         id: 'print',
                         key: 'print',
                         text: "Print",
+                        disabled: gridInEdit,
                         iconProps: { iconName: "Print" },
                         onClick: () => console.log('printing simulation!')
                     }

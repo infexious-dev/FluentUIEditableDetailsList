@@ -1869,19 +1869,32 @@ const EditableGrid = (props: Props) => {
     const CreateCommandBarFarItemProps = (): ICommandBarItemProps[] => {
 
         let commandBarItems: ICommandBarItemProps[] = [];
-        if (props.enableUnsavedEditIndicator && (props.enableRowEdit || props.enableCellEdit || props.enableBulkEdit || props.enableColumnEdit
-            || props.enableTextFieldEditMode)) {
+
+        if ((isGridInEdit || editMode) && props.enableGridInEditIndicator)
+            commandBarItems.push({
+                id: 'edit',
+                key: 'edit',
+                text: 'Grid is being edited',
+                // This needs an ariaLabel since it's icon-only
+                ariaLabel: 'Edit info',
+                iconOnly: true,
+                buttonStyles: { root: { cursor: 'default' } },
+                iconProps: { iconName: 'Edit' }
+            })
+
+
+        if (isGridStateEdited && props.enableUnsavedEditIndicator && (props.enableRowEdit || props.enableCellEdit || props.enableBulkEdit || props.enableColumnEdit || props.enableTextFieldEditMode))
             commandBarItems.push({
                 id: 'info',
                 key: 'info',
-                text: isGridStateEdited ? `Grid has unsaved data. Click on ${props.enableSaveText ? '"' + props.enableSaveText + '"' : '"Submit"'} to save` : '',
+                text: `Grid has unsaved data. Click on ${props.enableSaveText ? '"' + props.enableSaveText + '"' : '"Submit"'} to save`,
                 // This needs an ariaLabel since it's icon-only
                 ariaLabel: 'Info',
-                disabled: !isGridStateEdited,
                 iconOnly: true,
-                iconProps: { iconName: 'InfoSolid' },
-            });
-        }
+                buttonStyles: { root: { cursor: 'default' } },
+                iconProps: { iconName: 'SaveTemplate' }
+            })
+
 
         commandBarItems.push({
             key: "filteredrecs",
@@ -1895,6 +1908,7 @@ const EditableGrid = (props: Props) => {
             // This needs an ariaLabel since it's icon-only
             ariaLabel: "Filtered Records",
             iconOnly: false,
+            buttonStyles: { root: { cursor: 'default' } },
             iconProps: { iconName: "PageListFilter" }
         });
 

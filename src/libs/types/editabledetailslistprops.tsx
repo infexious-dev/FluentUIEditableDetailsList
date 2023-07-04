@@ -43,6 +43,7 @@ export interface Props extends IDetailsListProps {
     position?: string;
     constrainMode?: ConstrainMode;
     enableUnsavedEditIndicator?: boolean;
+    enableGridInEditIndicator?: boolean;
     enableGridReset?: boolean;
     onGridReset?: any;
     enableColumnFilterRules?: boolean;
