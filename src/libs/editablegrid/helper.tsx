@@ -116,11 +116,10 @@ export const ParseType = (type: string | undefined, text: string): any => {
             return Number(text);
         case DataType.decimal:
             let regex = new RegExp(/^-?[0-9]*\.[0-9]{0,10}$/, 'g');
-            if (text !== '0' && text !== "0" && regex.test(text)) {
+            if (text !== '0' && text !== "0" && regex.test(text))
                 return text // keep as string until more decimals are added
-            } else {
-                return parseFloat(text);
-            }
+            else
+                return parseFloat(text).toString();
         case DataType.date:
             return Date.parse(text);
     }

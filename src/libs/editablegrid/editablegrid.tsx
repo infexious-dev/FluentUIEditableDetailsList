@@ -40,6 +40,7 @@ import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 import { Panel, PanelType } from '@fluentui/react';
 import { TooltipHost } from 'office-ui-fabric-react';
+import { DataType } from '../types/datatype';
 
 interface SortOptions {
     key: string;
@@ -646,7 +647,19 @@ const EditableGrid = (props: Props) => {
         defaultGridDataTmp = [...defaultGridDataArr];
         var internalRowNumDefaultGrid = defaultGridDataTmp.findIndex((row) => row._grid_row_id_ == rowNum);
         var internalRowNumActivateGrid = activateCellEdit.findIndex((row) => row['properties']['_grid_row_id_']['value'] == rowNum);
-        defaultGridDataTmp[internalRowNumDefaultGrid][key] = activateCellEdit[internalRowNumActivateGrid]['properties'][key]['value'];
+
+        const column = props.columns.find(column => column.key === key);
+        let dataType: DataType | undefined = undefined;
+        let value = activateCellEdit[internalRowNumActivateGrid]['properties'][key]['value'];
+
+        if (column && column.dataType)
+            dataType = column.dataType as DataType;
+
+        if (dataType === DataType.decimal)
+            value = parseFloat(value);
+
+        defaultGridDataTmp[internalRowNumDefaultGrid][key] = value;
+
         if (defaultGridDataTmp[internalRowNumDefaultGrid]['_grid_row_operation_'] != Operation.Add) {
             defaultGridDataTmp[internalRowNumDefaultGrid]['_grid_row_operation_'] = Operation.Update;
         }

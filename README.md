@@ -64,7 +64,7 @@ Updates include:
 
 ### Experimental
 
->- New "decimal" data type now allows up to 2 decimals via regex. Still strips commas and other alpha characters (except "."). Works same as "number" otherwise.
+>- New "decimal" data type now allows up to 10 decimals via regex. Still strips commas and other alpha characters (except ".")
 
 ### Gotchas
 
@@ -72,7 +72,6 @@ Updates include:
 
 ### New Bugs and Issues (newly introduced)
 
->- "Decimal" data type will return a string if the inputted value contains one period and no decimals ("81.") or contains one period and exactly one decimal ("81.0").
 >- "Muted" rows cannot be edited but can be selected and can trigger "Edit Item", "Bulk Edit", and "Update Column"
 >- When using Dropdowns within the grid with the newly introduced function to populate "options", the Grid's "Edit Mode" will not dynamically update other dependent dropdowns.
 
