@@ -14,7 +14,7 @@ import { ITeachingBubbleConfig, teachingBubbleConfig } from './teachingbubblecon
 import { useBoolean } from '@fluentui/react-hooks';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ComboBox } from '@fluentui/react';
+import { ComboBox, CommandBarButton } from '@fluentui/react';
 import _ from 'lodash';
 
 interface GridConfigOptions {
@@ -474,6 +474,17 @@ const Consumer = () => {
                         disabled: gridInEdit,
                         iconProps: { iconName: "Print" },
                         onClick: () => console.log('printing simulation!')
+                    }
+                ]}
+                customCommandBarFarItems={[
+                    {
+                        id: 'div',
+                        key: 'div',
+                        text: "Wow",
+                        disabled: gridInEdit,
+                        buttonStyles: { root: { cursor: 'default' } },
+                        commandBarButtonAs: () => { return <div style={{ display: 'flex', padding: '0 10px', cursor: 'default', alignItems: 'center', height: '100%' }}>test</div> },
+                        iconOnly: true
                     }
                 ]}
             />

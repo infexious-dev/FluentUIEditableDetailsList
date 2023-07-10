@@ -24,6 +24,7 @@ Updates include:
 >- "rowMuteOptions" added as an option. If property inside IRowMute "enableRowMute" is set to 'true', "Actions" column will provide ability for rows to be "muted" and "unmuted". By default, this will add a class to the row in question called "muted" and will set its opacity to "0.2" and apply a grayscale filter. This will also trigger a grid update and muted rows will be logged as items which have had the **Operation** of **Mute**. This functionality is meant to cover all use cases for both making a row less prominent and for marking rows as "hidden" for post-data manipulation. As such, mute and umute classes applied to the row are customisable - as is the default opacity applied. Furthermore, the icon text of "Mute"/"Unmute" is customisable too.
 >- Similar to the "onSearch" event emitter, added in "onFilter" to allow instant and custom filters outside the grid that target specific columns.
 >- Added "customCommandBarItems" prop to EditableGrid. It allows the adding of custom Command Bar items.
+>- Added "customCommandBarFarItems" prop to EditableGrid. It allows the adding of custom FAR Command Bar items (those items appear to the right of the grid toolbar).
 >- Added "enableGridInEditIndicator" prop which allows an edit icon to appear when the grid is in edit mode.
 
 ### New "IColumnConfig" Features

@@ -1777,18 +1777,6 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableSave == true) {
-            commandBarItems.push({
-                id: 'submit',
-                key: 'submit',
-                text: props.enableSaveText ? props.enableSaveText : "Submit",
-                ariaLabel: props.enableSaveText ? props.enableSaveText : "Submit",
-                disabled: isGridInEdit || !isGridStateEdited,
-                iconProps: { iconName: 'Save' },
-                onClick: () => onGridSave(),
-            });
-        }
-
         if (props.enablePanelEdit) {
             commandBarItems.push({
                 id: 'enablepaneledit',
@@ -1808,6 +1796,17 @@ const EditableGrid = (props: Props) => {
                 disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount === 1,
                 iconProps: { iconName: "TripleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.BulkEdit, {})
+            });
+        }
+
+        if (props.enableColumnEdit) {
+            commandBarItems.push({
+                id: 'updatecolumn',
+                key: 'updatecolumn',
+                disabled: isGridInEdit || editMode || selectionCount == 0,
+                text: !isUpdateColumnClicked ? "Update Column" : "Save Column Update",
+                iconProps: { iconName: "SingleColumnEdit" },
+                onClick: () => RowSelectOperations(EditType.ColumnEdit, {})
             });
         }
 
@@ -1854,14 +1853,15 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableColumnEdit) {
+        if (props.enableSave == true) {
             commandBarItems.push({
-                id: 'updatecolumn',
-                key: 'updatecolumn',
-                disabled: isGridInEdit || editMode || selectionCount == 0,
-                text: !isUpdateColumnClicked ? "Update Column" : "Save Column Update",
-                iconProps: { iconName: "SingleColumnEdit" },
-                onClick: () => RowSelectOperations(EditType.ColumnEdit, {})
+                id: 'submit',
+                key: 'submit',
+                text: props.enableSaveText ? props.enableSaveText : "Submit",
+                ariaLabel: props.enableSaveText ? props.enableSaveText : "Submit",
+                disabled: isGridInEdit || !isGridStateEdited,
+                iconProps: { iconName: 'Save' },
+                onClick: () => onGridSave(),
             });
         }
 
@@ -1882,6 +1882,10 @@ const EditableGrid = (props: Props) => {
     const CreateCommandBarFarItemProps = (): ICommandBarItemProps[] => {
 
         let commandBarItems: ICommandBarItemProps[] = [];
+
+        props.customCommandBarFarItems?.forEach(commandBarItem => {
+            commandBarItems.push(commandBarItem);
+        });
 
         if ((isGridInEdit || editMode) && props.enableGridInEditIndicator)
             commandBarItems.push({

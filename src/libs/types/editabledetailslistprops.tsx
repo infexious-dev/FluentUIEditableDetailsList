@@ -57,4 +57,5 @@ export interface Props extends IDetailsListProps {
     aboveStickyContent?: HTMLDivElement;
     belowStickyContent?: HTMLDivElement;
     customCommandBarItems?: ICommandBarItemProps[];
+    customCommandBarFarItems?: ICommandBarItemProps[];
 }
