@@ -480,10 +480,9 @@ const Consumer = () => {
                     {
                         id: 'div',
                         key: 'div',
-                        text: "Wow",
-                        disabled: gridInEdit,
+                        text: "Custom Item",
                         buttonStyles: { root: { cursor: 'default' } },
-                        commandBarButtonAs: () => { return <div style={{ display: 'flex', padding: '0 10px', cursor: 'default', alignItems: 'center', height: '100%' }}>test</div> },
+                        commandBarButtonAs: () => { return <div style={{ display: 'flex', padding: '0 10px', cursor: 'default', alignItems: 'center', height: '100%' }}>Testing!</div> },
                         iconOnly: true
                     }
                 ]}
