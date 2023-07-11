@@ -655,7 +655,7 @@ const EditableGrid = (props: Props) => {
         if (column && column.dataType)
             dataType = column.dataType as DataType;
 
-        if (dataType === DataType.decimal)
+        if (dataType === DataType.decimal && (value !== null && value !== undefined))
             value = parseFloat(value);
 
         defaultGridDataTmp[internalRowNumDefaultGrid][key] = value;
