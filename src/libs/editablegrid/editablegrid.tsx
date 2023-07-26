@@ -2151,7 +2151,7 @@ const EditableGrid = (props: Props) => {
             <Panel
                 isOpen={isOpenForEdit}
                 onDismiss={dismissPanelForEdit}
-                isLightDismiss={true}
+                isLightDismiss={false}
                 headerText="Edit Grid Data"
                 closeButtonAriaLabel="Close"
                 type={PanelType.smallFixedFar}
@@ -2170,7 +2170,7 @@ const EditableGrid = (props: Props) => {
                 <Panel
                     isOpen={isOpenForAdd}
                     onDismiss={dismissPanelForAdd}
-                    isLightDismiss={true}
+                    isLightDismiss={false}
                     headerText="Add Rows"
                     closeButtonAriaLabel="Close"
                     type={PanelType.smallFixedFar}
