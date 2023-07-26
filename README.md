@@ -60,8 +60,9 @@ Updates include:
 >- Back up grid data is sorted in the background when a column's sorting is triggered. This way, resetting grid data is able to keep the correct and current sort state that the grid is in.
 >- EditableGrid now utilises supplied "theme".
 >- Removed redundant NPM packages. Now works in React 17+ too.
->- Add/Remove panels styles updated.
->- Add/Remove panels now have a "Cancel" button.
+>- Add/Edit panels styles updated.
+>- Add/Edit panels now have a "Cancel" button.
+>- Add/Edit panels now "block" user interaction (i.e. no "light" dismiss). This means the user can no longer accidentally click away from the panel to close it and potentially lose data.
 
 ### Experimental
 
