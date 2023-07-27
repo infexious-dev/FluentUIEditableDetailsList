@@ -1411,7 +1411,7 @@ const EditableGrid = (props: Props) => {
                                     />)
                             }</span>
                         case EditControlType.DropDown:
-                            return <span className={'row-' + rowNum! + '-col-' + index}>{
+                            return <span className={'span-value row-' + rowNum! + '-col-' + index}>{
                                 (ShouldRenderSpan())
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
