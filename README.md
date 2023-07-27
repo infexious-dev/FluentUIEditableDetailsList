@@ -35,6 +35,7 @@ Updates include:
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
 >- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties.
 >- "editableOnlyInPanel" prop on IColumnConfig allows the column to only be editable in the panel (i.e. when the "Edit Panel" is open) when the "editable" prop is "true". "editable", "editableOnlyInPanel", and not "editable" columns on the grid now have CSS classes of "editable", "editable-panel-only", and "non-editable", respectively.
+>- "panelEditDisabledUntil" prop on IColumnConfig allows custom disabling of fields in the add/edit panels based on other values.
 
 ### Bug Fixes
 
