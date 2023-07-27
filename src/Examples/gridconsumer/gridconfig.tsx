@@ -76,6 +76,7 @@ export const GridColumnConfig: IColumnConfig[] =
             name: 'Age',
             text: 'Age',
             editable: true,
+            editableOnlyInPanel: true,
             dataType: 'number',
             minWidth: 100,
             maxWidth: 100,

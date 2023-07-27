@@ -445,7 +445,6 @@ const EditableGrid = (props: Props) => {
     }
 
     const CloseColumnUpdateDialog = (): void => {
-
         setIsUpdateColumnClicked(false);
     };
 
@@ -1331,7 +1330,7 @@ const EditableGrid = (props: Props) => {
             columnConfigs.push({
                 key: colKey,
                 name: column.text,
-                className: column.className,
+                className: `${column.editable ? 'editable' : 'non-editable'} ${column.editable && column.editableOnlyInPanel ? 'editable-panel-only' : ''} ${column.className ? column.className : ''}`,
                 headerClassName: `${colHeaderClassName} ${column.headerClassName}`,
                 styles: column.styles,
                 ariaLabel: column.text,
@@ -1353,7 +1352,7 @@ const EditableGrid = (props: Props) => {
 
                     switch (column.inputType) {
                         case EditControlType.MultilineTextField:
-                            return <span>{
+                            return <span className='span-value'>{
                                 (ShouldRenderSpan())
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
@@ -1385,7 +1384,7 @@ const EditableGrid = (props: Props) => {
                                         maxLength={column.maxLength != null ? column.maxLength : 10000}
                                     />)}</span>
                         case EditControlType.Date:
-                            return <span>{
+                            return <span className='span-value'>{
                                 (ShouldRenderSpan())
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
@@ -1441,7 +1440,7 @@ const EditableGrid = (props: Props) => {
                                     />)
                             }</span>
                         case EditControlType.Picker:
-                            return <span>{
+                            return <span className='span-value'>{
                                 (ShouldRenderSpan())
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
@@ -1474,13 +1473,13 @@ const EditableGrid = (props: Props) => {
                         case EditControlType.Checkbox:
                             let isCheckboxDisabled: boolean = false;
 
-                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || item._is_muted_;
+                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || column.editableOnlyInPanel || item._is_muted_;
 
-                            if (column.editable && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])) {
+                            if (column.editable && !column.editableOnlyInPanel && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])) {
                                 isCheckboxDisabled = false;
                             }
 
-                            return <span>{
+                            return <span className='span-value'>{
                                 (column?.hoverComponentOptions?.enable ?
                                     (<HoverCard
                                         type={HoverCardType.plain}
@@ -1514,7 +1513,7 @@ const EditableGrid = (props: Props) => {
                                 )
                             }</span>
                         case EditControlType.Link:
-                            return <span>{
+                            return <span className='span-value'>{
                                 (column?.hoverComponentOptions?.enable ?
                                     (<HoverCard
                                         type={HoverCardType.plain}
@@ -1530,7 +1529,7 @@ const EditableGrid = (props: Props) => {
                                 )
                             }</span>
                         default:
-                            return <span>{
+                            return <span className='span-value'>{
                                 (ShouldRenderSpan())
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
@@ -1560,7 +1559,7 @@ const EditableGrid = (props: Props) => {
                     }
 
                     function ShouldRenderSpan() {
-                        return ((!column.editable || item._is_muted_) || (!props.enableDefaultEditMode && !(activateCellEdit?.[rowNum!]?.isActivated) && !(activateCellEdit?.[rowNum!]?.['properties'][column.key]?.activated)));
+                        return ((!column.editable || column.editableOnlyInPanel || item._is_muted_) || (!props.enableDefaultEditMode && !(activateCellEdit?.[rowNum!]?.isActivated) && !(activateCellEdit?.[rowNum!]?.['properties'][column.key]?.activated)));
                     }
                 }
             });
@@ -2046,7 +2045,7 @@ const EditableGrid = (props: Props) => {
 
     /* #region [Utilities] */
     function HandleCellOnDoubleClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && !props.enableSingleClickCellEdit && !item._is_muted_)
+        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && !props.enableSingleClickCellEdit && !item._is_muted_)
             ?
             EditCellValue(column.key, rowNum!, true)
             :
@@ -2054,7 +2053,7 @@ const EditableGrid = (props: Props) => {
     }
 
     function HandleCellOnClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && props.enableSingleClickCellEdit)
+        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && props.enableSingleClickCellEdit)
             ? EditCellValue(column.key, rowNum!, true)
             : null;
     }

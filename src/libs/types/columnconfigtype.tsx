@@ -11,6 +11,7 @@ export interface IColumnConfig extends IColumn {
     key: string;
     text: string;
     editable?: boolean;
+    editableOnlyInPanel?: boolean;
     dataType?: string;
     isResizable?: boolean;
     includeColumnInExport?: boolean;

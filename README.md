@@ -33,7 +33,8 @@ Updates include:
 >- Provided ability for columns (IColumnConfig) to have the "isSortedByDefault" prop. It allows the configured column to be sorted by default by showing the sort indicator when the grid is initially rendered. Note: this does not dynamically sort the grid, just a visual indicator of the current data and how it is sorted when grid initialises.
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
->- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties;
+>- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties.
+>- "editableOnlyInPanel" prop on IColumnConfig allows the column to only be editable in the panel (i.e. when the "Edit Panel" is open) when the "editable" prop is "true". "editable", "editableOnlyInPanel", and not "editable" columns on the grid now have CSS classes of "editable", "editable-panel-only", and "non-editable", respectively.
 
 ### Bug Fixes
 
@@ -63,6 +64,7 @@ Updates include:
 >- Add/Edit panels styles updated.
 >- Add/Edit panels now have a "Cancel" button.
 >- Add/Edit panels now "block" user interaction (i.e. no "light" dismiss). This means the user can no longer accidentally click away from the panel to close it and potentially lose data.
+>- Top-level spans that are rendered in the grid (when not editing) now have a CSS class of "span-value" for easier targetting.
 
 ### Experimental
 

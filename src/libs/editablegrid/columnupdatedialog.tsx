@@ -40,7 +40,7 @@ const ColumnUpdateDialog = (props: Props) => {
 
     useEffect(() => {
         let tmpColumnValuesObj: any = {};
-        props.columnConfigurationData.filter(x => x.editable == true).forEach((item, index) => {
+        props.columnConfigurationData.filter(x => x.editable == true && !x.editableOnlyInPanel).forEach((item, index) => {
             tmpColumnValuesObj[item.key] = {
                 //'value': GetDefault(item.dataType),
                 'value': props.selectedItem ? GetValue(item.dataType, props.selectedItem[item.key]) : GetDefault(item.dataType),
@@ -124,7 +124,7 @@ const ColumnUpdateDialog = (props: Props) => {
     const createDropDownOptions = (): IDropdownOption[] => {
         let dropdownOptions: IDropdownOption[] = [];
         props.columnConfigurationData.forEach((item, index) => {
-            if (item.editable == true) {
+            if (item.editable == true && !item.editableOnlyInPanel) {
                 dropdownOptions.push({ key: item.key, text: item.text });
             }
         });
