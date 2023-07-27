@@ -34,7 +34,7 @@ const EditPanel = (props: Props) => {
             };
         })
         setColumnValuesObj(tmpColumnValuesObj);
-    }, [props.columnConfigurationData]);
+    }, [props.columnConfigurationData, props.selectedItem]);
 
     const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null): void => {
         setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage } })
