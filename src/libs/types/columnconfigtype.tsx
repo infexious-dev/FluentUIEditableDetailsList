@@ -12,6 +12,7 @@ export interface IColumnConfig extends IColumn {
     text: string;
     editable?: boolean;
     editableOnlyInPanel?: boolean;
+    panelEditDisabledUntil?: (item?: any, column?: IColumn) => boolean;
     dataType?: string;
     isResizable?: boolean;
     includeColumnInExport?: boolean;

@@ -81,30 +81,32 @@ const EditPanel = (props: Props) => {
 
     const createFields = (): any[] => {
         let tmpRenderObj: any[] = [];
-        props.columnConfigurationData.filter(x => x.editable == true && x.dataType !== DataType.calculated).forEach((item) => {
-            switch (item.inputType) {
+        props.columnConfigurationData.filter(x => x.editable == true && x.dataType !== DataType.calculated).forEach((column) => {
+            switch (column.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
-                        key={item.key}
-                        label={item.text}
+                        key={column.key}
+                        label={column.text}
+                        disabled={column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false}
                         strings={DayPickerStrings}
                         placeholder="Select a date..."
                         ariaLabel="Select a date"
-                        onSelectDate={(date) => onCellDateChange(date, item)}
-                        value={columnValuesObj[item.key].value}
+                        onSelectDate={(date) => onCellDateChange(date, column)}
+                        value={columnValuesObj[column.key].value}
                     />);
                     break;
                 case EditControlType.Picker:
-                    tmpRenderObj.push(<div key={item.key}>
-                        <span className={controlClass.pickerLabel}>{item.text}</span>
+                    tmpRenderObj.push(<div key={column.key}>
+                        <span className={controlClass.pickerLabel}>{column.text}</span>
                         <PickerControl
-                            arialabel={item.text}
+                            arialabel={column.text}
                             selectedItemsLimit={1}
-                            defaultTags={columnValuesObj[item.key].value ? [columnValuesObj[item.key].value] : undefined}
-                            pickerTags={item.pickerOptions?.pickerTags ?? []}
+                            disabled={column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false}
+                            defaultTags={columnValuesObj[column.key].value ? [columnValuesObj[column.key].value] : undefined}
+                            pickerTags={column.pickerOptions?.pickerTags ?? []}
                             minCharLimitForSuggestions={2}
-                            onTaglistChanged={(selectedItem: ITag[] | undefined) => onCellPickerTagListChanged(selectedItem, item)}
-                            pickerDescriptionOptions={item.pickerOptions?.pickerDescriptionOptions}
+                            onTaglistChanged={(selectedItem: ITag[] | undefined) => onCellPickerTagListChanged(selectedItem, column)}
+                            pickerDescriptionOptions={column.pickerOptions?.pickerDescriptionOptions}
                         /></div>);
                     break;
                 case EditControlType.DropDown:
@@ -115,59 +117,62 @@ const EditPanel = (props: Props) => {
                         sanitisedColumnItem[key] = columnValuesObj[key].value;
                     });
 
-                    (typeof item.dropdownValues === 'function' ? item.dropdownValues(sanitisedColumnItem) as IDropdownOption[] : item.dropdownValues ?? [])?.map((option) => {
-                        if (option.text === columnValuesObj[item.key].value) {
+                    (typeof column.dropdownValues === 'function' ? column.dropdownValues(sanitisedColumnItem) as IDropdownOption[] : column.dropdownValues ?? [])?.map((option) => {
+                        if (option.text === columnValuesObj[column.key].value) {
                             selectedKey = option.key
                         }
                     });
 
                     tmpRenderObj.push(
                         <Dropdown
-                            key={item.key}
-                            label={item.text}
-                            options={typeof item.dropdownValues === 'function' ? item.dropdownValues(sanitisedColumnItem) as IDropdownOption[] : item.dropdownValues ?? []}
+                            key={column.key}
+                            label={column.text}
+                            disabled={column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false}
+                            options={typeof column.dropdownValues === 'function' ? column.dropdownValues(sanitisedColumnItem) as IDropdownOption[] : column.dropdownValues ?? []}
                             selectedKey={selectedKey || null}
-                            onChange={(ev, selected) => onDropDownChange(ev, selected, item)}
+                            onChange={(ev, selected) => onDropDownChange(ev, selected, column)}
                         />
                     );
                     break;
                 case EditControlType.Checkbox:
                     tmpRenderObj.push(
-                        <div key={item.key}>
-                            <Label>{item.text}</Label>
+                        <div key={column.key}>
+                            <Label>{column.text}</Label>
                             <Checkbox
                                 styles={{ root: { marginTop: 0 } }}
-                                disabled={!item.editable}
-                                checked={columnValuesObj[item.key].value || false}
-                                onChange={(ev, checked) => onCheckboxChange(checked, item)}
+                                disabled={!column.editable || (column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false)}
+                                checked={columnValuesObj[column.key].value || false}
+                                onChange={(ev, checked) => onCheckboxChange(checked, column)}
                             />
                         </div>
                     );
                     break;
                 case EditControlType.MultilineTextField:
                     tmpRenderObj.push(<TextField
-                        key={item.key}
-                        errorMessage={columnValuesObj[item.key].error}
-                        name={item.text}
+                        key={column.key}
+                        errorMessage={columnValuesObj[column.key].error}
+                        name={column.text}
+                        disabled={column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false}
                         multiline={true}
                         rows={1}
-                        id={item.key}
-                        label={item.text}
+                        id={column.key}
+                        label={column.text}
                         styles={textFieldStyles}
-                        onChange={(ev, text) => onTextUpdate(ev, text!, item)}
-                        value={columnValuesObj[item.key].value || ''}
+                        onChange={(ev, text) => onTextUpdate(ev, text!, column)}
+                        value={columnValuesObj[column.key].value || ''}
                     />);
                     break;
                 default:
                     tmpRenderObj.push(<TextField
-                        key={item.key}
-                        errorMessage={columnValuesObj[item.key].error}
-                        name={item.text}
-                        id={item.key}
-                        label={item.text}
+                        key={column.key}
+                        errorMessage={columnValuesObj[column.key].error}
+                        name={column.text}
+                        disabled={column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false}
+                        id={column.key}
+                        label={column.text}
                         styles={textFieldStyles}
-                        onChange={(ev, text) => onTextUpdate(ev, text!, item)}
-                        value={columnValuesObj[item.key].value || ''}
+                        onChange={(ev, text) => onTextUpdate(ev, text!, column)}
+                        value={columnValuesObj[column.key].value || ''}
                     />);
                     break;
             }
