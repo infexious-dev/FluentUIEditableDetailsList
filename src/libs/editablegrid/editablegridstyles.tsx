@@ -84,7 +84,11 @@ export const GetDynamicSpanStyles = (column: IColumnConfig, cellValue: number | 
             color: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.textColor : styleRule?.whenFalse?.textColor),
             //backgroundColor: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.backgroundColor : styleRule?.whenFalse?.backgroundColor),
             //lineHeight:'250%',
-            fontWeight: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.fontWeight : styleRule?.whenFalse?.fontWeight)
+            fontWeight: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.fontWeight : styleRule?.whenFalse?.fontWeight),
+
+            '& > *': {
+                width: '100%'
+            }
         }
     });
     return styles.dynamicSpanStyle;

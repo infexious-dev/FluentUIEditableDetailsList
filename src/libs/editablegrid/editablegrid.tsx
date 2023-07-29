@@ -1374,7 +1374,7 @@ const EditableGrid = (props: Props) => {
                     const isEditableInGrid = isEditable && column.editable;
                     const isEditableInPanelOnly = isEditableInGrid && column.editableOnlyInPanel;
                     const tooltipText =
-                        props.cellEditTooltip?.showTooltip && (!isGridInEdit && !editMode) && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
+                        props.cellEditTooltip?.showTooltip && !editMode && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
                             _shouldRenderSpan ?
                                 props.enableSingleClickCellEdit ?
                                     "Click to edit" :
@@ -1382,7 +1382,7 @@ const EditableGrid = (props: Props) => {
                                 : props.enableSingleClickCellEdit ?
                                     "Click to stop editing" :
                                     "Double-click to stop editing"
-                            : isEditableInPanelOnly ?
+                            : props.cellEditTooltip?.showTooltip && isEditableInPanelOnly ?
                                 "Editing disabled for this value on the grid. Please click on \"Edit Item\" to edit it."
                                 : "";
 
@@ -1393,7 +1393,7 @@ const EditableGrid = (props: Props) => {
                             root: { display: props.alignCellsMiddle ? 'flex' : 'inline-block', width: '100%', height: '100%', alignItems: props.alignCellsMiddle ? 'center' : undefined }
                         },
                         calloutProps: { gapSpace: 5 },
-                        directionalHint: props.cellEditTooltip?.tooltipDirectionalHint || DirectionalHint.leftTopEdge,
+                        directionalHint: props.cellEditTooltip?.tooltipDirectionalHint ? props.cellEditTooltip.tooltipDirectionalHint : props.alignCellsMiddle ? DirectionalHint.leftCenter : DirectionalHint.leftTopEdge,
                         content: tooltipText
                     }
 

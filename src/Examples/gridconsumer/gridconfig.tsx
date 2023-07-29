@@ -137,7 +137,7 @@ export const GridColumnConfig: IColumnConfig[] =
                 whenTrue: { textColor: '#EF5350', fontWeight: 'bold' },
                 whenFalse: { textColor: '#9CCC65' }
             },
-            onCustomRender: (item) => { return item.salary ? "$" + item.salary : null }
+            onCustomRender: (item) => { return <div>{item.salary ? "$" + item.salary : null}</div> }
         },
         {
             key: 'dateofjoining',
