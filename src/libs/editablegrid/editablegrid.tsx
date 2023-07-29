@@ -1375,8 +1375,9 @@ const EditableGrid = (props: Props) => {
                     const isEditable = canEditRowBasedOnCheck(item);
                     const isEditableInGrid = isEditable && column.editable;
                     const isEditableInPanelOnly = isEditableInGrid && column.editableOnlyInPanel;
+                    const rowInEdit = activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'];
                     const tooltipText =
-                        props.cellEditTooltip?.showTooltip && !editMode && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
+                        props.cellEditTooltip?.showTooltip && !rowInEdit && !editMode && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
                             _shouldRenderSpan ?
                                 props.enableSingleClickCellEdit ?
                                     "Click to edit" :
@@ -2344,13 +2345,15 @@ const EditableGrid = (props: Props) => {
                             onRenderItemColumn={props.onRenderItemColumn}
                             onRenderMissingItem={props.onRenderMissingItem}
                             onRenderRow={(rowProps, defaultRender) => {
+                                const rowInEdit = activateCellEdit && activateCellEdit[Number(rowProps?.item['_grid_row_id_'])!] && activateCellEdit[Number(rowProps?.item['_grid_row_id_'])!]['isActivated'];
+
                                 return <>
                                     {
                                         rowProps && defaultRender ?
                                             props.rowMuteOptions?.enableRowMute ?
                                                 defaultRender({
                                                     ...rowProps,
-                                                    className: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteClass ? props.rowMuteOptions.rowMuteClass : 'muted' : props.rowMuteOptions?.rowUnmuteClass ? props.rowMuteOptions.rowUnmuteClass : '',
+                                                    className: `${rowInEdit ? 'row-edit' : ''} ${rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteClass ? props.rowMuteOptions.rowMuteClass : 'muted' : props.rowMuteOptions?.rowUnmuteClass ? props.rowMuteOptions.rowUnmuteClass : ''}`,
                                                     styles: {
                                                         root:
                                                         {
@@ -2361,7 +2364,10 @@ const EditableGrid = (props: Props) => {
                                                         }
                                                     }
                                                 })
-                                                : defaultRender({ ...rowProps }) : null
+                                                : defaultRender({
+                                                    ...rowProps,
+                                                    className: `${rowInEdit ? 'row-edit' : ''}`
+                                                }) : null
 
                                     }
                                 </>

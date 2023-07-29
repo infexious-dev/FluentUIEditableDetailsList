@@ -71,6 +71,7 @@ Updates include:
 >- Top-level cell values that are rendered in the grid (when not editing) now have a CSS class of "cell-value" for easier targetting and are now Tooltips which guide the user on the editing experience.
 >- Streamlined the editing experience by allowing single/double-click to initiate and close editing inputs on the grid. This fixes generic TextFields from requiring the "Enter" key to be pressed to finish editing.
 >- Empty cells can now be edited.
+>- Rows now have a class of "row-edit" when the row is being edited.
 
 ### Experimental
 
