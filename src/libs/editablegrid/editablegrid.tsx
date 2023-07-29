@@ -39,8 +39,8 @@ import { Props } from '../types/editabledetailslistprops';
 import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 import { Panel, PanelType } from '@fluentui/react';
-import { TooltipHost } from 'office-ui-fabric-react';
 import { DataType } from '../types/datatype';
+import { ITooltipHostProps, TooltipHost } from 'office-ui-fabric-react';
 
 interface SortOptions {
     key: string;
@@ -1350,7 +1350,7 @@ const EditableGrid = (props: Props) => {
             columnConfigs.push({
                 key: colKey,
                 name: column.text,
-                className: `${column.editable ? 'editable' : 'non-editable'} ${column.editable && column.editableOnlyInPanel ? 'editable-panel-only' : ''} ${column.className ? column.className : ''}`,
+                className: `${column.className ? column.className : ''}`,
                 headerClassName: `${colHeaderClassName} ${column.headerClassName}`,
                 styles: column.styles,
                 ariaLabel: column.text,
@@ -1369,11 +1369,32 @@ const EditableGrid = (props: Props) => {
                 isMultiline: column.isMultiline,
                 onRender: column.onRender ? column.onRender : (item, rowNum) => {
                     rowNum = Number(item['_grid_row_id_']);
+                    const _shouldRenderSpan = shouldRenderSpan();
+                    const isEditable = canEditRowBasedOnCheck(item);
+                    const isEditableInGrid = isEditable && column.editable;
+                    const isEditableInPanelOnly = isEditableInGrid && column.editableOnlyInPanel;
+                    const tooltipText =
+                        isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
+                            _shouldRenderSpan ?
+                                props.enableSingleClickCellEdit ?
+                                    "Click to edit" :
+                                    "Double-click to edit"
+                                : props.enableSingleClickCellEdit ?
+                                    "Click to stop editing" :
+                                    "Double-click to stop editing"
+                            : "";
+
+                    const tooltipHostProps: ITooltipHostProps = {
+                        hostClassName: `cell-value ${isEditableInGrid ? "editable" : "non-editable"} ${isEditableInPanelOnly ? "editable-panel-only" : ""}`,
+                        styles: { root: { display: 'inline-block', width: '100%', height: '100%' } },
+                        calloutProps: { gapSpace: 5 },
+                        content: tooltipText
+                    }
 
                     switch (column.inputType) {
                         case EditControlType.MultilineTextField:
-                            return <span className='span-value'>{
-                                (ShouldRenderSpan())
+                            return <TooltipHost {...tooltipHostProps} >{
+                                _shouldRenderSpan
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
                                         (<HoverCard
@@ -1402,10 +1423,11 @@ const EditableGrid = (props: Props) => {
                                         value={activateCellEdit[rowNum!]['properties'][column.key].value}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                         maxLength={column.maxLength != null ? column.maxLength : 10000}
-                                    />)}</span>
+                                    />)
+                            }</TooltipHost>
                         case EditControlType.Date:
-                            return <span className='span-value'>{
-                                (ShouldRenderSpan())
+                            return <TooltipHost {...tooltipHostProps} >{
+                                _shouldRenderSpan
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
                                         (<HoverCard
@@ -1429,10 +1451,10 @@ const EditableGrid = (props: Props) => {
                                         onSelectDate={(date) => onCellDateChange(date, item, rowNum!, column)}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)
-                            }</span>
+                            }</TooltipHost>
                         case EditControlType.DropDown:
-                            return <span className={'span-value row-' + rowNum! + '-col-' + index}>{
-                                (ShouldRenderSpan())
+                            return <TooltipHost {...{ ...tooltipHostProps, ...{ hostClassName: tooltipHostProps.hostClassName + ' row-' + rowNum! + '-col-' + index } }} >{
+                                _shouldRenderSpan
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
                                         (<HoverCard
@@ -1458,10 +1480,10 @@ const EditableGrid = (props: Props) => {
                                         onChange={(ev, selectedItem) => onDropDownChange(ev, selectedItem, rowNum!, column)}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDropdownDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)
-                            }</span>
+                            }</TooltipHost>
                         case EditControlType.Picker:
-                            return <span className='span-value'>{
-                                (ShouldRenderSpan())
+                            return <TooltipHost {...tooltipHostProps} >{
+                                _shouldRenderSpan
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
                                         (<HoverCard
@@ -1489,7 +1511,7 @@ const EditableGrid = (props: Props) => {
                                             suggestionRule={column.pickerOptions?.suggestionsRule}
                                         />
                                     </span>)
-                            }</span>
+                            }</TooltipHost>
                         case EditControlType.Checkbox:
                             let isCheckboxDisabled: boolean = false;
 
@@ -1499,7 +1521,7 @@ const EditableGrid = (props: Props) => {
                                 isCheckboxDisabled = false;
                             }
 
-                            return <span className='span-value'>{
+                            return <TooltipHost {...tooltipHostProps} >{
                                 (column?.hoverComponentOptions?.enable ?
                                     (<HoverCard
                                         type={HoverCardType.plain}
@@ -1531,7 +1553,7 @@ const EditableGrid = (props: Props) => {
                                         onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
                                     />
                                 )
-                            }</span>
+                            }</TooltipHost>
                         case EditControlType.Link:
                             return <span className='span-value'>{
                                 (column?.hoverComponentOptions?.enable ?
@@ -1549,8 +1571,8 @@ const EditableGrid = (props: Props) => {
                                 )
                             }</span>
                         default:
-                            return <span className='span-value'>{
-                                (ShouldRenderSpan())
+                            return <TooltipHost {...tooltipHostProps} >{
+                                _shouldRenderSpan
                                     ?
                                     (column?.hoverComponentOptions?.enable ?
                                         (<HoverCard
@@ -1572,13 +1594,14 @@ const EditableGrid = (props: Props) => {
                                         styles={textFieldStyles}
                                         onChange={(ev, text) => onCellValueChange(ev, text!, item, rowNum!, column.key, column)}
                                         autoFocus={!props.enableDefaultEditMode && !editMode && !(activateCellEdit?.[Number(item['_grid_row_id_'])!]?.['isActivated'])}
+                                        onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                         value={activateCellEdit[rowNum!]['properties'][column.key].value}
                                         onKeyDown={(event) => onKeyDownEvent(event, column, rowNum!, false)}
                                         maxLength={column.maxLength != null ? column.maxLength : 1000}
-                                    />)}</span>
+                                    />)}</TooltipHost>
                     }
 
-                    function ShouldRenderSpan() {
+                    function shouldRenderSpan() {
                         return ((!column.editable || column.editableOnlyInPanel || item._is_muted_) || (!props.enableDefaultEditMode && !(activateCellEdit?.[rowNum!]?.isActivated) && !(activateCellEdit?.[rowNum!]?.['properties'][column.key]?.activated)));
                     }
                 }

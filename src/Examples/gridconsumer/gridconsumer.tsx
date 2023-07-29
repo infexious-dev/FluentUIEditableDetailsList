@@ -488,7 +488,7 @@ const Consumer = () => {
                 ]}
                 rowCanEditCheck={{
                     columnKey: "payrolltype",
-                    passValue: "Monthly"
+                    passValue: "Weekly"
                 }}
             />
 

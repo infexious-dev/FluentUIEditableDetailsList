@@ -166,7 +166,8 @@ export const GridColumnConfig: IColumnConfig[] =
             inputType: EditControlType.DropDown,
             dropdownValues: (item: any) => { // function type dropdown values
                 return ([
-                    { key: 'weekly', text: item?.name ? item.name + ' dropdown' : '' },
+                    { key: 'other', text: item?.name ? item.name + ' dropdown' : '' },
+                    { key: 'weekly', text: 'Weekly' },
                     { key: 'biweekly', text: 'Bi-Weekly' },
                     { key: 'monthly', text: 'Monthly' }
                 ])

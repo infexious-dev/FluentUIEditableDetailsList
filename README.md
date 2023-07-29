@@ -35,7 +35,7 @@ Updates include:
 >- ILinkOptions now has a new "isFocusable" prop which allows links in the grid to have their "data-is-focusable" controlled.
 >- Added "Checkbox" control to column's "inputType" (use via EditControlType enum). Use this to render a boolean-type field as a checkbox.
 >- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties.
->- "editableOnlyInPanel" prop on IColumnConfig allows the column to only be editable in the panel (i.e. when the "Edit Panel" is open) when the "editable" prop is "true". "editable", "editableOnlyInPanel", and not "editable" columns on the grid now have CSS classes of "editable", "editable-panel-only", and "non-editable", respectively.
+>- "editableOnlyInPanel" prop on IColumnConfig allows the column to only be editable in the panel (i.e. when the "Edit Panel" is open) when the "editable" prop is "true". "editable", "editableOnlyInPanel", and not "editable" columns on the grid now have CSS classes of "editable", "editable-panel-only", and "non-editable" added to their TooltipHost class names, respectively. TooltipHost class name is "cell-value".
 >- "panelEditDisabledUntil" prop on IColumnConfig allows custom disabling of fields in the add/edit panels based on other values.
 
 ### Bug Fixes
@@ -66,7 +66,9 @@ Updates include:
 >- Add/Edit panels styles updated.
 >- Add/Edit panels now have a "Cancel" button.
 >- Add/Edit panels now "block" user interaction (i.e. no "light" dismiss). This means the user can no longer accidentally click away from the panel to close it and potentially lose data.
->- Top-level spans that are rendered in the grid (when not editing) now have a CSS class of "span-value" for easier targetting.
+>- Top-level cell values that are rendered in the grid (when not editing) now have a CSS class of "cell-value" for easier targetting and are now Tooltips which guide the user on the editing experience.
+>- Streamlined the editing experience by allowing single/double-click to initiate and close editing inputs on the grid. This fixes generic TextFields from requiring the "Enter" key to be pressed to finish editing.
+>- Empty cells can now be edited.
 
 ### Experimental
 
