@@ -14,7 +14,7 @@ import { ITeachingBubbleConfig, teachingBubbleConfig } from './teachingbubblecon
 import { useBoolean } from '@fluentui/react-hooks';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ComboBox, CommandBarButton } from '@fluentui/react';
+import { ComboBox } from '@fluentui/react';
 import _ from 'lodash';
 
 interface GridConfigOptions {
@@ -75,8 +75,6 @@ const Consumer = () => {
         prependRowEditActions: false
     });
     const [gridSearchText, setGridSearchText] = useState("");
-
-    const RowSize = 5;
 
     const classNames = mergeStyleSets({
         controlWrapper: {
@@ -213,28 +211,28 @@ const Consumer = () => {
         console.log(data.filter(item => item._grid_row_operation_ == Operation.Mute));
     }
 
-    const onPayrollChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
-        alert('Payroll Changed');
-        return callbackRequestParamObj.data;
-    }
+    // const onPayrollChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
+    //     alert('Payroll Changed');
+    //     return callbackRequestParamObj.data;
+    // }
 
-    const onDateChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
-        alert('Date Changed');
-        return callbackRequestParamObj.data;
-    }
+    // const onDateChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
+    //     alert('Date Changed');
+    //     return callbackRequestParamObj.data;
+    // }
 
-    const onEmploymentTypeChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
-        alert('Employment Type Changed');
-        return callbackRequestParamObj.data;
-    }
+    // const onEmploymentTypeChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
+    //     alert('Employment Type Changed');
+    //     return callbackRequestParamObj.data;
+    // }
 
-    const onDesignationChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
-        callbackRequestParamObj.rowindex.forEach((index) => {
-            callbackRequestParamObj.data.filter((item) => item._grid_row_id_ == index).map((item) => item.salary = 30000);
-        });
+    // const onDesignationChanged = (callbackRequestParamObj: ICallBackParams): any[] => {
+    //     callbackRequestParamObj.rowindex.forEach((index) => {
+    //         callbackRequestParamObj.data.filter((item) => item._grid_row_id_ == index).map((item) => item.salary = 30000);
+    //     });
 
-        return callbackRequestParamObj.data;
-    }
+    //     return callbackRequestParamObj.data;
+    // }
 
     const attachGridValueChangeCallbacks = (columnConfig: IColumnConfig[]): IColumnConfig[] => {
         //columnConfig.filter((item) => item.key == 'designation').map((item) => item.onChange = onDesignationChanged);
@@ -403,7 +401,7 @@ const Consumer = () => {
             <div className={classNames.controlWrapper}>
                 <TextField value={gridSearchText} disabled={gridInEdit} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={
                     (event, value) => {
-                        setGridSearchText(value)
+                        setGridSearchText(value || "")
                         EventEmitter.dispatch(EventType.onSearch, event);
                     }
                 }

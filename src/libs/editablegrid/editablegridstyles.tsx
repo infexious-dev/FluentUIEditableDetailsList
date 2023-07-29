@@ -4,7 +4,6 @@
 import { IDropdownStyles, IStackStyles, IStackTokens, ITextFieldStyles, mergeStyleSets } from "@fluentui/react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EvaluateRule } from "./helper";
-import { EditControlType } from "../types/editcontroltype";
 import { Props } from "../types/editabledetailslistprops";
 
 export const stackStyles: Partial<IStackStyles> = { root: { width: '100%', justifyContent: 'end' } };

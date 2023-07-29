@@ -26,7 +26,7 @@ const EditPanel = (props: Props) => {
 
     useEffect(() => {
         let tmpColumnValuesObj: any = {};
-        props.columnConfigurationData.filter(x => x.editable == true).forEach((item, index) => {
+        props.columnConfigurationData.filter(x => x.editable === true).forEach((item, index) => {
             tmpColumnValuesObj[item.key] = {
                 'value': props.isBulk ? GetDefault(item.dataType) : props.selectedItem ? GetValue(item.dataType, props.selectedItem[item.key]) : GetDefault(item.dataType),
                 'isChanged': false,
@@ -81,7 +81,7 @@ const EditPanel = (props: Props) => {
 
     const createFields = (): any[] => {
         let tmpRenderObj: any[] = [];
-        props.columnConfigurationData.filter(x => x.editable == true && x.dataType !== DataType.calculated).forEach((column) => {
+        props.columnConfigurationData.filter(x => x.editable === true && x.dataType !== DataType.calculated).forEach((column) => {
             switch (column.inputType) {
                 case EditControlType.Date:
                     tmpRenderObj.push(<DatePicker
@@ -196,7 +196,7 @@ const EditPanel = (props: Props) => {
                     className={controlClass.submitStylesEditpanel}
                     onClick={onPanelSubmit}
                     allowDisabledFocus
-                    disabled={columnValuesObj && Object.keys(columnValuesObj).some(k => columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0) || false}
+                    disabled={(columnValuesObj && Object.keys(columnValuesObj).some(k => columnValuesObj[k] && columnValuesObj[k].error && columnValuesObj[k].error.length > 0)) || false}
                 />
             </Stack>
         </>
