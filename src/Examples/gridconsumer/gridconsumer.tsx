@@ -486,6 +486,10 @@ const Consumer = () => {
                         iconOnly: true
                     }
                 ]}
+                rowCanEditCheck={{
+                    columnKey: "payrolltype",
+                    passValue: "Monthly"
+                }}
             />
 
             {teachingBubbleVisible && (

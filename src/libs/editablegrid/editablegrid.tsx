@@ -103,7 +103,7 @@ const EditableGrid = (props: Props) => {
     const eventFilterList = React.useRef<IEventFilterList[]>([]);
     const eventSearchQuery = React.useRef<string>("");
 
-    const onFilterHandler = (data: { columnKey: string, queryText: string }) => {
+    function onFilterHandler(data: { columnKey: string; queryText: string; }) {
         if (data.columnKey) {
             const searchableColumn = props.columns.filter(x => x.key === data.columnKey)[0];
 
@@ -124,15 +124,15 @@ const EditableGrid = (props: Props) => {
                     eventFilterList.current.push({
                         columnKey: _columnKey,
                         queryText: data.queryText
-                    })
+                    });
                 } else { // column exists in filter list
-                    eventFilterList.current[index].queryText = data.queryText
+                    eventFilterList.current[index].queryText = data.queryText;
                 }
             }
             else {
                 // remove from filter list
                 if (index !== -1)
-                    eventFilterList.current.splice(index, 1)
+                    eventFilterList.current.splice(index, 1);
             }
 
             searchResult.filter(item => {
@@ -155,7 +155,7 @@ const EditableGrid = (props: Props) => {
 
                                 if (filteredIn)
                                     throw BreakException;
-                            })
+                            });
                         } catch (e) {
                             // silently continue...
                         }
@@ -172,7 +172,7 @@ const EditableGrid = (props: Props) => {
         }
     }
 
-    const onSearchHandler = (event: any) => {
+    function onSearchHandler(event: any) {
         if (event && event.target) {
 
             let queryText = event.target.value;
@@ -192,7 +192,7 @@ const EditableGrid = (props: Props) => {
                                     eventFilterList.current.map(filter => {
                                         if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
                                             filteredIn = false;
-                                    })
+                                    });
                                 }
 
                                 item._is_filtered_in_grid_search_ = filteredIn;
@@ -219,7 +219,7 @@ const EditableGrid = (props: Props) => {
                             filteredIn = false;
                     });
 
-                    item._is_filtered_in_grid_search_ = filteredIn
+                    item._is_filtered_in_grid_search_ = filteredIn;
                 });
                 setDefaultGridData(gridDataTmp);
             }
@@ -234,11 +234,11 @@ const EditableGrid = (props: Props) => {
                         filteredIn = false;
                 });
 
-                item._is_filtered_in_grid_search_ = filteredIn
+                item._is_filtered_in_grid_search_ = filteredIn;
             });
             setDefaultGridData(gridDataTmp);
         }
-    };
+    }
 
     React.useEffect(() => {
         EventEmitter.subscribe(EventType.onSearch, onSearchHandler);
@@ -301,19 +301,19 @@ const EditableGrid = (props: Props) => {
         }
     }, [filterCalloutComponent]);
 
-    const onGridSave = (): void => {
+    function onGridSave(): void {
         if (props.onGridSave) {
             props.onGridSave(defaultGridData);
         }
-    };
+    }
 
-    const onGridUpdate = async (): Promise<void> => {
+    async function onGridUpdate(): Promise<void> {
         if (props.onGridUpdate) {
             await props.onGridUpdate(defaultGridData);
         }
-    };
+    }
 
-    const UpdateGridEditStatus = (): void => {
+    function UpdateGridEditStatus(): void {
         var gridEditStatus: boolean = false;
         var BreakException = {};
 
@@ -342,37 +342,37 @@ const EditableGrid = (props: Props) => {
         }
     }
 
-    const SetGridItems = (data: any[]): void => {
+    function SetGridItems(data: any[]): void {
         data = ResetGridRowID(data);
         setDefaultGridData(data);
         setActivateCellEdit(InitializeInternalGridEditStructure(data));
     }
 
-    const setGridEditMode = (editMode: boolean): void => {
+    function setGridEditMode(editMode: boolean): void {
         setEditMode(editMode);
         onGridInEditChange(editMode);
     }
 
-    const setGridEditState = (editState: boolean): void => {
+    function setGridEditState(editState: boolean): void {
         if (isGridStateEdited != editState) {
             setIsGridStateEdited(editState);
             onGridStateEditedChange(editState);
         }
     }
 
-    const onGridInEditChange = async (gridInEdit: boolean): Promise<void> => {
+    async function onGridInEditChange(gridInEdit: boolean): Promise<void> {
         if (props.onGridInEditChange) {
             await props.onGridInEditChange(gridInEdit);
         }
-    };
+    }
 
-    const onGridStateEditedChange = async (editState: boolean): Promise<void> => {
+    async function onGridStateEditedChange(editState: boolean): Promise<void> {
         if (props.onGridStateEditedChange) {
             await props.onGridStateEditedChange(editState);
         }
-    };
+    }
 
-    const SetFilteredGridData = (filters: IFilter[]): void => {
+    function SetFilteredGridData(filters: IFilter[]): void {
         var filteredData = filterGridData(defaultGridData, filters);
         var activateCellEditTmp = ShallowCopyDefaultGridToEditGrid(defaultGridData, activateCellEdit);
         CheckOnFilter();
@@ -394,7 +394,7 @@ const EditableGrid = (props: Props) => {
     /* #endregion */
 
     /* #region [Grid Column Update Functions] */
-    const UpdateBulkData = (data: any, defaultGridDataArr: any[]): any[] => {
+    function UpdateBulkData(data: any, defaultGridDataArr: any[]): any[] {
         let newDefaultGridData = [...defaultGridDataArr];
 
         selectedItems!.forEach((item, index) => {
@@ -408,15 +408,15 @@ const EditableGrid = (props: Props) => {
                 });
 
                 return row;
-            }))
+            }));
         });
 
         setSelectedItems(selectedItems);
         setGridEditState(true);
         return newDefaultGridData;
-    };
+    }
 
-    const CheckBulkUpdateOnChangeCallBack = (data: any, defaultGridDataTmp: any[]): any[] => {
+    function CheckBulkUpdateOnChangeCallBack(data: any, defaultGridDataTmp: any[]): any[] {
         var columns: IColumnConfig[] = [];
         var columnsToFilter: IColumnConfig[] = props.customEditPanelColumns ? props.customEditPanelColumns : props.columns;
         for (var key in data) {
@@ -431,9 +431,9 @@ const EditableGrid = (props: Props) => {
         });
 
         return defaultGridDataTmp;
-    };
+    }
 
-    const UpdateGridColumnData = (data: any): void => {
+    function UpdateGridColumnData(data: any): void {
 
         var defaultGridDataTmp = UpdateBulkData(data, defaultGridData);
 
@@ -444,13 +444,13 @@ const EditableGrid = (props: Props) => {
         UpdateSelectedItems(defaultGridDataTmp);
     }
 
-    const CloseColumnUpdateDialog = (): void => {
+    function CloseColumnUpdateDialog(): void {
         setIsUpdateColumnClicked(false);
-    };
+    }
 
-    const ShowColumnUpdate = (): void => {
+    function ShowColumnUpdate(): void {
         setIsUpdateColumnClicked(s => !s);
-    };
+    }
     /* #endregion */
 
     /* #region [Grid Row Add Functions] */
@@ -795,7 +795,7 @@ const EditableGrid = (props: Props) => {
         setActivateCellEdit(activateCellEditTmp);
     };
 
-    const onCheckboxChange = (checked: boolean | undefined, row: number, column: IColumnConfig): void => {
+    const onCheckboxChange = (checked: boolean | undefined, row: number, column: IColumnConfig, item: any): void => {
         setGridEditState(true);
 
         let activateCellEditTmp: any[] = [];
@@ -811,7 +811,7 @@ const EditableGrid = (props: Props) => {
             HandleColumnOnChange(activateCellEditTmp, row, column);
         }
 
-        HandleCellOnClick(props, column, EditCellValue, row);
+        HandleCellOnClick(props, column, EditCellValue, row, item);
 
         EditCellValue(column.key, row, false);
 
@@ -854,17 +854,37 @@ const EditableGrid = (props: Props) => {
     /* #endregion */
 
     /* #region [Grid Row Edit Functions] */
-    const ChangeRowState = (item: any, rowNum: number, enableTextField: boolean): any[] => {
+    function canEditRowsBasedOnCheck(items: any[]): boolean {
+        let canEdit = true;
+
+        for (let i = 0; i < items?.length; i++) {
+            if (!canEditRowBasedOnCheck(items[i])) {
+                canEdit = false;
+                break;
+            }
+        }
+
+        return canEdit;
+    }
+
+    function canEditRowBasedOnCheck(item: any): boolean {
+        return props.rowCanEditCheck?.columnKey && item[props.rowCanEditCheck?.columnKey] ? item[props.rowCanEditCheck?.columnKey] === props.rowCanEditCheck.passValue : true
+    }
+
+    function ChangeRowState(item: any, rowNum: number, enableTextField: boolean): any[] {
         let activateCellEditTmp: any[] = [...activateCellEdit];
         var objectKeys = Object.keys(item);
+        const canEditRow = canEditRowBasedOnCheck(item);
         objectKeys.filter(key => key != '_grid_row_id_' && key != '_grid_row_operation_').forEach((objKey) => {
-            activateCellEditTmp = ChangeCellState(objKey, rowNum, enableTextField, activateCellEditTmp);
+            if (canEditRow)
+                activateCellEditTmp = ChangeCellState(objKey, rowNum, enableTextField, activateCellEditTmp);
         });
 
-        activateCellEditTmp[rowNum]['isActivated'] = enableTextField;
+        if (canEditRow)
+            activateCellEditTmp[rowNum]['isActivated'] = enableTextField;
 
         return activateCellEditTmp;
-    };
+    }
 
     const SaveRowValue = (item: any, rowNum: number, defaultGridDataArr: any[]): any[] => {
         let defaultGridDataTmp: any[] = [];
@@ -1473,7 +1493,7 @@ const EditableGrid = (props: Props) => {
                         case EditControlType.Checkbox:
                             let isCheckboxDisabled: boolean = false;
 
-                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || column.editableOnlyInPanel || item._is_muted_;
+                            isCheckboxDisabled = !props.enableCellEdit || !column.editable || column.editableOnlyInPanel || item._is_muted_ || !canEditRowBasedOnCheck(item);
 
                             if (column.editable && !column.editableOnlyInPanel && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])) {
                                 isCheckboxDisabled = false;
@@ -1496,7 +1516,7 @@ const EditableGrid = (props: Props) => {
                                             ariaLabel={column.key}
                                             disabled={isCheckboxDisabled}
                                             checked={activateCellEdit[rowNum!].properties[column.key].value || false}
-                                            onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
+                                            onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
                                         />
                                     </HoverCard>)
                                     :
@@ -1508,7 +1528,7 @@ const EditableGrid = (props: Props) => {
                                         ariaLabel={column.key}
                                         disabled={isCheckboxDisabled}
                                         checked={activateCellEdit[rowNum!].properties[column.key].value || false}
-                                        onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column)}
+                                        onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
                                     />
                                 )
                             }</span>
@@ -1645,41 +1665,52 @@ const EditableGrid = (props: Props) => {
                                     :
                                     <>
                                         {!props.enableDefaultEditMode &&
-                                            <IconButton data-is-focusable={false} disabled={item._is_muted_} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} title={'Edit'}></IconButton>
+                                            <TooltipHost calloutProps={{ gapSpace: 5 }} content={!item._is_muted_ && canEditRowBasedOnCheck(item) ? "Edit" : ""}>
+                                                <IconButton data-is-focusable={false} disabled={item._is_muted_ || !canEditRowBasedOnCheck(item)} onClick={() => ShowRowEditMode(item, Number(item['_grid_row_id_'])!, true)} iconProps={{ iconName: 'Edit' }} ></IconButton>
+                                            </TooltipHost>
                                         }
                                     </> : null
                         }
 
                         {
                             props.rowMuteOptions?.enableRowMute ?
-                                <IconButton
-                                    disabled={activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated']}
-                                    data-is-focusable={false}
-                                    onClick={() => {
-                                        let defaultGridDataTmp = [...defaultGridData];
+                                <TooltipHost calloutProps={{ gapSpace: 5 }} content={!(activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated']) ?
 
-                                        defaultGridDataTmp.filter((x => x._grid_row_id_ == item._grid_row_id_)).map((
-                                            x => {
-                                                x._is_muted_ = !x._is_muted_;
-                                                x._grid_row_operation_ = x._is_muted_ ? Operation.Mute : Operation.Update
-                                            }
-                                        ));
+                                    item._is_muted_ ? props.rowMuteOptions?.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute'
 
-                                        //setGridEditState(true);
-                                        SetGridItems(defaultGridDataTmp);
-                                    }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }} title={`${item._is_muted_ ? props.rowMuteOptions.rowUnmuteText ? props.rowMuteOptions.rowUnmuteText : 'Unmute' : props.rowMuteOptions.rowMuteText ? props.rowMuteOptions.rowMuteText : 'Mute'}`}></IconButton>
+
+                                    : ""}>
+                                    <IconButton
+                                        disabled={activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated']}
+                                        data-is-focusable={false}
+                                        onClick={() => {
+                                            let defaultGridDataTmp = [...defaultGridData];
+
+                                            defaultGridDataTmp.filter((x => x._grid_row_id_ == item._grid_row_id_)).map((
+                                                x => {
+                                                    x._is_muted_ = !x._is_muted_;
+                                                    x._grid_row_operation_ = x._is_muted_ ? Operation.Mute : canEditRowBasedOnCheck(item) ? Operation.Update : Operation.None
+                                                }
+                                            ));
+
+                                            //setGridEditState(true);
+                                            SetGridItems(defaultGridDataTmp);
+                                        }} iconProps={{ iconName: `${item._is_muted_ ? 'RedEye' : 'Hide'}` }}></IconButton>
+                                </TooltipHost>
                                 : null
                         }
 
                         {
                             props.gridCopyOptions?.enableRowCopy ?
-                                <IconButton
-                                    disabled={item._is_muted_}
-                                    data-is-focusable={false}
-                                    onClick={() => HandleRowCopy(Number(item['_grid_row_id_'])!)}
-                                    iconProps={{ iconName: "Copy" }}
-                                    title={"Copy"}
-                                ></IconButton> : null
+                                <TooltipHost calloutProps={{ gapSpace: 5 }} content={!item._is_muted_ && canEditRowBasedOnCheck(item) ? "Copy row" : ""}>
+                                    <IconButton
+                                        disabled={item._is_muted_ || !canEditRowBasedOnCheck(item)}
+                                        data-is-focusable={false}
+                                        onClick={() => HandleRowCopy(Number(item['_grid_row_id_'])!)}
+                                        iconProps={{ iconName: "Copy" }}
+                                    ></IconButton>
+                                </TooltipHost>
+                                : null
                         }
                     </>
                 ),
@@ -1781,7 +1812,7 @@ const EditableGrid = (props: Props) => {
                 id: 'enablepaneledit',
                 key: 'enablepaneledit',
                 text: "Edit Item",
-                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount > 1,
+                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount > 1 || (selectedItems?.length ? !canEditRowBasedOnCheck(selectedItems[0]) : false),
                 iconProps: { iconName: "DoubleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.ColumnPanelEdit, {})
             });
@@ -1792,7 +1823,7 @@ const EditableGrid = (props: Props) => {
                 id: 'bulkedit',
                 key: 'bulkedit',
                 text: "Bulk Edit",
-                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount === 1,
+                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount === 1 || (selectedItems?.length ? !canEditRowsBasedOnCheck(selectedItems) : false),
                 iconProps: { iconName: "TripleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.BulkEdit, {})
             });
@@ -1802,7 +1833,7 @@ const EditableGrid = (props: Props) => {
             commandBarItems.push({
                 id: 'updatecolumn',
                 key: 'updatecolumn',
-                disabled: isGridInEdit || editMode || selectionCount == 0,
+                disabled: isGridInEdit || editMode || selectionCount == 0 || (selectedItems?.length ? !canEditRowBasedOnCheck(selectedItems[0]) : false),
                 text: !isUpdateColumnClicked ? "Update Column" : "Save Column Update",
                 iconProps: { iconName: "SingleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.ColumnEdit, {})
@@ -1983,7 +2014,7 @@ const EditableGrid = (props: Props) => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
-            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
+            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
             {
@@ -2015,7 +2046,7 @@ const EditableGrid = (props: Props) => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
-            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
+            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
             {item && item[column.key] ? customRender ? customRender : (new Date(item[column.key])).toDateString() : null}
@@ -2027,14 +2058,14 @@ const EditableGrid = (props: Props) => {
     }
 
     const RenderSpan = (props: Props, index: number, rowNum: number, column: IColumnConfig, item: any,
-        HandleCellOnClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number) => React.MouseEventHandler<HTMLSpanElement> | undefined,
+        HandleCellOnClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any) => React.MouseEventHandler<HTMLSpanElement> | undefined,
         EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void,
         HandleCellOnDoubleClick: (props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any) => React.MouseEventHandler<HTMLSpanElement> | undefined,
         customRender?: React.ReactNode): React.ReactNode => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
             className={GetDynamicSpanStyles(column, item[column.key])}
-            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum)}
+            onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
             style={{ whiteSpace: column.isMultiline ? 'pre-line' : 'normal' }}
         >
@@ -2045,15 +2076,15 @@ const EditableGrid = (props: Props) => {
 
     /* #region [Utilities] */
     function HandleCellOnDoubleClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && !props.enableSingleClickCellEdit && !item._is_muted_)
+        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && !props.enableSingleClickCellEdit && !item._is_muted_ && canEditRowBasedOnCheck(item))
             ?
             EditCellValue(column.key, rowNum!, true)
             :
             null;
     }
 
-    function HandleCellOnClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && props.enableSingleClickCellEdit)
+    function HandleCellOnClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any): React.MouseEventHandler<HTMLSpanElement> | undefined {
+        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && props.enableSingleClickCellEdit && !item._is_muted_ && canEditRowBasedOnCheck(item))
             ? EditCellValue(column.key, rowNum!, true)
             : null;
     }
