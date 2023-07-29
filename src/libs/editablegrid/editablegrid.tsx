@@ -1391,8 +1391,12 @@ const EditableGrid = (props: Props) => {
                     const tooltipHostProps: ITooltipHostProps = {
                         delay: TooltipDelay.zero,
                         hostClassName: `cell-value ${isEditableInGrid ? "editable" : "non-editable"} ${isEditableInPanelOnly ? "editable-panel-only" : ""}`,
+                        className: mergeStyles({
+                            pointerEvents: 'none'
+                        }),
                         styles: {
                             root: { display: props.alignCellsMiddle ? 'flex' : 'inline-block', width: '100%', height: '100%', alignItems: props.alignCellsMiddle ? 'center' : undefined }
+
                         },
                         calloutProps: { gapSpace: 5 },
                         directionalHint: props.cellEditTooltip?.tooltipDirectionalHint ? props.cellEditTooltip.tooltipDirectionalHint : props.alignCellsMiddle ? DirectionalHint.leftCenter : DirectionalHint.leftTopEdge,
