@@ -107,9 +107,9 @@ export const GridColumnConfig: IColumnConfig[] =
             dataType: 'string',
             minWidth: 100,
             maxWidth: 100,
-            // panelEditDisabledUntil: (item: any) => {
-            //     return item?.salary?.value < 50000
-            // },
+            panelEditDisabledUntil: (item: any) => {
+                return item?.salary?.value < 50000
+            },
             isResizable: true,
             includeColumnInExport: true,
             includeColumnInSearch: true,
