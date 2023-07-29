@@ -5,6 +5,7 @@ import { IGridCopy } from "./gridcopytype";
 import { IRowAddWithValues } from "./rowaddtype";
 import { IRowMute } from "./rowmutetype";
 import { ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
+import { DirectionalHint } from "office-ui-fabric-react";
 
 export interface Props extends IDetailsListProps {
     id: number;
@@ -19,6 +20,10 @@ export interface Props extends IDetailsListProps {
     rowCanEditCheck?: {
         columnKey: string,
         passValue: any
+    };
+    cellEditTooltip?: {
+        showTooltip: boolean;
+        tooltipDirectionalHint?: DirectionalHint;
     };
     prependRowEditActions?: boolean;
     enableRowEditCancel?: boolean;
@@ -62,4 +67,5 @@ export interface Props extends IDetailsListProps {
     belowStickyContent?: HTMLDivElement;
     customCommandBarItems?: ICommandBarItemProps[];
     customCommandBarFarItems?: ICommandBarItemProps[];
+    alignCellsMiddle?: boolean;
 }

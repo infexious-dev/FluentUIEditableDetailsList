@@ -27,6 +27,8 @@ Updates include:
 >- Added "customCommandBarFarItems" prop to EditableGrid. It allows the adding of custom FAR Command Bar items (those items appear to the right of the grid toolbar).
 >- Added "enableGridInEditIndicator" prop which allows an edit icon to appear when the grid is in edit mode.
 >- Added "rowCanEditCheck" object prop which accepts "columnKey" (string) and "passValue" (any) to determine if certain rows are editable. If the column equals the passValue, then the row is editable.
+>- Added "cellEditTooltip" object prop which accepts "showTooltip" (boolean) and an optional "tooltipDirectionalHint" (DirectionalHint) which controls the new cell Tooltip functionality (opt-in).
+>- Added "alignCellsMiddle" prop which allows the grid cells to render centre-aligned by default.
 
 ### New "IColumnConfig" Features
 

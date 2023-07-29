@@ -4,6 +4,8 @@
 import { IDropdownStyles, IStackStyles, IStackTokens, ITextFieldStyles, mergeStyleSets } from "@fluentui/react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EvaluateRule } from "./helper";
+import { EditControlType } from "../types/editcontroltype";
+import { Props } from "../types/editabledetailslistprops";
 
 export const stackStyles: Partial<IStackStyles> = { root: { width: '100%', justifyContent: 'end' } };
 
@@ -68,16 +70,17 @@ export const controlClass = mergeStyleSets({
     },
 });
 
-export const GetDynamicSpanStyles = (column: IColumnConfig, cellValue: number | string | undefined): string => {
+export const GetDynamicSpanStyles = (column: IColumnConfig, cellValue: number | string | undefined, props: Props): string => {
 
     var styleRule = column.cellStyleRule ?? undefined;
     var isRuleTrue: boolean = EvaluateRule(column.dataType ?? 'string', cellValue, styleRule);
     var styles = mergeStyleSets({
         dynamicSpanStyle: {
-            display: 'inline-block',
+            display: props.alignCellsMiddle ? 'flex' : 'inline-block',
             width: '100%',
             height: '100%',
-            //textAlign:'center',
+            alignItems: props.alignCellsMiddle ? 'center' : '',
+            // textAlign:'center',
             color: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.textColor : styleRule?.whenFalse?.textColor),
             //backgroundColor: (!column.cellStyleRule || !column.cellStyleRule.enable) ? undefined : (isRuleTrue ? styleRule?.whenTrue?.backgroundColor : styleRule?.whenFalse?.backgroundColor),
             //lineHeight:'250%',

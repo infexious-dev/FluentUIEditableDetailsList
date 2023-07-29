@@ -490,6 +490,11 @@ const Consumer = () => {
                     columnKey: "payrolltype",
                     passValue: "Weekly"
                 }}
+                alignCellsMiddle
+                cellEditTooltip={{
+                    showTooltip: true
+                }}
+
             />
 
             {teachingBubbleVisible && (

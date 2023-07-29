@@ -40,7 +40,7 @@ import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 import { Panel, PanelType } from '@fluentui/react';
 import { DataType } from '../types/datatype';
-import { ITooltipHostProps, TooltipHost } from 'office-ui-fabric-react';
+import { DirectionalHint, ITooltipHostProps, TooltipDelay, TooltipHost } from 'office-ui-fabric-react';
 
 interface SortOptions {
     key: string;
@@ -1374,7 +1374,7 @@ const EditableGrid = (props: Props) => {
                     const isEditableInGrid = isEditable && column.editable;
                     const isEditableInPanelOnly = isEditableInGrid && column.editableOnlyInPanel;
                     const tooltipText =
-                        isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
+                        props.cellEditTooltip?.showTooltip && (!isGridInEdit && !editMode) && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
                             _shouldRenderSpan ?
                                 props.enableSingleClickCellEdit ?
                                     "Click to edit" :
@@ -1382,12 +1382,18 @@ const EditableGrid = (props: Props) => {
                                 : props.enableSingleClickCellEdit ?
                                     "Click to stop editing" :
                                     "Double-click to stop editing"
-                            : "";
+                            : isEditableInPanelOnly ?
+                                "Editing disabled for this value on the grid. Please click on \"Edit Item\" to edit it."
+                                : "";
 
                     const tooltipHostProps: ITooltipHostProps = {
+                        delay: TooltipDelay.zero,
                         hostClassName: `cell-value ${isEditableInGrid ? "editable" : "non-editable"} ${isEditableInPanelOnly ? "editable-panel-only" : ""}`,
-                        styles: { root: { display: 'inline-block', width: '100%', height: '100%' } },
+                        styles: {
+                            root: { display: props.alignCellsMiddle ? 'flex' : 'inline-block', width: '100%', height: '100%', alignItems: props.alignCellsMiddle ? 'center' : undefined }
+                        },
                         calloutProps: { gapSpace: 5 },
+                        directionalHint: props.cellEditTooltip?.tooltipDirectionalHint || DirectionalHint.leftTopEdge,
                         content: tooltipText
                     }
 
@@ -1447,6 +1453,11 @@ const EditableGrid = (props: Props) => {
                                         strings={DayPickerStrings}
                                         placeholder="Select a date..."
                                         ariaLabel={column.key}
+                                        className={mergeStyles({
+                                            'div[class^="statusMessage"]': {
+                                                marginTop: props.alignCellsMiddle ? 0 : undefined
+                                            }
+                                        })}
                                         value={new Date(activateCellEdit[rowNum!].properties[column.key].value)}
                                         onSelectDate={(date) => onCellDateChange(date, item, rowNum!, column)}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
@@ -1669,7 +1680,10 @@ const EditableGrid = (props: Props) => {
                 isResizable: true,
                 minWidth: minWidth,
                 maxWidth: maxWidth,
-                className: 'actions-cell',
+                className: `actions-cell ${props.alignCellsMiddle ? mergeStyles({
+                    display: 'flex',
+                    alignItems: 'center'
+                }) : undefined}`,
                 onRender: (item, index) => (
                     <>
                         {
@@ -2036,7 +2050,7 @@ const EditableGrid = (props: Props) => {
     const RenderLinkSpan = (props: Props, index: number, rowNum: number, column: IColumnConfig, item: any, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void): React.ReactNode => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
-            className={GetDynamicSpanStyles(column, item[column.key])}
+            className={GetDynamicSpanStyles(column, item[column.key], props)}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
@@ -2068,7 +2082,7 @@ const EditableGrid = (props: Props) => {
     const RenderDateSpan = (props: Props, index: number, rowNum: number, column: IColumnConfig, item: any, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, customRender?: React.ReactNode): React.ReactNode => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
-            className={GetDynamicSpanStyles(column, item[column.key])}
+            className={GetDynamicSpanStyles(column, item[column.key], props)}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
         >
@@ -2087,10 +2101,10 @@ const EditableGrid = (props: Props) => {
         customRender?: React.ReactNode): React.ReactNode => {
         return <span
             id={`id-${props.id}-col-${index}-row-${rowNum}`}
-            className={GetDynamicSpanStyles(column, item[column.key])}
+            className={GetDynamicSpanStyles(column, item[column.key], props)}
             onClick={HandleCellOnClick(props, column, EditCellValue, rowNum, item)}
             onDoubleClick={HandleCellOnDoubleClick(props, column, EditCellValue, rowNum, item)}
-            style={{ whiteSpace: column.isMultiline ? 'pre-line' : 'normal' }}
+            style={{ whiteSpace: column.isMultiline || column.inputType === EditControlType.MultilineTextField ? 'pre-line' : 'normal' }}
         >
             {customRender ? customRender : item[column.key]}
         </span>;
@@ -2199,6 +2213,12 @@ const EditableGrid = (props: Props) => {
         }
     }, [scrollablePaneRef, props.aboveStickyContent, props.belowStickyContent])
 
+    const checkboxCellClassName = mergeStyles({
+        '.ms-DetailsRow-check': {
+            height: props.alignCellsMiddle ? '100%' : undefined
+        }
+    })
+
     return (
         <ThemeProvider theme={props.theme}>
             <Panel
@@ -2284,7 +2304,7 @@ const EditableGrid = (props: Props) => {
                             ariaLabelForGrid={props.ariaLabelForGrid}
                             ariaLabelForListHeader={props.ariaLabelForListHeader}
                             cellStyleProps={props.cellStyleProps}
-                            checkboxCellClassName={props.checkboxCellClassName}
+                            checkboxCellClassName={`${checkboxCellClassName} ${props.checkboxCellClassName ? props.checkboxCellClassName : ''}`}
                             checkboxVisibility={props.checkboxVisibility}
                             className={props.className}
                             columnReorderOptions={props.columnReorderOptions}
