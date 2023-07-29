@@ -868,7 +868,9 @@ const EditableGrid = (props: Props) => {
     }
 
     function canEditRowBasedOnCheck(item: any): boolean {
-        return props.rowCanEditCheck?.columnKey && item[props.rowCanEditCheck?.columnKey] ? item[props.rowCanEditCheck?.columnKey] === props.rowCanEditCheck.passValue : true
+        return props.rowCanEditCheck?.columnKey &&
+            item[props.rowCanEditCheck?.columnKey] !== undefined &&
+            item[props.rowCanEditCheck?.columnKey] !== null ? item[props.rowCanEditCheck?.columnKey] === props.rowCanEditCheck.passValue : true
     }
 
     function ChangeRowState(item: any, rowNum: number, enableTextField: boolean): any[] {
