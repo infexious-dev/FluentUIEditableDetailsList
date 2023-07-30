@@ -104,23 +104,26 @@ const Consumer = () => {
     });
 
     const onTeachingBubbleNavigation = (direction: string) => {
+        let teachingProps;
+        let currentId;
+
         switch (direction) {
             case 'previous':
-                var TeachingProps = teachingBubbleConfig[teachingBubblePropsConfig.id - 1];
-                var currentId = teachingBubblePropsConfig.id - 1;
-                TeachingProps.footerContent = `${currentId + 1} of ${teachingBubbleConfig.length}`;
-                setTeachingBubblePropsConfig({ id: currentId, config: TeachingProps })
+                teachingProps = teachingBubbleConfig[teachingBubblePropsConfig.id - 1];
+                currentId = teachingBubblePropsConfig.id - 1;
+                teachingProps.footerContent = `${currentId + 1} of ${teachingBubbleConfig.length}`;
+                setTeachingBubblePropsConfig({ id: currentId, config: teachingProps })
                 break;
             case 'next':
-                var TeachingProps = teachingBubbleConfig[teachingBubblePropsConfig.id + 1];
-                var currentId = teachingBubblePropsConfig.id + 1;
-                TeachingProps.footerContent = `${currentId + 1} of ${teachingBubbleConfig.length}`;
-                setTeachingBubblePropsConfig({ id: currentId, config: TeachingProps })
+                teachingProps = teachingBubbleConfig[teachingBubblePropsConfig.id + 1];
+                currentId = teachingBubblePropsConfig.id + 1;
+                teachingProps.footerContent = `${currentId + 1} of ${teachingBubbleConfig.length}`;
+                setTeachingBubblePropsConfig({ id: currentId, config: teachingProps })
                 break;
             case 'close':
-                var TeachingProps = teachingBubbleConfig[0];
-                TeachingProps.footerContent = `1 of ${teachingBubbleConfig.length}`;
-                setTeachingBubblePropsConfig({ id: 0, config: TeachingProps });
+                teachingProps = teachingBubbleConfig[0];
+                teachingProps.footerContent = `1 of ${teachingBubbleConfig.length}`;
+                setTeachingBubblePropsConfig({ id: 0, config: teachingProps });
                 toggleTeachingBubbleVisible();
                 break;
         }

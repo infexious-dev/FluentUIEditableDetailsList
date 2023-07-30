@@ -31,7 +31,7 @@ import { ICallBackParams } from '../types/callbackparams';
 import { EventEmitter, EventType } from '../eventemitter/EventEmitter';
 import ColumnFilterDialog from './columnfilterdialog/columnfilterdialog';
 import { IFilter } from '../types/filterstype';
-import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, DeepCopy } from './helper';
+import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, deepClone } from './helper';
 import { IFilterItem, IFilterListProps, IGridColumnFilter } from '../types/columnfilterstype';
 import FilterCallout from './columnfiltercallout/filtercallout';
 import AddRowPanel from './addrowpanel';
@@ -40,7 +40,7 @@ import PickerControl from './pickercontrol/picker';
 import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 import { Panel, PanelType } from '@fluentui/react';
 import { DataType } from '../types/datatype';
-import { DirectionalHint, ITooltipHostProps, TooltipDelay, TooltipHost } from 'office-ui-fabric-react';
+import { DirectionalHint, ITooltipHostProps, TooltipDelay, TooltipHost } from '@fluentui/react';
 
 interface SortOptions {
     key: string;
@@ -251,16 +251,12 @@ const EditableGrid = (props: Props) => {
     useEffect(() => {
         if (props && props.items) {
             const data: any[] = InitializeInternalGrid(props.items, props.rowCanEditCheck);
-            const deeplyCopiedData = DeepCopy(data);
             setGridData(data);
-            setBackupDefaultGridData(deeplyCopiedData);
+            setBackupDefaultGridData(deepClone(data));
             setGridEditState(false);
             SetGridItems(data);
         }
     }, [props.items]);
-
-    useEffect(() => {
-    }, [backupDefaultGridData]);
 
     // useEffect(() => {
     //     console.log('Cancellable Rows');
@@ -1078,7 +1074,7 @@ const EditableGrid = (props: Props) => {
     }
 
     const ResetGridData = (): void => {
-        const deeplyCopiedData = DeepCopy(backupDefaultGridData);
+        const deeplyCopiedData = deepClone(backupDefaultGridData);
 
         defaultGridData.filter(item => item._is_muted_ === true).forEach((item) => {
             deeplyCopiedData.find((findItem: any) => findItem.id === item.id)._is_muted_ = true;
@@ -1841,7 +1837,7 @@ const EditableGrid = (props: Props) => {
                 id: 'enablepaneledit',
                 key: 'enablepaneledit',
                 text: "Edit Item",
-                disabled: isGridInEdit || editMode || selectionCount == 0 || selectionCount > 1 || (selectedItems?.length ? !selectedItems[0]?._can_edit_row_ : false),
+                disabled: isGridInEdit || editMode || selectionCount === 0 || selectionCount > 1 || (selectedItems?.length ? !selectedItems[0]?._can_edit_row_ : false),
                 iconProps: { iconName: "DoubleColumnEdit" },
                 onClick: () => RowSelectOperations(EditType.ColumnPanelEdit)
             });
@@ -1912,7 +1908,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableSave == true) {
+        if (props.enableSave === true) {
             commandBarItems.push({
                 id: 'submit',
                 key: 'submit',
@@ -1976,10 +1972,10 @@ const EditableGrid = (props: Props) => {
             key: "filteredrecs",
             text: `${defaultGridData.filter(
                 (x) =>
-                    x._grid_row_operation_ != Operation.Delete &&
-                    x._is_filtered_in_ == true &&
-                    x._is_filtered_in_grid_search_ == true &&
-                    x._is_filtered_in_column_filter_ == true
+                    x._grid_row_operation_ !== Operation.Delete &&
+                    x._is_filtered_in_ === true &&
+                    x._is_filtered_in_grid_search_ === true &&
+                    x._is_filtered_in_column_filter_ === true
             ).length}/${defaultGridData.length}`,
             // This needs an ariaLabel since it's icon-only
             ariaLabel: "Filtered Records",
@@ -2018,7 +2014,7 @@ const EditableGrid = (props: Props) => {
             return null;
         }
         const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = tooltipHostProps => (
-            <TooltipHost {...tooltipHostProps} />
+            <TooltipHost {...tooltipHostProps as any} />
         );
         return (
             <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
@@ -2105,7 +2101,7 @@ const EditableGrid = (props: Props) => {
 
     /* #region [Utilities] */
     function HandleCellOnDoubleClick(props: Props, column: IColumnConfig, EditCellValue: (key: string, rowNum: number, activateCurrentCell: boolean) => void, rowNum: number, item: any): React.MouseEventHandler<HTMLSpanElement> | undefined {
-        return () => (props.enableCellEdit == true && column.editable == true && !column.editableOnlyInPanel && !props.enableSingleClickCellEdit && !item._is_muted_ && item._can_edit_row_)
+        return () => (props.enableCellEdit === true && column.editable === true && !column.editableOnlyInPanel && !props.enableSingleClickCellEdit && !item._is_muted_ && item._can_edit_row_)
             ?
             EditCellValue(column.key, rowNum!, true)
             :

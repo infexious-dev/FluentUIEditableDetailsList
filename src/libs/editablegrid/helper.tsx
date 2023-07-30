@@ -1,3 +1,4 @@
+import lodash from "lodash";
 import { ICellStyleRulesType } from "../types/cellstyleruletype";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { IGridColumnFilter } from "../types/columnfilterstype";
@@ -36,13 +37,13 @@ export const filterGridData = (data: any[], filters: IFilter[]): any[] => {
 
 export const applyGridColumnFilter = (data: any[], gridColumnFilterArr: IGridColumnFilter[]): any[] => {
     var dataTmp: any[] = [...data];
-    if (gridColumnFilterArr.filter((item) => item.isApplied == true).length > 0) {
+    if (gridColumnFilterArr.filter((item) => item.isApplied === true).length > 0) {
         dataTmp.map((row) => row._is_filtered_in_column_filter_ = true);
     }
 
-    gridColumnFilterArr.filter((gridColumnFilter) => gridColumnFilter.isApplied == true).forEach((gridColumnFilter, index) => {
-        dataTmp.filter((row) => row._is_filtered_in_column_filter_ == true).forEach((row, i) => {
-            row._is_filtered_in_column_filter_ = gridColumnFilter.filterCalloutProps!.filterList.filter(a => a.isChecked == true).map(a => a.text).includes(row[gridColumnFilter.column.key]);
+    gridColumnFilterArr.filter((gridColumnFilter) => gridColumnFilter.isApplied === true).forEach((gridColumnFilter, index) => {
+        dataTmp.filter((row) => row._is_filtered_in_column_filter_ === true).forEach((row, i) => {
+            row._is_filtered_in_column_filter_ = gridColumnFilter.filterCalloutProps!.filterList.filter(a => a.isChecked === true).map(a => a.text).includes(row[gridColumnFilter.column.key]);
         });
     });
 
@@ -107,7 +108,7 @@ export const ConvertObjectToText = (obj: any, columns: IColumnConfig[]): string 
 }
 
 export const ParseType = (type: string | undefined, text: string): any => {
-    if (text.trim().length == 0) {
+    if (text.trim().length === 0) {
         return null;
     }
 
@@ -145,17 +146,13 @@ export const GetValue = (type: string | undefined, value: any): any => {
     }
 }
 
-// obtained from https://javascript.plainenglish.io/deep-clone-an-object-and-preserve-its-type-with-typescript-d488c35e5574
-export const DeepCopy = (source: any): any => {
-    return Array.isArray(source)
-        ? source.map(item => DeepCopy(item))
-        : source instanceof Date
-            ? new Date(source.getTime())
-            : source && typeof source === 'object'
-                ? Object.getOwnPropertyNames(source).reduce((o, prop) => {
-                    Object.defineProperty(o, prop, Object.getOwnPropertyDescriptor(source, prop)!);
-                    o[prop] = DeepCopy((source as { [key: string]: any })[prop]);
-                    return o;
-                }, Object.create(Object.getPrototypeOf(source)))
-                : source as any;
+export const clone = (entity: any): any => {
+    return lodash.clone(entity);
+}
+
+export const deepClone = (entity: any, customizer?: lodash.CloneDeepWithCustomizer<any>): any => {
+    if (customizer)
+        return lodash.cloneDeepWith(entity, customizer);
+    else
+        return lodash.cloneDeep(entity);
 }
