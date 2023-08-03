@@ -18,7 +18,7 @@ export interface Props extends IDetailsListProps {
     enableSaveText?: string;
     enableRowEdit?: boolean;
     rowCanEditCheck?: {
-        columnKey: string,
+        fieldName: string,
         passValue: any
     };
     cellEditTooltip?: {

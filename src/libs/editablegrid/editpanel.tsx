@@ -26,18 +26,19 @@ const EditPanel = (props: Props) => {
 
     useEffect(() => {
         let tmpColumnValuesObj: any = {};
-        props.columnConfigurationData.filter(x => x.editable === true).forEach((item, index) => {
-            tmpColumnValuesObj[item.key] = {
-                'value': props.isBulk ? GetDefault(item.dataType) : props.selectedItem ? GetValue(item.dataType, props.selectedItem[item.key]) : GetDefault(item.dataType),
+        props.columnConfigurationData.filter(x => x.editable === true).forEach((column, index) => {
+            tmpColumnValuesObj[column.key] = {
+                'value': props.isBulk ? GetDefault(column.dataType) : props.selectedItem ? GetValue(column.dataType, props.selectedItem[column.key]) : GetDefault(column.dataType),
                 'isChanged': false,
-                'error': null
+                'error': null,
+                'dataType': column.dataType
             };
         })
         setColumnValuesObj(tmpColumnValuesObj);
     }, [props.columnConfigurationData, props.selectedItem]);
 
     const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null): void => {
-        setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage } })
+        setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage, 'dataType': columnValuesObj[key]?.dataType } })
     }
 
     const onDropDownChange = (event: React.FormEvent<HTMLDivElement>, selectedDropdownItem: IDropdownOption | undefined, item: any): void => {
@@ -61,7 +62,12 @@ const EditPanel = (props: Props) => {
         var objectKeys = Object.keys(columnValuesObj);
         objectKeys.forEach((objKey) => {
             if (columnValuesObj[objKey]['isChanged']) {
-                updateObj[objKey] = columnValuesObj[objKey]['value']
+                let value = columnValuesObj[objKey]['value'];
+
+                if (columnValuesObj[objKey]['dataType'] === DataType.decimal && (value !== null && value !== undefined))
+                    value = parseFloat(value);
+
+                updateObj[objKey] = value
             }
         });
 

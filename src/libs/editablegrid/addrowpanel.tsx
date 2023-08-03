@@ -24,14 +24,14 @@ const AddRowPanel = (props: Props) => {
 
     useEffect(() => {
         let tmpColumnValuesObj: any = {};
-        props.columnConfigurationData.forEach((item, index) => {
-            tmpColumnValuesObj[item.key] = { 'value': GetDefault(item.dataType), 'isChanged': false, 'error': null };
+        props.columnConfigurationData.forEach((column, index) => {
+            tmpColumnValuesObj[column.key] = { 'value': GetDefault(column.dataType), 'isChanged': false, 'error': null, 'dataType': column.dataType };
         })
         setColumnValuesObj(tmpColumnValuesObj);
     }, [props.columnConfigurationData]);
 
     const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null): void => {
-        setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage } })
+        setColumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage, 'dataType': columnValuesObj[key]?.dataType } })
     }
 
     const onDropDownChange = (event: React.FormEvent<HTMLDivElement>, selectedDropdownItem: IDropdownOption | undefined, item: any): void => {
@@ -55,7 +55,12 @@ const AddRowPanel = (props: Props) => {
         var objectKeys = Object.keys(columnValuesObj);
         objectKeys.forEach((objKey) => {
             if (columnValuesObj[objKey]['isChanged']) {
-                updateObj[objKey] = columnValuesObj[objKey]['value']
+                let value = columnValuesObj[objKey]['value'];
+
+                if (columnValuesObj[objKey]['dataType'] === DataType.decimal && (value !== null && value !== undefined))
+                    value = parseFloat(value);
+
+                updateObj[objKey] = value
             }
         });
 

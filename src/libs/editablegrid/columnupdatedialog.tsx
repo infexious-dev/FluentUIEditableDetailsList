@@ -9,6 +9,7 @@ import { DayPickerStrings } from "./datepickerconfig";
 import { GetDefault, GetValue, IsValidDataType, ParseType } from "./helper";
 import PickerControl from "./pickercontrol/picker";
 import { controlClass } from "./editablegridstyles";
+import { DataType } from "../types/datatype";
 
 interface Props {
     columnConfigurationData: IColumnConfig[];
@@ -40,19 +41,20 @@ const ColumnUpdateDialog = (props: Props) => {
 
     useEffect(() => {
         let tmpColumnValuesObj: any = {};
-        props.columnConfigurationData.filter(x => x.editable == true && !x.editableOnlyInPanel).forEach((item, index) => {
-            tmpColumnValuesObj[item.key] = {
+        props.columnConfigurationData.filter(x => x.editable == true && !x.editableOnlyInPanel).forEach((column, index) => {
+            tmpColumnValuesObj[column.key] = {
                 //'value': GetDefault(item.dataType),
-                'value': props.selectedItem ? GetValue(item.dataType, props.selectedItem[item.key]) : GetDefault(item.dataType),
+                'value': props.selectedItem ? GetValue(column.dataType, props.selectedItem[column.key]) : GetDefault(column.dataType),
                 'isChanged': false,
-                'error': null
+                'error': null,
+                'dataType': column.dataType
             };
         })
         setcolumnValuesObj(tmpColumnValuesObj);
     }, [props.columnConfigurationData]);
 
     const SetObjValues = (key: string, value: any, isChanged: boolean = true, errorMessage: string | null = null): void => {
-        setcolumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage } })
+        setcolumnValuesObj({ ...columnValuesObj, [key]: { 'value': value, 'isChanged': isChanged, 'error': errorMessage, 'dataType': columnValuesObj[key]?.dataType } })
     }
 
     const onTextUpdate = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text: string, column: IColumnConfig): void => {
@@ -107,7 +109,12 @@ const ColumnUpdateDialog = (props: Props) => {
             try {
                 objectKeys.forEach((objKey) => {
                     if (columnValuesObj[objKey]['isChanged']) {
-                        columnValuesObjTmp[objKey] = columnValuesObj[objKey]['value'];
+                        let value = columnValuesObj[objKey]['value'];
+
+                        if (columnValuesObj[objKey]['dataType'] === DataType.decimal && (value !== null && value !== undefined))
+                            value = parseFloat(value);
+
+                        columnValuesObjTmp[objKey] = value;
                         throw BreakException;
                     }
                 });

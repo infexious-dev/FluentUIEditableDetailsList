@@ -7,7 +7,7 @@ import { initializeIcons } from '@fluentui/react';
 initializeIcons(/* optional base url */);
 
 export const InitializeInternalGrid = (items: any[], rowCanEditCheck: {
-    columnKey: string,
+    fieldName: string,
     passValue: any
 } | undefined): any[] => {
     return items.map((obj, index) => {
@@ -18,9 +18,9 @@ export const InitializeInternalGrid = (items: any[], rowCanEditCheck: {
             obj._is_filtered_in_grid_search_ = true;
             obj._is_filtered_in_column_filter_ = true;
             obj._is_muted_ = false;
-            obj._can_edit_row_ = rowCanEditCheck?.columnKey &&
-                obj[rowCanEditCheck?.columnKey] !== undefined &&
-                obj[rowCanEditCheck?.columnKey] !== null ? obj[rowCanEditCheck?.columnKey] === rowCanEditCheck.passValue : true
+            obj._can_edit_row_ = rowCanEditCheck?.fieldName &&
+                obj[rowCanEditCheck?.fieldName] !== undefined &&
+                obj[rowCanEditCheck?.fieldName] !== null ? obj[rowCanEditCheck?.fieldName] === rowCanEditCheck.passValue : true
         }
         return obj;
     })

@@ -488,7 +488,7 @@ const Consumer = () => {
                     }
                 ]}
                 rowCanEditCheck={{
-                    columnKey: "payrolltype",
+                    fieldName: "payrolltype",
                     passValue: "Weekly"
                 }}
                 alignCellsMiddle
