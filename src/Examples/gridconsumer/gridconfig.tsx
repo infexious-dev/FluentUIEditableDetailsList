@@ -107,6 +107,7 @@ export const GridColumnConfig: IColumnConfig[] =
             dataType: 'string',
             minWidth: 100,
             maxWidth: 100,
+            editableOnlyInPanel: true,
             panelEditDisabledUntil: (item: any) => {
                 return item?.salary?.value < 50000
             },
@@ -192,14 +193,14 @@ export const GridColumnConfig: IColumnConfig[] =
             includeColumnInSearch: true,
             inputType: EditControlType.Picker,
             pickerOptions: {
-                pickerTags: ['Employment Type1', 'Employment Type2', 'Employment Type3', 'Employment Type4', 'Employment Type5', 'Employment Type6', 'Employment Type7', 'Employment Type8', 'Employment Type9', 'Employment Type10', 'Employment Type11', 'Employment Type12'],
+                pickerTags: ['Employment Type1', 'EMployment Type2', 'Employment Type3', 'Employment Type4', 'Employment Type5', 'Employment Type6', 'Employment Type7', 'Employment Type8', 'Employment Type9', 'Employment Type10', 'Employment Type11', 'Employment Type12'],
                 minCharLimitForSuggestions: 2,
                 tagsLimit: 1,
                 pickerDescriptionOptions: {
                     enabled: true,
                     values: [
                         { key: 'Employment Type1', description: 'Employment Type1 Description' },
-                        { key: 'Employment Type2', description: 'Employment Type2 Description' },
+                        { key: 'EMployment Type2', description: 'Employment Type2 Description' },
                         { key: 'Employment Type3', description: 'Employment Type3 Description' },
                         { key: 'Employment Type4', description: 'Employment Type4 Description' },
                         { key: 'Employment Type5', description: 'Employment Type5 Description' },

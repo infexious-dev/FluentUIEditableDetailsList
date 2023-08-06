@@ -1,5 +1,5 @@
 import { HoverCard, HoverCardType, IBasePickerSuggestionsProps, IInputProps, IPlainCardProps, ISuggestionItemProps, ITag, TagPicker } from "office-ui-fabric-react"
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { StringOperators } from "../../types/cellstyleruletype";
 import { IPickerDescriptionOption, IPickerTagDescription } from "../../types/columnconfigtype";

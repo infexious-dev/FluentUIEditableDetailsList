@@ -24,17 +24,17 @@ export const operatorsArr: IOperators[] = [
 ]
 
 export const operatorEval1 = {
-    'equals': (a: string, b: string): boolean => { return a == b },
+    'equals': (a: string, b: string): boolean => { return a === b },
     'contains': (a: string, b: string): boolean => { return a.indexOf(b) >= 0 },
     'starts with': (a: string, b: string): boolean => { return a.startsWith(b) },
     'ends with': (a: string, b: string): boolean => { return a.endsWith(b) },
-    'not equal to': (a: string, b: string): boolean => { return a != b },
+    'not equal to': (a: string, b: string): boolean => { return a !== b },
     '>': (a: number, b: number): boolean => { return a > b },
     '<': (a: number, b: number): boolean => { return a < b },
     '>=': (a: number, b: number): boolean => { return a >= b },
     '<=': (a: number, b: number): boolean => { return a <= b },
-    '=': (a: number, b: number): boolean => { return a == b },
-    '!=': (a: number, b: number): boolean => { return a != b },
+    '=': (a: number, b: number): boolean => { return a === b },
+    '!=': (a: number, b: number): boolean => { return a !== b },
 }
 
 export const numberOperatorEval = (var1: number, var2: number, operator: string): boolean => {
@@ -48,9 +48,9 @@ export const numberOperatorEval = (var1: number, var2: number, operator: string)
         case '<=':
             return var1 <= var2;
         case '=':
-            return var1 == var2;
+            return var1 === var2;
         case '!=':
-            return var1 != var2;
+            return var1 !== var2;
         default:
             return false;
     }
@@ -67,9 +67,9 @@ export const dateOperatorEval = (var1: Date, var2: Date, operator: string): bool
         case '<=':
             return var1 <= var2;
         case '=':
-            return var1 == var2;
+            return var1 === var2;
         case '!=':
-            return var1 != var2;
+            return var1 !== var2;
         default:
             return false;
     }
@@ -79,7 +79,7 @@ export const stringOperatorEval = (var1: string, var2: string, operator: string)
     if (var1) { // null check
         switch (operator) {
             case 'equals':
-                return var1.toLowerCase() == var2.toLowerCase();
+                return var1.toLowerCase() === var2.toLowerCase();
             case 'contains':
                 return var1.toLowerCase().indexOf(var2.toLowerCase()) >= 0;
             case 'starts with':
@@ -87,7 +87,7 @@ export const stringOperatorEval = (var1: string, var2: string, operator: string)
             case 'ends with':
                 return var1.toLowerCase().endsWith(var2.toLowerCase());
             case 'not equal to':
-                return var1.toLowerCase() != var2.toLowerCase();
+                return var1.toLowerCase() !== var2.toLowerCase();
             default:
                 return false;
         }

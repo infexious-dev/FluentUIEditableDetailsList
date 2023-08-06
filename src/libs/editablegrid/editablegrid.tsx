@@ -41,6 +41,7 @@ import { ThemeProvider } from '@uifabric/foundation/lib/ThemeProvider';
 import { Panel, PanelType } from '@fluentui/react';
 import { DataType } from '../types/datatype';
 import { DirectionalHint, ITooltipHostProps, TooltipDelay, TooltipHost } from '@fluentui/react';
+import lodash from 'lodash';
 
 interface SortOptions {
     key: string;
@@ -60,10 +61,12 @@ const EditableGrid = (props: Props) => {
     const dismissPanelForEdit = React.useCallback(() => setIsOpenForEdit(false), []);
     const [isOpenForAdd, setIsOpenForAdd] = React.useState(false);
     const dismissPanelForAdd = React.useCallback(() => setIsOpenForAdd(false), []);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [gridData, setGridData] = useState<any[]>([]);
     const [defaultGridData, setDefaultGridData] = useState<any[]>([]);
     const [backupDefaultGridData, setBackupDefaultGridData] = useState<any[]>([]);
     const [activateCellEdit, setActivateCellEdit] = useState<any[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [selectionDetails, setSelectionDetails] = useState('');
     const [selectedItems, setSelectedItems] = useState<any[]>();
     const [cancellableRows, setCancellableRows] = useState<any[]>([]);
@@ -71,14 +74,16 @@ const EditableGrid = (props: Props) => {
     const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
     const [isGridInEdit, setIsGridInEdit] = React.useState(false);
     const [dialogContent, setDialogContent] = React.useState<JSX.Element | undefined>(undefined);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [announced, setAnnounced] = React.useState<JSX.Element | undefined>(undefined);
     const [isUpdateColumnClicked, setIsUpdateColumnClicked] = React.useState(false);
     const [isColumnFilterClicked, setIsColumnFilterClicked] = React.useState(false);
-    const [showSpinner, setShowSpinner] = useState(false);
+    const [showSpinner] = useState(false);
     const [isGridStateEdited, setIsGridStateEdited] = useState(false);
     //const defaultTag : ITag[] = [{name: 'Designation == \'Designation1\'', key:'kushal'}];
     const [defaultTag, setDefaultTag] = useState<ITag[]>([]);
     const [filteredColumns, setFilteredColumns] = useState<IColumnConfig[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [filterStore, setFilterStore] = useState<IFilter[]>([]);
     const gridColumnFilterArrRef: any = React.useRef<IGridColumnFilter[]>([]);
     const [filterCalloutComponent, setFilterCalloutComponent] = React.useState<JSX.Element | undefined>(undefined);
@@ -913,13 +918,13 @@ const EditableGrid = (props: Props) => {
     // }
 
     const CancelRowEditMode = (item: any, rowNum: number): void => {
-        // SetGridItems(defaultGridData);
+        //SetGridItems(defaultGridData);
         let activateCellEditTmp: any[] = ChangeRowState(item, rowNum, false);
         activateCellEditTmp = RevertRowEditValues(rowNum, activateCellEditTmp);
 
         setActivateCellEdit(activateCellEditTmp);
         //setDefaultGridData(defaultGridData);
-        setDefaultGridData(ShallowCopyEditGridToDefaultGrid(defaultGridData, activateCellEditTmp));
+        //setDefaultGridData(ShallowCopyEditGridToDefaultGrid(defaultGridData, activateCellEditTmp));
     }
 
     const RevertRowEditValues = (rowNum: number, activateCellEditArr: any): any[] => {
@@ -1113,19 +1118,26 @@ const EditableGrid = (props: Props) => {
             }
         });
 
-        const newItems = _copyAndSort(defaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
+        const newItems = _orderBy(defaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         SetGridItems(newItems);
 
-        const newItemsBackup = _copyAndSort(backupDefaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
+        const newItemsBackup = _orderBy(backupDefaultGridData, currColumn.fieldName!, currColumn.isSortedDescending);
         setBackupDefaultGridData(newItemsBackup);
 
         setSortColObj({ key: column!.key, isAscending: !currColumn.isSortedDescending, isEnabled: true });
         onGridSort(newItems, currColumn);
     }
 
-    function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
-        const key = columnKey as keyof T;
-        return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
+    function _orderBy(items: any[], columnKey: string, isSortedDescending?: boolean): any[] {
+        return lodash.orderBy(items, [
+            item => {
+                let value = item[columnKey];
+
+                if (typeof value === 'string')
+                    value = value.toLowerCase()
+
+                return value
+            }], [isSortedDescending ? 'desc' : 'asc'])
     }
 
     const onGridSort = async (data: Array<any>, column: IColumn): Promise<void> => {

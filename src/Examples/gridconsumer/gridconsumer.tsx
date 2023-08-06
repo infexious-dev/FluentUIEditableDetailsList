@@ -74,7 +74,13 @@ const Consumer = () => {
         enableRowMute: true,
         prependRowEditActions: false
     });
+
+    // filters
     const [gridSearchText, setGridSearchText] = useState("");
+    const [nameFilterKey, setNameFilterKey] = useState<string | number | null>(null);
+    const [ageFilter, setAgeFilter] = useState("");
+    const [designationFilter, setDesignationFilter] = useState("");
+    const [hiddenStringFilter, setHiddenStringFilter] = useState("");
 
     const classNames = mergeStyleSets({
         controlWrapper: {
@@ -200,6 +206,39 @@ const Consumer = () => {
         console.log('Grid Data Updated:');
         LogRows(data);
     };
+
+    function clearFilters(delay: boolean = false): void {
+        // other
+        setGridSearchText("");
+        setNameFilterKey(null);
+        setAgeFilter("");
+        setDesignationFilter("");
+        setHiddenStringFilter("");
+
+        function _clearFilters(): void {
+            // emit events to grid
+            EventEmitter.dispatch(EventType.onSearch, { target: { value: "" } });
+            EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: "" });
+            EventEmitter.dispatch(EventType.onFilter, { columnKey: 'age', queryText: "" });
+            EventEmitter.dispatch(EventType.onFilter, { columnKey: 'designation', queryText: "" });
+            EventEmitter.dispatch(EventType.onFilter, { columnKey: 'hiddenstring', queryText: "" });
+        }
+
+        if (delay) {
+            setTimeout(() => {
+                _clearFilters()
+            }, 0);
+        } else
+            _clearFilters()
+    }
+
+    async function onGridReset(data: any[]): Promise<void> {
+        console.log('Grid has reset with items:');
+        console.log(items);
+
+        clearFilters(true);
+    }
+
 
     const LogRows = (data: any[]): void => {
         console.log('Updated Rows');
@@ -376,24 +415,28 @@ const Consumer = () => {
                 </Stack>
             </fieldset>
             <div style={{ display: 'flex', textAlign: 'left', marginBottom: 20 }}>
-                <ComboBox disabled={gridInEdit} styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
+                <ComboBox selectedKey={nameFilterKey} disabled={gridInEdit} styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
                     return ({
                         key: item.name,
                         text: item.name
                     })
                 }), 'text')} label='Name' onChange={(event, option) => {
+                    setNameFilterKey(option?.key);
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: option?.text })
                 }} />
 
-                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
+                <TextField value={ageFilter} styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
+                    setAgeFilter(newValue || "");
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'age', queryText: (event.target as any).value })
                 }} label="Age" />
 
-                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
+                <TextField value={designationFilter} styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
+                    setDesignationFilter(newValue || "");
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'designation', queryText: (event.target as any).value })
                 }} label="Designation" />
 
-                <TextField styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} placeholder="Filter not a column!" onChange={(event, newValue) => {
+                <TextField value={hiddenStringFilter} styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} placeholder="Filter a hidden column!" onChange={(event, newValue) => {
+                    setHiddenStringFilter(newValue || "");
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'hiddenstring', queryText: (event.target as any).value })
                 }} label="Hidden String" />
 
@@ -457,7 +500,7 @@ const Consumer = () => {
                     })
                 }}
                 onGridUpdate={onGridUpdate}
-                onGridReset={(items) => { console.log('Grid has reset with items:'); console.log(items); setGridSearchText('') }}
+                onGridReset={onGridReset}
                 enableDefaultEditMode={gridConfigOptions.enableDefaultEditMode}
                 enableMarqueeSelection={gridConfigOptions.enableMarqueeSelection}
                 aboveStickyContent={aboveContent}
