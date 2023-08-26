@@ -5,7 +5,7 @@ import { Checkbox, DetailsListLayoutMode, DirectionalHint, Fabric, FontIcon, IBu
 import * as React from 'react';
 import { useState } from 'react';
 import EditableGrid from '../../libs/editablegrid/editablegrid';
-import { ICallBackParams } from '../../libs/types/callbackparams';
+// import { ICallBackParams } from '../../libs/types/callbackparams';
 import { IColumnConfig } from '../../libs/types/columnconfigtype';
 import { GridColumnConfig, GridItemsType } from './gridconfig';
 import { EventEmitter, EventType } from '../../libs/eventemitter/EventEmitter.js';
@@ -149,12 +149,12 @@ const Consumer = () => {
         onClick: () => onTeachingBubbleNavigation('close'),
     };
 
-    const GetRandomDate = (start: Date, end: Date): Date => {
-        var diff = end.getTime() - start.getTime();
-        var new_diff = diff * Math.random();
-        var date = new Date(start.getTime() + new_diff);
-        return date;
-    }
+    // const GetRandomDate = (start: Date, end: Date): Date => {
+    //     var diff = end.getTime() - start.getTime();
+    //     var new_diff = diff * Math.random();
+    //     var date = new Date(start.getTime() + new_diff);
+    //     return date;
+    // }
 
     const GetRandomInt = (min: number, max: number): number => {
         min = Math.ceil(min);
@@ -173,10 +173,11 @@ const Consumer = () => {
             newDummyData.customerhovercol = 'Hover Me';
             newDummyData.name = 'Name' + GetRandomInt(1, 10);
             newDummyData.age = GetRandomInt(20, 40);
-            newDummyData.designation = randomInt % 2 == 0 ? 'Designation' + GetRandomInt(1, 15) : undefined;
+            newDummyData.designation = randomInt % 2 === 0 ? 'Designation' + GetRandomInt(1, 15) : undefined;
             newDummyData.salary = GetRandomInt(35000, 75000);
             newDummyData.dateofjoining = '2010-10-10T14:57:10';
-            newDummyData.payrolltype = randomInt % 3 == 0 ? 'Weekly' : randomInt % 3 == 1 ? 'Bi-Weekly' : 'Monthly';
+            newDummyData.payrolltype = randomInt % 3 === 0 ? 'Weekly' : randomInt % 3 === 1 ? 'Bi-Weekly' : 'Monthly';
+            //newDummyData.payrolltype = 'Bi-Weekly';
             newDummyData.employmenttype = 'Employment Type' + GetRandomInt(1, 12);
             newDummyData.employeelink = 'Link';
             newDummyData.hiddenstring = 'Hidden' + GetRandomInt(1, 15);
@@ -194,7 +195,7 @@ const Consumer = () => {
     const onGridSave = (data: any[]): void => {
         alert('Grid Data Saved');
         LogRows(data);
-        data = data.filter(y => y._grid_row_operation_ != Operation.Delete);
+        data = data.filter(y => y._grid_row_operation_ !== Operation.Delete);
         data.map((x, index) => {
             data[index]._grid_row_operation_ = Operation.None
         });
@@ -242,15 +243,15 @@ const Consumer = () => {
 
     const LogRows = (data: any[]): void => {
         console.log('Updated Rows');
-        console.log(data.filter(item => item._grid_row_operation_ == Operation.Update));
+        console.log(data.filter(item => item._grid_row_operation_ === Operation.Update));
         console.log('Added Rows');
-        console.log(data.filter(item => item._grid_row_operation_ == Operation.Add));
+        console.log(data.filter(item => item._grid_row_operation_ === Operation.Add));
         console.log('Deleted Rows');
-        console.log(data.filter(item => item._grid_row_operation_ == Operation.Delete));
+        console.log(data.filter(item => item._grid_row_operation_ === Operation.Delete));
         console.log('Unchanged Rows');
-        console.log(data.filter(item => item._grid_row_operation_ == Operation.None));
+        console.log(data.filter(item => item._grid_row_operation_ === Operation.None));
         console.log('Muted Rows');
-        console.log(data.filter(item => item._grid_row_operation_ == Operation.Mute));
+        console.log(data.filter(item => item._grid_row_operation_ === Operation.Mute));
     }
 
     // const onPayrollChanged = (callbackRequestParamObj: ICallBackParams): any[] => {

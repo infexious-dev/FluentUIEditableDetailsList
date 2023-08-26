@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Text, Link, FontWeights, IStackTokens, IStackStyles, ITextStyles } from '@fluentui/react';
+import { Stack, IStackTokens, IStackStyles } from '@fluentui/react';
 import Consumer from './Examples/gridconsumer/gridconsumer';
 const stackTokens: IStackTokens = { childrenGap: 15 };
 const stackStyles: Partial<IStackStyles> = {

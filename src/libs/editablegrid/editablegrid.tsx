@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import { ConstrainMode, IColumn, IDetailsHeaderProps } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList.types';
-import { useState, useEffect } from 'react';
 import { DetailsList } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList';
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/CommandBar';
 import {
@@ -62,29 +61,30 @@ const EditableGrid = (props: Props) => {
     const [isOpenForAdd, setIsOpenForAdd] = React.useState(false);
     const dismissPanelForAdd = React.useCallback(() => setIsOpenForAdd(false), []);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [gridData, setGridData] = useState<any[]>([]);
-    const [defaultGridData, setDefaultGridData] = useState<any[]>([]);
-    const [backupDefaultGridData, setBackupDefaultGridData] = useState<any[]>([]);
-    const [activateCellEdit, setActivateCellEdit] = useState<any[]>([]);
+    const [gridData, setGridData] = React.useState<any[]>([]);
+    const [defaultGridData, setDefaultGridData] = React.useState<any[]>([]);
+    const [backupDefaultGridData, setBackupDefaultGridData] = React.useState<any[]>([]);
+    const [activateCellEdit, setActivateCellEdit] = React.useState<any[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [selectionDetails, setSelectionDetails] = useState('');
-    const [selectedItems, setSelectedItems] = useState<any[]>();
-    const [cancellableRows, setCancellableRows] = useState<any[]>([]);
-    const [selectionCount, setSelectionCount] = useState(0);
-    const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+    const [selectionDetails, setSelectionDetails] = React.useState('');
+    const [selectedItems, setSelectedItems] = React.useState<any[]>();
+    const [cancellableRows, setCancellableRows] = React.useState<any[]>([]);
+    const [selectionCount, setSelectionCount] = React.useState(0);
+    const [selectedIndices, setSelectedIndices] = React.useState<number[]>([]);
     const [isGridInEdit, setIsGridInEdit] = React.useState(false);
+    const [isGlobalEditEnabled, setIsGlobalEditEnabled] = React.useState(true);
     const [dialogContent, setDialogContent] = React.useState<JSX.Element | undefined>(undefined);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [announced, setAnnounced] = React.useState<JSX.Element | undefined>(undefined);
     const [isUpdateColumnClicked, setIsUpdateColumnClicked] = React.useState(false);
     const [isColumnFilterClicked, setIsColumnFilterClicked] = React.useState(false);
-    const [showSpinner] = useState(false);
-    const [isGridStateEdited, setIsGridStateEdited] = useState(false);
+    const [showSpinner] = React.useState(false);
+    const [isGridStateEdited, setIsGridStateEdited] = React.useState(false);
     //const defaultTag : ITag[] = [{name: 'Designation == \'Designation1\'', key:'kushal'}];
-    const [defaultTag, setDefaultTag] = useState<ITag[]>([]);
-    const [filteredColumns, setFilteredColumns] = useState<IColumnConfig[]>([]);
+    const [defaultTag, setDefaultTag] = React.useState<ITag[]>([]);
+    const [filteredColumns, setFilteredColumns] = React.useState<IColumnConfig[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [filterStore, setFilterStore] = useState<IFilter[]>([]);
+    const [filterStore, setFilterStore] = React.useState<IFilter[]>([]);
     const gridColumnFilterArrRef: any = React.useRef<IGridColumnFilter[]>([]);
     const [filterCalloutComponent, setFilterCalloutComponent] = React.useState<JSX.Element | undefined>(undefined);
     const [showFilterCallout, setShowFilterCallout] = React.useState(false);
@@ -253,9 +253,10 @@ const EditableGrid = (props: Props) => {
         };
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (props && props.items) {
             const data: any[] = InitializeInternalGrid(props.items, props.rowCanEditCheck);
+            setIsGlobalEditEnabled(data.filter(item => item._can_edit_row_ === false).length !== data.length);
             setGridData(data);
             setBackupDefaultGridData(deepClone(data));
             setGridEditState(false);
@@ -268,7 +269,7 @@ const EditableGrid = (props: Props) => {
     //     console.log(cancellableRows);
     // }, [cancellableRows]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const CheckOnUpdate = async () => {
             if (defaultGridData.filter(x => x._grid_row_operation_ !== Operation.None).length > 0)
                 await onGridUpdate();
@@ -277,7 +278,7 @@ const EditableGrid = (props: Props) => {
         CheckOnUpdate();
     }, [defaultGridData]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         UpdateGridEditStatus();
         //console.log('activate cell edit');
         //console.log(activateCellEdit);
@@ -286,15 +287,15 @@ const EditableGrid = (props: Props) => {
         }
     }, [activateCellEdit]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         //alert('IsGridInEdit: ' + isGridInEdit);
     }, [isGridInEdit]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         SetFilteredGridData(getFilterStoreRef());
     }, [filteredColumns]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (filterCalloutComponent) {
             setShowFilterCallout(true);
         }
@@ -1681,13 +1682,13 @@ const EditableGrid = (props: Props) => {
                 minWidth: minWidth,
                 maxWidth: maxWidth,
                 className: `actions-cell ${props.alignCellsMiddle ? mergeStyles({
-                    display: 'flex',
+                    display: 'flex !important',
                     alignItems: 'center'
                 }) : undefined}`,
                 onRender: (item) => (
                     <>
                         {
-                            props.enableRowEdit ?
+                            props.enableRowEdit && isGlobalEditEnabled ?
                                 (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])
                                     ?
                                     <>
@@ -1738,7 +1739,7 @@ const EditableGrid = (props: Props) => {
                         }
 
                         {
-                            props.gridCopyOptions?.enableRowCopy ?
+                            props.gridCopyOptions?.enableRowCopy && isGlobalEditEnabled ?
                                 <TooltipHost calloutProps={{ gapSpace: 5 }} content={!item._is_muted_ && item._can_edit_row_ ? "Copy row" : ""}>
                                     <IconButton
                                         disabled={item._is_muted_ || !item._can_edit_row_}
@@ -1753,7 +1754,8 @@ const EditableGrid = (props: Props) => {
                 ),
             };
 
-            props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
+            if (isGlobalEditEnabled || (!isGlobalEditEnabled && props.rowMuteOptions?.enableRowMute))
+                props.prependRowEditActions ? columnConfigs.unshift(actionsColumn) : columnConfigs.push(actionsColumn);
         }
 
         return columnConfigs;
@@ -1822,7 +1824,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (!props.enableDefaultEditMode && props.enableTextFieldEditMode) {
+        if (!props.enableDefaultEditMode && props.enableTextFieldEditMode && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'editmode',
                 key: 'editmode',
@@ -1844,7 +1846,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enablePanelEdit) {
+        if (props.enablePanelEdit && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'enablepaneledit',
                 key: 'enablepaneledit',
@@ -1855,7 +1857,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableBulkEdit) {
+        if (props.enableBulkEdit && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'bulkedit',
                 key: 'bulkedit',
@@ -1866,7 +1868,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableColumnEdit) {
+        if (props.enableColumnEdit && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'updatecolumn',
                 key: 'updatecolumn',
@@ -1877,7 +1879,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.gridCopyOptions && props.gridCopyOptions.enableGridCopy) {
+        if (props.gridCopyOptions && props.gridCopyOptions.enableGridCopy && isGlobalEditEnabled) {
             commandBarItems.push({
                 key: "copy",
                 text: "Copy",
@@ -1887,7 +1889,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableGridRowsAdd) {
+        if (props.enableGridRowsAdd && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'addrows',
                 key: 'addrows',
@@ -1898,7 +1900,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableRowAddWithValues && props.enableRowAddWithValues.enable) {
+        if (props.enableRowAddWithValues && props.enableRowAddWithValues.enable && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'addrowswithdata',
                 key: 'addrowswithdata',
@@ -1909,7 +1911,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableGridRowsDelete) {
+        if (props.enableGridRowsDelete && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'deleterows',
                 key: 'deleterows',
@@ -1920,7 +1922,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableSave === true) {
+        if (props.enableSave === true && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'submit',
                 key: 'submit',
@@ -1932,7 +1934,7 @@ const EditableGrid = (props: Props) => {
             });
         }
 
-        if (props.enableGridReset) {
+        if (props.enableGridReset && isGlobalEditEnabled) {
             commandBarItems.push({
                 id: 'resetgrid',
                 key: 'resetGrid',
@@ -2131,7 +2133,7 @@ const EditableGrid = (props: Props) => {
     const scrollablePaneRef = React.createRef<any>();
 
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (scrollablePaneRef?.current) {
             if (!hasRenderedStickyContent) {
                 const sticky: Sticky = scrollablePaneRef.current._stickies.entries().next().value[0];
