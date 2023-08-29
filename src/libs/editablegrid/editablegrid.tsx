@@ -30,7 +30,7 @@ import { ICallBackParams } from '../types/callbackparams';
 import { EventEmitter, EventType } from '../eventemitter/EventEmitter';
 import ColumnFilterDialog from './columnfilterdialog/columnfilterdialog';
 import { IFilter } from '../types/filterstype';
-import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, deepClone } from './helper';
+import { applyGridColumnFilter, ConvertObjectToText, filterGridData, GetDefault, isColumnDataTypeSupportedForFilter, IsValidDataType, ParseType, deepClone, GetParsedFloat } from './helper';
 import { IFilterItem, IFilterListProps, IGridColumnFilter } from '../types/columnfilterstype';
 import FilterCallout from './columnfiltercallout/filtercallout';
 import AddRowPanel from './addrowpanel';
@@ -652,8 +652,8 @@ const EditableGrid = (props: Props) => {
         if (column && column.dataType)
             dataType = column.dataType as DataType;
 
-        if (dataType === DataType.decimal && (value !== null && value !== undefined))
-            value = parseFloat(value);
+        if (dataType === DataType.decimal)
+            value = GetParsedFloat(value);
 
         defaultGridDataTmp[internalRowNumDefaultGrid][key] = value;
 

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
-import { GetDefault, GetValue, IsValidDataType, ParseType } from "./helper";
+import { GetDefault, GetParsedFloat, GetValue, IsValidDataType, ParseType } from "./helper";
 import PickerControl from "./pickercontrol/picker";
 import { controlClass } from "./editablegridstyles";
 import { DataType } from "../types/datatype";
@@ -111,8 +111,8 @@ const ColumnUpdateDialog = (props: Props) => {
                     if (columnValuesObj[objKey]['isChanged']) {
                         let value = columnValuesObj[objKey]['value'];
 
-                        if (columnValuesObj[objKey]['dataType'] === DataType.decimal && (value !== null && value !== undefined))
-                            value = parseFloat(value);
+                        if (columnValuesObj[objKey]['dataType'] === DataType.decimal)
+                            value = GetParsedFloat(value);
 
                         columnValuesObjTmp[objKey] = value;
                         throw BreakException;

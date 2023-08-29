@@ -22,7 +22,7 @@ const ColumnFilterDialog = (props: Props) => {
     const operatorTypePrevious = useRef('');
 
     const onSelectGridColumn = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption | undefined, index: number | undefined): void => {
-        const gridColumn = props.columnConfigurationData.filter((val) => val.key == item!.key)[0];
+        const gridColumn = props.columnConfigurationData.filter((val) => val.key === item!.key)[0];
         setGridColumn(gridColumn);
 
         switch (gridColumn?.dataType) {

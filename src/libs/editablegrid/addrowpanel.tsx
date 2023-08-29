@@ -5,7 +5,7 @@ import { DataType } from "../types/datatype";
 import { EditControlType } from "../types/editcontroltype";
 import { DayPickerStrings } from "./datepickerconfig";
 import { controlClass, stackStyles, textFieldStyles, verticalGapStackTokens } from "./editablegridstyles";
-import { GetDefault, IsValidDataType, ParseType } from "./helper";
+import { GetDefault, GetParsedFloat, IsValidDataType, ParseType } from "./helper";
 import PickerControl from "./pickercontrol/picker";
 import { DefaultButton } from "@fluentui/react";
 
@@ -57,8 +57,8 @@ const AddRowPanel = (props: Props) => {
             if (columnValuesObj[objKey]['isChanged']) {
                 let value = columnValuesObj[objKey]['value'];
 
-                if (columnValuesObj[objKey]['dataType'] === DataType.decimal && (value !== null && value !== undefined))
-                    value = parseFloat(value);
+                if (columnValuesObj[objKey]['dataType'] === DataType.decimal)
+                    value = GetParsedFloat(value);            
 
                 updateObj[objKey] = value
             }

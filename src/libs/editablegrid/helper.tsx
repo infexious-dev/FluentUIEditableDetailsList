@@ -69,7 +69,7 @@ export const IsValidDataType = (type: string | undefined, text: string): boolean
             isValid = !isNaN(Number(text));
             break;
         case DataType.decimal:
-            let regex = new RegExp(/^[0-9.]*$/, 'g');
+            let regex = new RegExp(/^[-]?((\d+)|(\.)|(\.\d+)|(\d+\.\d+)|(\d+\.))?$/, 'g');
             if (!regex.test(text)) {
                 isValid = false;
             }
@@ -116,11 +116,8 @@ export const ParseType = (type: string | undefined, text: string): any => {
         case DataType.number:
             return Number(text);
         case DataType.decimal:
-            let regex = new RegExp(/^-?[0-9]*\.[0-9]{0,10}$/, 'g');
-            if (text !== '0' && text !== "0" && regex.test(text))
-                return text // keep as string until more decimals are added
-            else
-                return parseFloat(text).toString();
+            // let regex = new RegExp(/^[+-]?((\d+(\.\d*)?)|(\.\d+))$/, 'g');
+            return text
         case DataType.date:
             return Date.parse(text);
     }
@@ -144,6 +141,15 @@ export const GetValue = (type: string | undefined, value: any): any => {
         default:
             return value;
     }
+}
+
+export const GetParsedFloat = (value: any): number | null => {
+    let _value: number | null = parseFloat(value);
+
+    if (Number.isNaN(_value))
+        _value = null
+
+    return _value;
 }
 
 export const clone = (entity: any): any => {
