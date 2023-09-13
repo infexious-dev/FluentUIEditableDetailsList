@@ -39,6 +39,7 @@ Updates include:
 >- "dropdownValues" prop on IColumnConfig can now be a function that returns IDropdownOption[]. It accepts an "item" parameter so tailor-made dropdown options for an item are possible based on any its other properties.
 >- "editableOnlyInPanel" prop on IColumnConfig allows the column to only be editable in the panel (i.e. when the "Edit Panel" is open) when the "editable" prop is "true". "editable", "editableOnlyInPanel", and not "editable" columns on the grid now have CSS classes of "editable", "editable-panel-only", and "non-editable" added to their TooltipHost class names, respectively. TooltipHost class name is "cell-value".
 >- "panelEditDisabledUntil" prop on IColumnConfig allows custom disabling of fields in the add/edit panels based on other values.
+>- "onRenderHeader" and "ariaLabel" now available for use from IColumns definitions.
 
 ### Bug Fixes
 

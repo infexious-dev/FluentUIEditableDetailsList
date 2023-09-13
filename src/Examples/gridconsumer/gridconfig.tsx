@@ -8,6 +8,7 @@ import { EditControlType } from "../../libs/types/editcontroltype";
 import { CellHover } from "./hoverComponent";
 import { DataType } from "../../libs/types/datatype";
 import { IDetailsColumnStyles } from "office-ui-fabric-react";
+import { Icon, TooltipHost, mergeStyles } from '@fluentui/react';
 
 const headerStyle: Partial<IDetailsColumnStyles> = { cellTitle: { backgroundColor: "rgb(0, 120, 212)", color: "#fff" }, sortIcon: { color: '#fff' } };
 
@@ -69,7 +70,37 @@ export const GridColumnConfig: IColumnConfig[] =
             isResizable: true,
             includeColumnInExport: true,
             includeColumnInSearch: true,
-            applyColumnFilter: true
+            applyColumnFilter: true,
+            ariaLabel: 'Custom hover title',
+            headerClassName: mergeStyles({
+                '.ms-DetailsHeader-cellTitle,.ms-DetailsHeader-cellName': {
+                    width: '100%'
+                }
+            }),
+            onRenderHeader: () => {
+                return <div style={{ height: 42, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                        <div style={{ marginRight: 5 }}>Name</div>
+                        <div style={{ marginTop: 2, fontSize: '.85em', fontWeight: 400 }}>test</div>
+                    </div>
+
+                    <TooltipHost content="This is custom tooltip content">
+                        <Icon iconName='Info' />
+                    </TooltipHost>
+                </div>
+            }
+            // onRenderHeader: () => {
+            //     return <div style={{ height: 42, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            //         <div>
+            //             <div style={{ marginRight: 5 }}>Name</div>
+            //             <div style={{ fontSize: '.85em', lineHeight: 1, fontWeight: 400, position: 'absolute', bottom: 2 }}>test</div>
+            //         </div>
+
+            //         <TooltipHost content="This is custom tooltip content">
+            //             <Icon iconName='Info' />
+            //         </TooltipHost>
+            //     </div>
+            // }
         },
         {
             key: 'age',
