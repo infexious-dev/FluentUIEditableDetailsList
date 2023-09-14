@@ -2254,7 +2254,7 @@ const EditableGrid = (props: Props) => {
                     <AddRowPanel
                         onDismiss={dismissPanelForAdd}
                         onChange={onAddPanelChange}
-                        columnConfigurationData={props.columns}
+                        columnConfigurationData={props.customEditPanelColumns ? props.customEditPanelColumns : props.columns}
                         enableRowsCounterField={props.enableRowAddWithValues.enableRowsCounterInPanel}
                     />
                 </Panel>
