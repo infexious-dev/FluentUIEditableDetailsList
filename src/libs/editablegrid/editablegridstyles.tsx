@@ -106,5 +106,6 @@ export const horizontalGapStackTokens: IStackTokens = {
 export const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: {} };
 
 export const dropdownStyles: Partial<IDropdownStyles> = {
-    dropdown: { width: '90%' },
+    root: { width: '100%' },
+    dropdown: { width: '100%' },
 };

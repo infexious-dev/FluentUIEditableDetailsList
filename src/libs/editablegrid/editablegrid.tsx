@@ -1931,6 +1931,7 @@ const EditableGrid = (props: Props) => {
                 ariaLabel: props.enableSaveText ? props.enableSaveText : "Submit",
                 disabled: isGridInEdit || !isGridStateEdited,
                 iconProps: { iconName: 'Save' },
+                className: 'commandbar-save',
                 onClick: () => onGridSave(),
             });
         }
@@ -1942,6 +1943,7 @@ const EditableGrid = (props: Props) => {
                 disabled: (isGridInEdit || editMode) || !isGridStateEdited,
                 text: "Reset Data",
                 iconProps: { iconName: "Refresh" },
+                className: 'commandbar-refresh',
                 onClick: () => ResetGridData()
             });
         }
@@ -2309,7 +2311,9 @@ const EditableGrid = (props: Props) => {
                             cellStyleProps={props.cellStyleProps}
                             checkboxCellClassName={`${checkboxCellClassName} ${props.checkboxCellClassName ? props.checkboxCellClassName : ''}`}
                             checkboxVisibility={props.checkboxVisibility}
-                            className={props.className}
+                            className={`${mergeStyles({
+                                fontSize: '1em'
+                            })} ${props.className}`}
                             columnReorderOptions={props.columnReorderOptions}
                             componentRef={props.componentRef}
                             disableSelectionZone={props.disableSelectionZone}
@@ -2353,16 +2357,23 @@ const EditableGrid = (props: Props) => {
                                                     styles: {
                                                         root:
                                                         {
+                                                            fontSize: '0.8571428571428571em',
                                                             ".ms-DetailsRow-cell:not(.actions-cell)": {
                                                                 opacity: rowProps?.item._is_muted_ ? props.rowMuteOptions?.rowMuteOpacity ? `${props.rowMuteOptions.rowMuteOpacity}` : '.2' : '',
                                                                 filter: rowProps?.item._is_muted_ ? 'grayscale(100%)' : 'none'
                                                             }
+
                                                         }
                                                     }
                                                 })
                                                 : defaultRender({
                                                     ...rowProps,
-                                                    className: `${rowInEdit ? 'row-edit' : ''}`
+                                                    className: `${rowInEdit ? 'row-edit' : ''}`,
+                                                    styles: {
+                                                        root: {
+                                                            fontSize: '0.8571428571428571em'
+                                                        }
+                                                    }
                                                 }) : null
 
                                     }
