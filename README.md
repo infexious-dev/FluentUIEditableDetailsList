@@ -75,6 +75,10 @@ Updates include:
 >- Empty cells can now be edited.
 >- Rows now have a CSS class of "row-edit" when the row is being edited.
 >- Sorting via the columns will now be case insensitive.
+>- "Save" command bar button now has class of "commandbar-save".
+>- "Reset" command bar button now has class of "commandbar-reset".
+>- Dropdown widths are now 100% of the column width.
+>- Font sizes on the grid are now set to '0.8571428571428571em' to allow for dynamic scaling.
 
 ### Experimental
 

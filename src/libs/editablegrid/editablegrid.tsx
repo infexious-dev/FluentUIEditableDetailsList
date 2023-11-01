@@ -1943,7 +1943,7 @@ const EditableGrid = (props: Props) => {
                 disabled: (isGridInEdit || editMode) || !isGridStateEdited,
                 text: "Reset Data",
                 iconProps: { iconName: "Refresh" },
-                className: 'commandbar-refresh',
+                className: 'commandbar-reset',
                 onClick: () => ResetGridData()
             });
         }
