@@ -1460,7 +1460,7 @@ const EditableGrid = (props: Props) => {
                                                 marginTop: props.alignCellsMiddle ? 0 : undefined
                                             }
                                         })}
-                                        value={new Date(activateCellEdit[rowNum!].properties[column.key].value)}
+                                        value={activateCellEdit[rowNum!].properties[column.key].value ? new Date(activateCellEdit[rowNum!].properties[column.key].value) : undefined}
                                         onSelectDate={(date) => onCellDateChange(date, item, rowNum!, column)}
                                         onDoubleClick={() => !activateCellEdit[rowNum!].isActivated ? onDoubleClickEvent(column.key, rowNum!, false) : null}
                                     />)

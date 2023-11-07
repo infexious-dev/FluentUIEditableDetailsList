@@ -58,7 +58,7 @@ const AddRowPanel = (props: Props) => {
                 let value = columnValuesObj[objKey]['value'];
 
                 if (columnValuesObj[objKey]['dataType'] === DataType.decimal)
-                    value = GetParsedFloat(value);            
+                    value = GetParsedFloat(value);
 
                 updateObj[objKey] = value
             }
@@ -92,7 +92,6 @@ const AddRowPanel = (props: Props) => {
                         ariaLabel="Select a date"
                         onSelectDate={(date) => onCellDateChange(date, column)}
                         //value={props != null && props.panelValues != null ? new Date(props.panelValues[item.key]) : new Date()}
-                        value={new Date()}
                     />);
                     break;
                 case EditControlType.Picker:

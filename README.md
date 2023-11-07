@@ -50,6 +50,7 @@ Updates include:
 >- Operation enum was exported as "type" and therefore could not be used as intended. Removed "type" from index.tsx Operation export.
 >- Having data with a "prototype" method will no longer cause grid to crash of grid reset if method is used during rendering.
 >- Clicking on "Cancel" when editing a row will no longer incorrectly internally reset filters applied.
+>- Date Picker controls will no longer set the date to Jan 1 1970 if empty, null, or undefined when editing. Adding rows with data now present a blank date picker.
 
 ### Enhancements
 

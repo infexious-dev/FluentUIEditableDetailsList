@@ -295,7 +295,7 @@ export class GridItemsType {
     age: number;
     designation: string | undefined;
     salary: number;
-    dateofjoining: string;
+    dateofjoining: string | undefined;
     payrolltype: string;
     employmenttype: string;
     employeelink: string;

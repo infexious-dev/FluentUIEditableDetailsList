@@ -98,7 +98,7 @@ const EditPanel = (props: Props) => {
                         placeholder="Select a date..."
                         ariaLabel="Select a date"
                         onSelectDate={(date) => onCellDateChange(date, column)}
-                        value={columnValuesObj[column.key].value}
+                        value={columnValuesObj[column.key].value ? new Date(columnValuesObj[column.key].value) : undefined}
                     />);
                     break;
                 case EditControlType.Picker:

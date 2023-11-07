@@ -127,8 +127,8 @@ export const ParseType = (type: string | undefined, text: string): any => {
 
 export const GetDefault = (type: string | undefined): any => {
     switch (type) {
-        case DataType.date:
-            return new Date();
+        // case DataType.date:
+        //     return new Date();
         default:
             return null;
     }
@@ -136,8 +136,8 @@ export const GetDefault = (type: string | undefined): any => {
 
 export const GetValue = (type: string | undefined, value: any): any => {
     switch (type) {
-        case DataType.date:
-            return new Date(value);
+        // case DataType.date:
+        //     return new Date(value);
         default:
             return value;
     }
