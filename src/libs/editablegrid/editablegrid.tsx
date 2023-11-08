@@ -1588,6 +1588,7 @@ const EditableGrid = (props: Props) => {
                                         <Toggle
                                             onText={column.toggleOnText}
                                             offText={column.toggleOffText}
+                                            styles={{ root: { marginBottom: 0, fontSize: '1em' }, container: { alignItems: 'center' }, text: { fontSize: '1em' } }}
                                             ariaLabel={column.key}
                                             disabled={isToggleDisabled}
                                             checked={activateCellEdit[rowNum!].properties[column.key].value || false}
@@ -1599,6 +1600,7 @@ const EditableGrid = (props: Props) => {
                                     <Toggle
                                         onText={column.toggleOnText}
                                         offText={column.toggleOffText}
+                                        styles={{ root: { marginBottom: 0, fontSize: '1em' }, container: { alignItems: 'center' }, text: { fontSize: '1em' } }}
                                         ariaLabel={column.key}
                                         disabled={isToggleDisabled}
                                         checked={activateCellEdit[rowNum!].properties[column.key].value || false}
