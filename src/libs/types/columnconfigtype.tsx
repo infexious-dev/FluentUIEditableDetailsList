@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { ConstrainMode, IColumn, IDetailsHeaderProps } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList.types';
+import { IColumn } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsList.types';
 import { IDropdownOption } from "office-ui-fabric-react";
 import { CalculationType } from "./calculationtype";
 import { ICellStyleRulesType, StringOperators } from './cellstyleruletype';
@@ -30,6 +30,8 @@ export interface IColumnConfig extends IColumn {
     linkOptions?: ILinkOptions;
     onCustomRender?: (item?: any, index?: number, column?: IColumn) => any;
     isSortedByDefault?: boolean;
+    toggleOnText?: string;
+    toggleOffText?: string;
 };
 
 export interface ILinkOptions {

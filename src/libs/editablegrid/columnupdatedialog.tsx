@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { Checkbox, DatePicker, DefaultButton, Dialog, DialogFooter, Dropdown, IDropdownOption, IDropdownStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, PrimaryButton, Stack, TextField } from "@fluentui/react";
+import { Checkbox, DatePicker, DefaultButton, Dialog, DialogFooter, Dropdown, IDropdownOption, IDropdownStyles, IStackTokens, ITag, ITextFieldStyles, Label, mergeStyleSets, PrimaryButton, Stack, TextField, Toggle } from "@fluentui/react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { EditControlType } from "../types/editcontroltype";
@@ -196,6 +196,20 @@ const ColumnUpdateDialog = (props: Props) => {
                         <div key={item.key}>
                             <Label>{item.text}</Label>
                             <Checkbox
+                                styles={{ root: { marginTop: 0 } }}
+                                disabled={!item.editable}
+                                checked={columnValuesObj[item.key].value || false}
+                                onChange={(ev, checked) => onCheckboxChange(checked, item)}
+                            />
+                        </div>
+                    );
+                case EditControlType.Toggle:
+                    return (
+                        <div key={item.key}>
+                            <Label>{item.text}</Label>
+                            <Toggle
+                                onText={item.toggleOnText}
+                                offText={item.toggleOffText}
                                 styles={{ root: { marginTop: 0 } }}
                                 disabled={!item.editable}
                                 checked={columnValuesObj[item.key].value || false}

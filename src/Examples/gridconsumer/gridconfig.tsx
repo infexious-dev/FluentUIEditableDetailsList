@@ -45,6 +45,22 @@ export const GridColumnConfig: IColumnConfig[] =
             inputType: EditControlType.Checkbox
         },
         {
+            key: 'toggle',
+            name: 'Toggle',
+            text: 'Toggle',
+            editable: true,
+            minWidth: 50,
+            maxWidth: 100,
+            isResizable: true,
+            includeColumnInExport: true,
+            includeColumnInSearch: true,
+            applyColumnFilter: true,
+            disableSort: false,
+            inputType: EditControlType.Toggle,
+            toggleOnText: "Yes",
+            toggleOffText: "No"
+        },
+        {
             key: 'customerhovercol',
             name: 'Custom Hover Column',
             text: 'Custom Hover Column',
@@ -290,6 +306,7 @@ export const GridColumnConfigCustomPanelEdit: IColumnConfig[] =
 export class GridItemsType {
     id: number;
     check: boolean;
+    toggle: boolean;
     customerhovercol: string;
     name: string;
     age: number;

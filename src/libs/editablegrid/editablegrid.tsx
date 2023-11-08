@@ -12,7 +12,7 @@ import {
 } from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
 import { IconButton } from '@fluentui/react/lib/components/Button/IconButton/IconButton';
-import { DefaultButton, PrimaryButton, Dropdown, IDropdownOption, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, Checkbox } from '@fluentui/react';
+import { DefaultButton, PrimaryButton, Dropdown, IDropdownOption, DialogFooter, Announced, Dialog, SpinButton, DatePicker, ScrollablePane, ScrollbarVisibility, Sticky, StickyPositionType, IRenderFunction, mergeStyles, Spinner, SpinnerSize, TagPicker, ITag, IBasePickerSuggestionsProps, IInputProps, HoverCard, HoverCardType, Link, Checkbox, Toggle } from '@fluentui/react';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { IColumnConfig } from '../types/columnconfigtype';
 import { controlClass, dropdownStyles, GetDynamicSpanStyles, textFieldStyles } from './editablegridstyles';
@@ -1372,7 +1372,7 @@ const EditableGrid = (props: Props) => {
                     const isEditableInPanelOnly = isEditableInGrid && column.editableOnlyInPanel;
                     const rowInEdit = activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'];
                     const tooltipText =
-                        props.cellEditTooltip?.showTooltip && !rowInEdit && !editMode && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox ?
+                        props.cellEditTooltip?.showTooltip && !rowInEdit && !editMode && isEditableInGrid && !isEditableInPanelOnly && column.inputType !== EditControlType.Checkbox && column.inputType !== EditControlType.Toggle ?
                             _shouldRenderSpan ?
                                 props.enableSingleClickCellEdit ?
                                     "Click to edit" :
@@ -1562,6 +1562,45 @@ const EditableGrid = (props: Props) => {
                                         }}
                                         ariaLabel={column.key}
                                         disabled={isCheckboxDisabled}
+                                        checked={activateCellEdit[rowNum!].properties[column.key].value || false}
+                                        onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
+                                    />
+                                )
+                            }</TooltipHost>
+                        case EditControlType.Toggle:
+                            let isToggleDisabled: boolean = false;
+
+                            isToggleDisabled = !props.enableCellEdit || !column.editable || column.editableOnlyInPanel || item._is_muted_ || !item._can_edit_row_;
+
+                            if (column.editable && !column.editableOnlyInPanel && props.enableRowEdit && (activateCellEdit && activateCellEdit[Number(item['_grid_row_id_'])!] && activateCellEdit[Number(item['_grid_row_id_'])!]['isActivated'])) {
+                                isToggleDisabled = false;
+                            }
+
+                            return <TooltipHost {...tooltipHostProps} >{
+                                (column?.hoverComponentOptions?.enable ?
+                                    (<HoverCard
+                                        type={HoverCardType.plain}
+                                        plainCardProps={{
+                                            onRenderPlainCard: () => onRenderPlainCard(column, rowNum!, item),
+                                        }}
+                                        instantOpenOnClick
+                                    >
+                                        <Toggle
+                                            onText={column.toggleOnText}
+                                            offText={column.toggleOffText}
+                                            ariaLabel={column.key}
+                                            disabled={isToggleDisabled}
+                                            checked={activateCellEdit[rowNum!].properties[column.key].value || false}
+                                            onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
+                                        />
+
+                                    </HoverCard>)
+                                    :
+                                    <Toggle
+                                        onText={column.toggleOnText}
+                                        offText={column.toggleOffText}
+                                        ariaLabel={column.key}
+                                        disabled={isToggleDisabled}
                                         checked={activateCellEdit[rowNum!].properties[column.key].value || false}
                                         onChange={(ev, checked) => onCheckboxChange(checked, rowNum!, column, item)}
                                     />

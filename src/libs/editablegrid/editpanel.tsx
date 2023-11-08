@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-import { Checkbox, DatePicker, Dropdown, IDropdownOption, ITag, Label, PrimaryButton, Stack, TextField } from "@fluentui/react";
+import { Checkbox, DatePicker, Dropdown, IDropdownOption, ITag, Label, PrimaryButton, Stack, TextField, Toggle } from "@fluentui/react";
 import React, { useEffect, useState } from "react";
 import { IColumnConfig } from "../types/columnconfigtype";
 import { DataType } from "../types/datatype";
@@ -145,6 +145,21 @@ const EditPanel = (props: Props) => {
                         <div key={column.key}>
                             <Label>{column.text}</Label>
                             <Checkbox
+                                styles={{ root: { marginTop: 0 } }}
+                                disabled={!column.editable || (column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false)}
+                                checked={columnValuesObj[column.key].value || false}
+                                onChange={(ev, checked) => onCheckboxChange(checked, column)}
+                            />
+                        </div>
+                    );
+                    break;
+                case EditControlType.Toggle:
+                    tmpRenderObj.push(
+                        <div key={column.key}>
+                            <Label>{column.text}</Label>
+                            <Toggle
+                                onText={column.toggleOnText}
+                                offText={column.toggleOffText}
                                 styles={{ root: { marginTop: 0 } }}
                                 disabled={!column.editable || (column.panelEditDisabledUntil ? column.panelEditDisabledUntil(columnValuesObj, column) : false)}
                                 checked={columnValuesObj[column.key].value || false}
