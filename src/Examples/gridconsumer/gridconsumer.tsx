@@ -14,7 +14,7 @@ import { ITeachingBubbleConfig, teachingBubbleConfig } from './teachingbubblecon
 import { useBoolean } from '@fluentui/react-hooks';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ComboBox } from '@fluentui/react';
+import { ComboBox, PrimaryButton } from '@fluentui/react';
 import _ from 'lodash';
 
 interface GridConfigOptions {
@@ -416,7 +416,7 @@ const Consumer = () => {
                     </Stack.Item>
                 </Stack>
             </fieldset>
-            <div style={{ display: 'flex', textAlign: 'left', marginBottom: 20 }}>
+            <div style={{ display: 'flex', textAlign: 'left', marginBottom: 20, alignItems: 'flex-end' }}>
                 <ComboBox selectedKey={nameFilterKey} disabled={gridInEdit} styles={{ root: { marginRight: 20 } }} options={_.uniqBy(items?.map(item => {
                     return ({
                         key: item.name,
@@ -442,9 +442,11 @@ const Consumer = () => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'hiddenstring', queryText: (event.target as any).value })
                 }} label="Hidden String" />
 
-                <TextField placeholder="Incorrect column name" disabled={gridInEdit} onChange={(event, newValue) => {
+                <TextField placeholder="Incorrect column name" styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {
                     EventEmitter.dispatch(EventType.onFilter, { columnKey: 'errorcheck', queryText: (event.target as any).value })
                 }} label="Nonexistant Field (Error Check)" />
+
+                <PrimaryButton onClick={() => clearFilters()}>Clear Filters</PrimaryButton>
             </div>
             <div className={classNames.controlWrapper}>
                 <TextField value={gridSearchText} disabled={gridInEdit} id="searchField" placeholder='Search Grid' className={mergeStyles({ width: '60vh', paddingBottom: '10px' })} onChange={

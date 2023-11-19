@@ -201,8 +201,11 @@ const EditableGrid = (props: Props) => {
                                 // now check event emitter filters
                                 if (filteredIn) {
                                     eventFilterList.current.forEach(filter => {
-                                        if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                                        if (filter.exact && item[filter.columnKey].toString().toLowerCase() !== filter.queryText.trim().toLowerCase()) // is exact match
                                             filteredIn = false;
+                                        else if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                                            filteredIn = false;
+
                                     });
                                 }
 
@@ -226,7 +229,9 @@ const EditableGrid = (props: Props) => {
 
                     // ensure to respect event filters
                     eventFilterList.current.forEach(filter => {
-                        if (!item[filter.columnKey]?.toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                        if (filter.exact && item[filter.columnKey].toString().toLowerCase() !== filter.queryText.trim().toLowerCase()) // is exact match
+                            filteredIn = false;
+                        else if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
                             filteredIn = false;
                     });
 
