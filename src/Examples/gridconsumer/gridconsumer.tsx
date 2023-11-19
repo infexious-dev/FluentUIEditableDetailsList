@@ -424,7 +424,7 @@ const Consumer = () => {
                     })
                 }), 'text')} label='Name' onChange={(event, option) => {
                     setNameFilterKey(option?.key);
-                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: option?.text })
+                    EventEmitter.dispatch(EventType.onFilter, { columnKey: 'name', queryText: option?.text, exact: true })
                 }} />
 
                 <TextField value={ageFilter} styles={{ root: { marginRight: 20 } }} disabled={gridInEdit} onChange={(event, newValue) => {

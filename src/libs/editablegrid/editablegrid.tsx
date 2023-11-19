@@ -51,6 +51,7 @@ interface SortOptions {
 interface IEventFilterList {
     columnKey: string;
     queryText: string;
+    exact?: boolean;
 }
 
 const EditableGrid = (props: Props) => {
@@ -107,7 +108,7 @@ const EditableGrid = (props: Props) => {
     const eventFilterList = React.useRef<IEventFilterList[]>([]);
     const eventSearchQuery = React.useRef<string>("");
 
-    function onFilterHandler(data: { columnKey: string; queryText: string; }) {
+    function onFilterHandler(data: { columnKey: string; queryText: string; exact?: boolean; }) {
         if (data.columnKey) {
             const searchableColumn = props.columns.filter(x => x.key === data.columnKey)[0];
 
@@ -127,7 +128,8 @@ const EditableGrid = (props: Props) => {
                 if (index === -1) {
                     eventFilterList.current.push({
                         columnKey: _columnKey,
-                        queryText: data.queryText
+                        queryText: data.queryText,
+                        exact: data.exact
                     });
                 } else { // column exists in filter list
                     eventFilterList.current[index].queryText = data.queryText;
@@ -145,9 +147,14 @@ const EditableGrid = (props: Props) => {
 
                     eventFilterList.current.forEach(filter => {
                         // filter out item if it null/undefined or if it is not found
-                        if ((item[filter.columnKey] === undefined || item[filter.columnKey] === null)
-                            || !item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
-                            filteredIn = false;
+                        if (item[filter.columnKey] === undefined || item[filter.columnKey] === null)
+                            filteredIn = false
+                        else {
+                            if (filter.exact && item[filter.columnKey].toString().toLowerCase() !== filter.queryText.trim().toLowerCase()) // is exact match
+                                filteredIn = false;
+                            else if (!item[filter.columnKey].toString().toLowerCase().includes(filter.queryText.trim().toLowerCase()))
+                                filteredIn = false;
+                        }
                     });
 
                     // now check event emitter search
